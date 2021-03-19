@@ -1,6 +1,8 @@
 # SimVCCE
 
-The SimVCCE is the vapor-compression refrigeration cycle steady-state simulator for education. The educational simulator is available in Python, C++ and Modelica
+The SimVCCE is the vapor-compression refrigeration cycle steady-state simulator the sequential-modular approach for education.
+
+The simulator is available in Python, C++ and Modelica.
 
 * [Python](./vccpython)
 
