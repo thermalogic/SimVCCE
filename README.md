@@ -10,9 +10,9 @@ The simulator is available in Python, C++ and Modelica.
 
 * [Modelica](./vccmo)
 
-We wish that SimVCCE may be a helpful vehicle for you to understand
+We wish that SimVCCE may be a helpful vehicle for you to 
 
-*  Computational Thinking and improve programming skills
+*  understand Computational Thinking and improve programming skills
 
 *  Modeling and Simulation Methods for Design of Engineering Systems
 
