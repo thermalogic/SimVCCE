@@ -1,53 +1,63 @@
-/*
+/* 
 
-The vapor-compression refrigeration cycle simulator for education in C++
-
-  evaporator.cpp
+  Evaporator.cpp
 
 */
 
 #include "evaporator.hpp"
 
-Evaporator::Evaporator(dictDevice dictDev, mapNode nodes)
+Evaporator::Evaporator(umComponent dictComp)
 {
-
-    name = any_cast<const char *>(dictDev["name"]);
-    iNode = nodes[any_cast<int>(dictDev["iNode"])];
-    oNode = nodes[any_cast<int>(dictDev["oNode"])];
+    name = any_cast<const char *>(dictComp["name"]);
+    iPort = new Port(any_cast<mPort>(dictComp["iPort"]));
+    oPort = new Port(any_cast<mPort>(dictComp["oPort"]));
+    portdict = {{"iPort", iPort},
+                {"oPort", oPort}};
+    energy = "RefrigerationCapacity";
 }
 
 Evaporator::~Evaporator()
 {
+    delete iPort;
+    delete oPort;
 }
 
 void Evaporator::state()
 {
-    iNode->p = oNode->p;
+    iPort->p = oPort->p;
 }
 
 void Evaporator::balance()
 {
     // mass and energy balance
     // mass balance
-    if (!isnan(iNode->mdot))
+    if (!isnan(iPort->mdot))
     {
-        oNode->mdot = iNode->mdot;
+        oPort->mdot = iPort->mdot;
     }
     else
     {
-        if (!isnan(oNode->mdot))
-            iNode->mdot = oNode->mdot;
+        if (!isnan(oPort->mdot))
+            iPort->mdot = oPort->mdot;
     }
-    Qin = iNode->mdot * (oNode->h - iNode->h);
+    Qin = iPort->mdot * (oPort->h - iPort->h);
+}
+
+void Evaporator::setportaddress()
+{
+    if (iPort != portdict["iPort"])
+        iPort = portdict["iPort"];
+    if (oPort != portdict["oPort"])
+        oPort = portdict["oPort"];
 }
 
 string Evaporator::resultstring()
 {
     string result;
     result = "\n" + name;
-    result += "\n" + Node::title;
-    result += "\n" + iNode->resultstring();
-    result += "\n" + oNode->resultstring();
+    result += "\n" + Port::title;
+    result += "\n" + iPort->resultstring();
+    result += "\n" + oPort->resultstring();
     result += "\nThe Refrigeration Capacity(kW): " + to_string_with_precision<double>(Qin, 3) + "\n";
     return result;
 }

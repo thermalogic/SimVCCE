@@ -1,6 +1,5 @@
 /*
-  The vapor-compression refrigeration cycle simulator for education in C++
-    expansionvalve.hpp
+   ExpansionValve.cpp
 */
 
 #ifndef EXPANSIONVALVE_HPP
@@ -11,13 +10,15 @@
 class ExpansionValve : public CompBase
 {
 public:
-  // methods
-  ExpansionValve(dictDevice dictDev, mapNode nodes);
-  ~ExpansionValve();
+   // methods
+   ExpansionValve(umComponent dictComp);
+   ~ExpansionValve();
 
-  void state();
-  void balance();
-  string resultstring();
+   void setportaddress();
+   void state();
+   void balance();
+   string resultstring();
+ 
 };
 
-#endif /* EXPANSIONVALVE_HPP */
+#endif /* EXPANSIONVALVE_hpp */

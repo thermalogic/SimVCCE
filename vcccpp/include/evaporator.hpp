@@ -1,6 +1,5 @@
 /*
-   The vapor-compression refrigeration cycle simulator for education in C++
-   evaporator.hpp
+   Evaporator.hpp
 */
 
 #ifndef EVAPORATOR_HPP
@@ -12,14 +11,15 @@ class Evaporator : public CompBase
 {
 public:
     double Qin;
-
     // methods
-    Evaporator(dictDevice dictDev, mapNode nodes);
+    Evaporator(umComponent dictComp);
     ~Evaporator();
-
+  
+    void setportaddress();
     void state();
     void balance();
     string resultstring();
+ 
 };
 
 #endif /* EVAPORATOR_HPP */

@@ -1,6 +1,5 @@
 /*
-  The vapor-compression refrigeration cycle simulator for education in C++
-     condenser.cpp
+  Condenser.cpp
 */
 
 #ifndef CONDENSER_HPP
@@ -12,12 +11,14 @@ class Condenser : public CompBase
 {
 public:
   // methods
-  Condenser(dictDevice dictDev, mapNode nodes);
+  Condenser(umComponent dictComp);
   ~Condenser();
-
+ 
+  void setportaddress();
   void state();
   void balance();
   string resultstring();
+ 
 };
 
 #endif /* Condenser_hpp */

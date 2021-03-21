@@ -1,40 +1,45 @@
 """
-The vapor-compression refrigeration cycle simulator for education in Python
-  Node
+ The port of device
 """
 import CoolProp.CoolProp as cp
 
 
-class Node:
+class Port:
 
-    title = ('{:^6} \t{:^32} \t{:<8} \t{:>8} \t{:>10} \t{:>10} \t{:^10} \t{:>10}'.format
-             ("NodeID", "Name", "P(MPa)", "T(°C)", "H(kJ/kg)", "S(kJ/kg.K)",  "Quality", "MDOT(kg/s)"))
+    title = ('{:^6} \t{:<8} \t{:>8} \t{:>10} \t{:>10} \t{:^10} \t{:>10}'.format
+             ("Index", "P(MPa)", "T(°C)", "H(kJ/kg)", "S(kJ/kg.K)",  "Quality", "MDOT(kg/s)"))
 
     def __init__(self, dictnode):
         """ create the node object"""
+        self.index = None
+        self.p = None
+        self.t = None
+        self.x = None
+        self.mdot = None
 
-        self.name = dictnode['name']
-        self.id = dictnode['id']
+        if('p' in dictnode):
+            try:
+                self.p = float(dictnode['p'])
+            except:
+                pass
 
-        try:
-            self.p = float(dictnode['p'])
-        except:
-            self.p = None
+        if ('t' in dictnode):
+            try:
+                self.t = float(dictnode['t'])
+            except:
+                pass
 
-        try:
-            self.t = float(dictnode['t'])
-        except:
-            self.t = None
+        if ('x' in dictnode):
+            try:
+                self.x = float(dictnode['x'])
+            except:
+                pass
 
-        try:
-            self.x = float(dictnode['x'])
-        except:
-            self.x = None
-
-        try:
-            self.mdot = float(dictnode['mdot'])
-        except:
-            self.mdot = None
+        if ('mdot' in dictnode):
+            try:
+                self.mdot = float(dictnode['mdot'])
+            except:
+                pass
 
         self.h = None
         self.s = None
@@ -129,14 +134,13 @@ class Node:
                 self.pt()
 
     def __str__(self):
-        result = ('{:^6} \t{:<32}'.format(self.id, self.name))
-
-        OutStrs = [{"fstr": '\t{:>7.4}', "sstr": '\t{:>7}', 'prop': self.p},
-                   {"fstr": '\t{:>8.2f}', "sstr": '\t{:>8}', 'prop': self.t},
-                   {"fstr": '\t{:>10.2f}', "sstr": '\t{:>10}', 'prop': self.h},
-                   {"fstr": '\t{:>8.3f}', "sstr": '\t{:>8}', 'prop': self.s},
-                   {"fstr": '\t{:>10.4f}', "sstr": '\t{:>10}', 'prop': self.x},
-                   {"fstr": '\t{:>8.2f}', "sstr": '\t{:>8}', 'prop': self.mdot}
+        result = '{:^6}'.format(self.index)
+        OutStrs = [{"fstr": '\t{:>7.4}', 'prop': self.p, "sstr": '\t{:>7}'},
+                   {"fstr": '\t{:>8.2f}', 'prop': self.t, "sstr": '\t{:>8}'},
+                   {"fstr": '\t{:>10.2f}', 'prop': self.h, "sstr": '\t{:>10}'},
+                   {"fstr": '\t{:>8.3f}',  'prop': self.s, "sstr": '\t{:>8}'},
+                   {"fstr": '\t{:>10.4f}', 'prop': self.x, "sstr": '\t{:>10}'},
+                   {"fstr": '\t{:>8.2f}',  'prop': self.mdot, "sstr": '\t{:>8}'}
                    ]
 
         for item in OutStrs:

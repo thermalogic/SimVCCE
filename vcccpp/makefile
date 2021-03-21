@@ -8,8 +8,9 @@ LIBFLAGS=-L./bin -lCoolProp
 CFLAGES=-std=c++17 -O3 -DCOOLPROP_LIB 
 
 SRCS=./demovcc.cpp \
-	./src/vccycle.cpp \
-	./src/node.cpp \
+	./src/vcc.cpp \
+	./src/port.cpp \
+	./src/connector.cpp \
 	./src/compressor.cpp \
 	./src/condenser.cpp \
 	./src/evaporator.cpp \
@@ -40,5 +41,3 @@ else
 install:
 	@echo "Install for Linux Only!"
 endif	
-
-

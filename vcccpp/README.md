@@ -2,14 +2,6 @@
 
 The vapor-compression refrigeration cycle steady-state simulator for education in C++
 
-## Makefiles
-
-1. `makefile`: Install CoolProp, building and run
-
-2. `makelib.mk`: Building the SimVCCE shared Library(`libvcc.so/dll`)
-
-3. `makelibapp.mk`: Building and run the client of the SimVCCE shared Library
-
 ## Prerequisites：The shared library of CoolProp
 
 * `libCoolProp.dll` is the library builded with tdm64-gcc-9.2.0 on Windows 

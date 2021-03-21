@@ -1,38 +1,35 @@
+from .port import *
 
-"""
-The vapor-compression refrigeration cycle simulator for education in Python
-  ExpansionValve: Throttling ：Isenthalpic expansion
-"""
-from .node import *
 
 class ExpansionValve:
 
     energy = "None"
     devtype = "EXPANSIONVALVE"
 
-    def __init__(self, dictDev, nodes):
+    def __init__(self, dictDev):
         """ Initializes the ExpansionValve """
         self.name = dictDev['name']
-        self.iNode = nodes[dictDev['iNode']]
-        self.oNode = nodes[dictDev['oNode']]
+        self.iPort = [Port(dictDev['iPort'])]
+        self.oPort = [Port(dictDev['oPort'])]
+        # map the name of port to the port obj
+        self.portdict = {
+            "iPort": self.iPort,
+            "oPort": self.oPort
+        }
 
     def state(self):
-        """
-          Throttling：Isenthalpic expansion
-        """
-        self.oNode.h=self.iNode.h
-    
+        self.oPort[0].h = self.iPort[0].h
+
     def balance(self):
         """ mass and energy balance  """
-        if self.iNode.mdot is not None:
-            self.oNode.mdot = self.iNode.mdot
-        elif self.oNode.mdot is not None:
-            self.iNode.mdot = self.oNode.mdot
+        if self.iPort[0].mdot is not None:
+            self.oPort[0].mdot = self.iPort[0].mdot
+        elif self.oPort[0].mdot is not None:
+            self.iPort[0].mdot = self.oPort[0].mdot
 
- 
     def __str__(self):
         result = '\n' + self.name
-        result += '\n' + Node.title
-        result += '\n' + self.iNode.__str__()
-        result += '\n' + self.oNode.__str__()
+        result += '\n' +" PORTS "+Port.title
+        result += '\n' +" iPort "+ self.iPort[0].__str__()
+        result += '\n' +" oPort "+ self.oPort[0].__str__()
         return result

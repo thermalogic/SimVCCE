@@ -1,6 +1,5 @@
 /*
-The vapor-compression refrigeration cycle simulator for education in C++
-  compressor.hpp
+  Compressor.hpp
 */
 
 #ifndef COMPRESSOR_HPP
@@ -11,15 +10,18 @@ The vapor-compression refrigeration cycle simulator for education in C++
 class Compressor : public CompBase
 {
 public:
+  
   double Wc;
 
   // methods
-  Compressor(dictDevice dictDev, mapNode nodes);
+  Compressor(umComponent dictComp);
   ~Compressor();
 
+  void setportaddress();
   void state();
   void balance();
   string resultstring();
+ 
 };
 
 #endif /* Compressor_hpp */

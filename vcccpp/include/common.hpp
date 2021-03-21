@@ -1,6 +1,6 @@
 /*
-The vapor-compression refrigeration cycle simulator for education in C++
-  COMMON_HPP
+
+COMMON_HPP
 */
 #ifndef COMMON_HPP
 #define COMMON_HPP
@@ -15,35 +15,35 @@ The vapor-compression refrigeration cycle simulator for education in C++
 #include <cmath>
 #include <vector>
 #include <sstream>
-#include "node.hpp"
+#include <tuple>
+#include "port.hpp"
 #include "CoolPropLib.h"
 
 using namespace std;
+
+typedef unordered_map<string, any> umComponent;
+// port
+typedef tuple<string,string> tupPort;
+typedef tuple<tupPort,tupPort> tupConnector;
+typedef map<string, Port *> mapPortObj;
 
 class CompBase
 {
 public:
   string name;
-  // nodes
-  Node *iNode;
-  Node *oNode;
-
+  string energy;
+  Port *iPort;
+  Port *oPort;
+  mapPortObj portdict;
+  
+  virtual void setportaddress()=0;
   virtual void state() = 0;
   virtual void balance() = 0;
   virtual string resultstring() = 0;
+  
 };
 
-typedef unordered_map<string, any> dictDevice;
-typedef map<int, Node *> mapNode;
-typedef unordered_map<string, CompBase *> mapComponent;
-
-enum class ComponentClass
-{
-  Compressor,
-  Condenser,
-  Evaporator,
-  ExpansionValve
-};
+typedef unordered_map<string, CompBase *> mComponentObj;
 
 template <typename T>
 string to_string_with_precision(const T a_value, const int n = 6)
@@ -51,12 +51,12 @@ string to_string_with_precision(const T a_value, const int n = 6)
   ostringstream out;
   out.precision(n);
   if (!isnan(a_value))
-    out << fixed << a_value;
+     out << fixed << a_value;
   else
   {
-    out << fixed << " -- ";
+     out << fixed <<" -- ";
   }
   return out.str();
-};
+}
 
 #endif /* COMMON_HPP */

@@ -1,7 +1,8 @@
 
 """
-The vapor-compression refrigeration cycle simulator for education in Python
-    vccycle Package 
+ General Object-oriented Abstraction of vc Cycle 
+    
+    cycle Package 
 
 """
 

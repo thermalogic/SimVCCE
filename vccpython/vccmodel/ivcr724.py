@@ -1,66 +1,38 @@
-"""
-The vapor-compression refrigeration cycle simulator for education in Python
-  The Ideal VCR Example 7.2-4
-"""
 cycle = {}
 cycle["name"] = "The Ideal VCR Example 7.2-4"
-cycle["nodes"] = [{
-    "name": "Evaporator to Compressor",
-            "id": 1,
-            "p": None,
-            "t":-10.0,
-            "x": 1,
-            "mdot": 0.08
- },
-    {
-    "name": "Compressor to Condenser",
-            "id": 2,
-            "p": None,
-            "t": None,
-            "x": None,
-            "mdot": None
-},
-    {
-    "name": "Condenser to Expansion Valve ",
-            "id": 3,
-            "p": 0.9,
-            "t": None,
-            "x": 0,
-            "mfdot": None
-},
-    {
-    "name": "Expansion Valve to Evaporator",
-            "id": 4,
-            "p": None,
-            "t": None,
-            "x": None,
-            "mdot": None
-}
-]
-
-cycle["comps"] = [
+cycle["components"] = [
     {
         "name": "Compressor",
         "devtype": "COMPRESSOR",
-        "iNode": 1,
-        "oNode": 2
+        "iPort": {"t": -10.0,  "x":1,"mdot":0.08},
+        "oPort": {},
+        "ef":1.0
+ 
     },
     {
         "name": "Condenser",
         "devtype": "CONDENSER",
-        "iNode": 2,
-        "oNode": 3
+        "iPort": {},
+        "oPort": {"p":0.9,  "x":0},
     },
     {
-        "name": "Expansion Valve ",
+        "name": "ExpansionValve",
         "devtype": "EXPANSIONVALVE",
-        "iNode": 3,
-        "oNode": 4
+        "iPort": {},
+        "oPort": {},
+    
     },
     {
         "name": "Evaporator",
         "devtype": "EVAPORATOR",
-        "iNode": 4,
-        "oNode": 1
+        "iPort": {},
+        "oPort": {},
     }
 ]
+
+cycle["connectors"] = [
+    (("Compressor", "oPort"), ("Condenser", "iPort")),
+    (("Condenser", "oPort"), ("ExpansionValve", "iPort")),
+    (("ExpansionValve", "oPort"), ("Evaporator", "iPort")),
+    (("Evaporator", "oPort"), ("Compressor", "iPort"))]
+

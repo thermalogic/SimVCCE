@@ -1,11 +1,9 @@
 """
-The vapor-compression refrigeration cycle simulator for education in Python
-
     Components Package  
 """
 
-from .node import Node
-
+from .port import Port
+from .connector import Connector
 from .compressor import Compressor
 from .condenser import Condenser
 from .expansionvalve import ExpansionValve

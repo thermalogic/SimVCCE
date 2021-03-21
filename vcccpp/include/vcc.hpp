@@ -1,44 +1,66 @@
 /*
-The vapor-compression refrigeration cycle simulator for education in C++
-  vcc.hpp for the client 
+  vccycleport.hpp
+    
+- The Factory Method Pattern: 
+     typedef std::map<std::string, std::function<CompBase *(umComponent, mapPort)>> compfactory;
+     class ClassReg
 */
+
 #ifndef VCC_HPP
 #define VCC_HPP
 
-#include <string>
-#include <unordered_map>
-#include <map>
-#include <any>
-#include <vector>
-#include <cmath>
-#include <memory>
+#include "common.hpp"
+#include "port.hpp"
+#include "connector.hpp"
+#include "compressor.hpp"
+#include "condenser.hpp"
+#include "evaporator.hpp"
+#include "expansionvalve.hpp"
+#include <typeinfo>
+#include <functional>
 
-using namespace std;
+typedef std::map<std::string, std::function<CompBase *(umComponent)>> compfactory;
 
-class Node;
+class ClassReg
+{
+public:
+    compfactory compinstance;
+    // register
+    template <typename T>
+    void register_type(const std::string &name)
+    {
+        compinstance[name] = [](umComponent item) { return new T(item); };
+    }
 
-class CompBase;
-
-typedef unordered_map<string, any> dictDevice;
-typedef map<int, Node *> mapNode;
-typedef unordered_map<string, CompBase *> mapComponent;
+    void register_type_all()
+    { // if you have the new component class, register it here!
+        register_type<Compressor>("Compressor");
+        register_type<Condenser>("Condenser");
+        register_type<Evaporator>("Evaporator");
+        register_type<ExpansionValve>("ExpansionValve");
+    }
+};
 
 class VCCycle
 {
 public:
-  mapNode nodes;
-  mapComponent comps;
+    inline static compfactory compinstance;
+    Connector *curcon;
+    mComponentObj Comps;
 
-  double Wc;
-  double Qin;
-  double cop;
+    double Wc;
+    double Qin;
+    double cop;
 
-  // methods
-  VCCycle(vector<dictDevice> dictNodes, vector<dictDevice> dictcomps);
+    // methods
+    VCCycle(vector<umComponent> dictcomps, vector<tupConnector> vecConnectors);
+    ~VCCycle();
 
-  void state();
-  void balance();
-  void outresults();
+    void state();
+    void balance();
+    string resultstr();
+    void outdevresultstr();
+    void outresults();
 };
 
-#endif /* VCC_HPP */
+#endif /* VCCycleport_hpp */
