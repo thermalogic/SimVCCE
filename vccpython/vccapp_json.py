@@ -21,8 +21,7 @@ def create_dictcycle_from_jsonfile(filename):
     # convection json to the tuple in python
     for itemtuples in dictcycle["connectors"]:
         for i in range(len(itemtuples)):
-            keys = list(itemtuples[i].keys())
-            itemtuples[i] = (itemtuples[i][keys[0]], itemtuples[i][keys[1]])
+            itemtuples[i] = (itemtuples[i]["devname"], itemtuples[i]["port"])
     return dictcycle
 
 curpath = os.path.abspath(os.path.dirname(__file__))
