@@ -18,7 +18,7 @@ def create_dictcycle_from_jsonfile(filename):
     with open(filename, 'r') as f:
         dictcycle = json.loads(f.read())
 
-    #  convert the list of dict object  to  the list of tuple
+    #  convert the list of dict object  to  the tuple of tuple
     for itemtuples in dictcycle["connectors"]:
         for i in range(len(itemtuples)):
             itemtuples[i] = (itemtuples[i]["devname"], itemtuples[i]["port"])
