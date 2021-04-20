@@ -16,7 +16,7 @@ SRCS=./demovcc.cpp \
 	./src/evaporator.cpp \
 	./src/expansionvalve.cpp 
 
-OUTFILE=./bin/demovcc
+OUTFILE=$(BIN)demovcc
 
 all: $(OUTFILE)
 	$(OUTFILE)
