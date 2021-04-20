@@ -42,9 +42,9 @@ class VCCycle:
         for tupconnector in listconnectors:
             self.curcon.AddConnector(tupconnector, self.comps)
 
-        self.Wc = 0
-        self.Qlow = 0
-        self.cop = 0.0
+        self.Wc = None
+        self.Qlow =None
+        self.cop = None
 
     def ComponentState(self):
         """ calculate the state of ports """
@@ -82,7 +82,6 @@ class VCCycle:
         result += formatstr.format('Compression Work(kW): ', self.Wc)
         result += formatstr.format('Refrigeration Capacity(ton): ', self.Qin)
         result += formatstr.format('The coefficient of performance: ', self.cop)
-
         return result
 
     def __str__(self):
