@@ -1,6 +1,6 @@
 
 """
-General Object-oriented Abstraction  of VP Cycle 
+General Object-oriented Abstraction  of VCR Cycle 
 The Simulator of VC Cycle 
   * Input :the json file of the cycle model
   * Output: text file
@@ -36,3 +36,4 @@ OutFiles(cycle)
 ResultFilePath = curpath+'/result/'
 ResultFileName = ResultFilePath+thedictcycle['name']
 OutFiles(cycle, ResultFileName + '.txt')
+

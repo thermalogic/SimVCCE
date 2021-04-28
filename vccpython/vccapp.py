@@ -1,6 +1,6 @@
 
 """
-General Object-oriented Abstraction  of VP Cycle 
+General Object-oriented Abstraction  of VCR Cycle 
 
 The Simulator of VC Cycle 
   * Input :VC cycle dict model

@@ -25,7 +25,7 @@ class VCCycle:
                   }
           TO:     
              self.comps : dict of all component objects      
-             self.curcon : the connector object
+             self.conns : the connector object
         """
         self.name = dictcycle["name"]
         dictcomps = dictcycle["components"]
@@ -37,10 +37,10 @@ class VCCycle:
         for curdev in dictcomps:
             self.comps[curdev['name']] = compdict[curdev['devtype']](curdev)
 
-        self.curcon = Connector()
-        # 2 use the dictconnectors to set the nodes value and alias between the item of nodes and the port of devices
+        self.conns = Connector()
+        # 2 use the listconnectors to set the nodes value and alias between the item of nodes and the port of devices
         for tupconnector in listconnectors:
-            self.curcon.AddConnector(tupconnector, self.comps)
+            self.conns.add_node(tupconnector, self.comps)
 
         self.Wc = None
         self.Qlow =None
@@ -53,7 +53,7 @@ class VCCycle:
             self.comps[key].state()
 
         # the nodes state oof connectors
-        for item in self.curcon.nodes:
+        for item in self.conns.nodes:
             if item[0].stateok == False:
                 item[0].state()
 
