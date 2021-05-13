@@ -63,3 +63,4 @@ string Compressor::resultstring()
     result += "\nThe compressor Work(kW): " + to_string_with_precision<double>(Wc, 3) + "\n";
     return result;
 }
+

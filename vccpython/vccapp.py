@@ -19,12 +19,12 @@ if __name__ == "__main__":
     ResultFilePath = curpath+'/result/'
 
     for curcycle in cycles:
-        ResultFileName = ResultFilePath+curcycle.cycle['name']
+        ResultFileName = ResultFilePath+curcycle.cycle['name'] + '.txt'
 
         cycle = VCCycle(curcycle.cycle)
         cycle.simulator()
         # output to text
         OutFiles(cycle)
-        OutFiles(cycle, ResultFileName + '.txt')
+        OutFiles(cycle, ResultFileName)
 
       

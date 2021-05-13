@@ -63,7 +63,7 @@ void Connector::AddConnector(tupConnector tconn, mComponentObj &comps)
    getnodevalue(comps[comp1]->portdict[port1]);
    // 1,2,3 use the origin address of ports
 
-   // 4 send the Node[index] info back to the port1 by change the address of port1 to the Node[index]
+   // 4 change the address of port1 to the Node[index]
    comps[comp1]->portdict[port1] = Nodes[index];
    comps[comp1]->setportaddress();
 }

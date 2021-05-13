@@ -46,24 +46,24 @@ class VCCycle:
         self.Qlow =None
         self.cop = None
 
-    def ComponentState(self):
+    def port_state(self):
         """ calculate the state of ports """
-        # the ports state oof devices
+        # the ports state of devices
         for key in self.comps:
             self.comps[key].state()
 
-        # the nodes state oof connectors
+        # the nodes state of connectors
         for item in self.conns.nodes:
             if item[0].stateok == False:
                 item[0].state()
 
-    def ComponentBalance(self):
+    def component_balance(self):
         for curdev in self.comps:
             self.comps[curdev].balance()
 
     def simulator(self):
-        self.ComponentState()
-        self.ComponentBalance()
+        self.port_state()
+        self.component_balance()
 
         self.Wc = 0
         self.Qin = 0
@@ -90,9 +90,7 @@ class VCCycle:
         result = "\nRefrigeration Cycle: {} (Time: {} by {} on {})\n".format(
             self.name, str_curtime, getpass.getuser(), os.popen('hostname').read())
         try:
-            formatstr = "{:>35} {:>5.2f}\n"
-            result = self.__setformatstr(formatstr, result)
+            result = self.__setformatstr("{:>35} {:>5.2f}\n", result)
         except:
-            formatstr = "{} {}\n"
-            result = self.__setformatstr(formatstr, result)
+            result = self.__setformatstr("{} {}\n", result)
         return result
