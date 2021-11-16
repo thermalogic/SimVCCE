@@ -44,15 +44,9 @@ class Compressor:
             self.iPort[0].mdot = self.oPort[0].mdot
         # energy
         if self.ef != 1.0 or self.ef is None:
-            self.isoh = cp.PropsSI('H', 'P', self.oPort[0].p*1.0e6, 'S',
-                                   self.isos*1000, 'R134a')/1000
-            if self.ef is None:
-                self.ef = (self.isoh-self.iPort[0].h) / \
-                    (self.oPort[0].h-self.iPort[0].h)
-            elif self.ef < 1.0 and self.ef > 0.0:
-                self.oPort[0].h = (
-                    self.isoh-self.iPort[0].h)/self.ef + self.iPort[0].h
-                self.oPort[0].state()
+            # add code 
+            pass
+       
         # wc
         self.Wc = self.iPort[0].mdot * (self.oPort[0].h - self.iPort[0].h)
 

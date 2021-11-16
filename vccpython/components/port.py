@@ -6,11 +6,13 @@ import CoolProp.CoolProp as cp
 
 class Port:
 
+    coolant = 'R134a'
     title = ('{:^6} \t{:<8} \t{:>8} \t{:>10} \t{:>10} \t{:^10} \t{:>10}'.format
              ("Index", "P(MPa)", "T(°C)", "H(kJ/kg)", "S(kJ/kg.K)",  "Quality", "MDOT(kg/s)"))
-
+        
     def __init__(self, dictnode):
         """ create the node object"""
+        self.coolant=Port.coolant
         self.index = None
         self.p = None
         self.t = None
@@ -51,15 +53,14 @@ class Port:
             self.px()
         elif self.p is not None and self.t is not None:
             self.pt()
-
     def tx(self):
         try:
             self.p = cp.PropsSI('P', 'T', 273.15+self.t,
-                                'Q', self.x, 'R134a')/1.0e6
+                                'Q', self.x, self.coolant)/1.0e6
             self.h = cp.PropsSI('H', 'T', 273.15+self.t,
-                                'Q', self.x, 'R134a')/1000
+                                'Q', self.x, self.coolant)/1000
             self.s = cp.PropsSI('S', 'T', 273.15+self.t,
-                                'Q', self.x, 'R134a')/1000
+                                'Q', self.x, self.coolant)/1000
             self.stateok = True
         except:
             self.stateok = False
@@ -67,11 +68,13 @@ class Port:
     def px(self):
         try:
             self.t = cp.PropsSI('T', 'P', self.p*1.0e6,
-                                'Q', self.x, 'R134a')-273.15
+                                'Q', self.x, self.coolant)-273.15
             self.h = cp.PropsSI('H', 'P', self.p*1.0e6,
-                                'Q', self.x, 'R134a')/1000
+                                'Q', self.x, self.coolant)/1000
             self.s = cp.PropsSI('S', 'P', self.p*1.0e6,
-                                'Q', self.x, 'R134a')/1000
+                                'Q', self.x, self.coolant)/1000
+            print(self.t, self.h, self.s)
+
             self.stateok = True
         except:
             self.stateok = False
@@ -79,11 +82,11 @@ class Port:
     def pt(self):
         try:
             self.h = cp.PropsSI('H', 'P', self.p*1.0e6, 'T',
-                                self.t+273.15, 'R134a')/1000
+                                self.t+273.15, self.coolant)/1000
             self.s = cp.PropsSI('S', 'P', self.p*1.0e6, 'T',
-                                self.t+273.15, 'R134a')/1000
+                                self.t+273.15, self.coolant)/1000
             self.x = cp.PropsSI('Q', 'P', self.p*1.0e6,
-                                'H', self.h*1000, 'R134a')
+                                'H', self.h*1000, self.coolant)
             if self.x == -1:
                 self.x = None
             self.stateok = True
@@ -94,13 +97,13 @@ class Port:
         try:
             if self.h is None:
                 self.h = cp.PropsSI('H', 'P', self.p*1.0e6, 'S',
-                                    self.s*1000, 'R134a')/1000
+                                    self.s*1000, self.coolant)/1000
             if self.t is None:
                 self.t = cp.PropsSI('T', 'P', self.p*1.0e6, 'S',
-                                    self.s*1000, 'R134a')-273.15
+                                    self.s*1000, self.coolant)-273.15
             if self.x is None:
                 self.x = cp.PropsSI('Q', 'P', self.p*1.0e6, 'S',
-                                    self.s*1000, 'R134a')
+                                    self.s*1000, self.coolant)
                 if self.x == -1:
                     self.x = None
             self.stateok = True
@@ -111,13 +114,13 @@ class Port:
         try:
             if self.s is None:
                 self.s = cp.PropsSI('S', 'P', self.p*1.0e6, 'H',
-                                    self.h*1000, 'R134a')/1000
+                                    self.h*1000, self.coolant)/1000
             if self.t is None:
                 self.t = cp.PropsSI('T', 'P', self.p*1.0e6, 'H',
-                                    self.h*1000, 'R134a')-273.15
+                                    self.h*1000, self.coolant)-273.15
             if self.x is None:
                 self.x = cp.PropsSI('Q', 'P', self.p*1.0e6, 'H',
-                                    self.h*1000, 'R134a')
+                                    self.h*1000, self.coolant)
                 if self.x == -1:
                     self.x = None
             self.stateok = True
