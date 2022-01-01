@@ -1,0 +1,5 @@
+digraph "classes" {
+rankdir=BT
+charset="utf-8"
+"vcc.vccobj.VCCycle" [color="black", fontcolor="black", label="{VCCycle|DevNum\lQin : int, float\lQlow : NoneType\lQout : int\lWc : NoneType, int\lcomps : dict\lconns\lcop : NoneType\lname\l|component_balance()\lport_state()\lsimulator()\l}", shape="record", style="solid"];
+}

@@ -55,3 +55,21 @@ The mass flow rate of the refrigerant is 0.08 kg/s.
  
  * (c) the coefficient of performance
 
+## The UML Diagrams
+
+### components package
+
+![](./uml/uml-components-classes.jpg)
+
+![](./uml/uml-components-packages.jpg)
+
+
+### vcc package
+
+![](./uml/uml-vcccycle-class.jpg)
+
+![](./uml/uml-vcc-package.jpg)
+
+## Reference:
+
+* [Creating UML diagrams for Python code](https://gitee.com/thermalogic/sees/blob/S2019/guide/UMLPython.md)
