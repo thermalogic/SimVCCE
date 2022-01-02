@@ -1,5 +1,5 @@
 digraph "classes" {
 rankdir=BT
 charset="utf-8"
-"vcc.vccobj.VCCycle" [color="black", fontcolor="black", label="{VCCycle|name:str\lDevNum: int\lcomps : dict cycle\lconns: Connector\lQin : int, float\lQlow : float\lQout : float\lWc : float\lcop : float\l|__init__(dictcycle)\lport_state()\lcomponent_balance()\lsimulator()\l__setformatstr(formatstr, result)\l__str__()\l}", shape="record", style="solid"];
+"vcc.vccobj.VCCycle" [color="black", fontcolor="black", label="{VCCycle|name:str\lDevNum: int\lcomps : dict cycle\lconns: Connector\lQin : float\lQlow : float\lQout : float\lWc : float\lcop : float\l|__init__(dictcycle)\lport_state()\lcomponent_balance()\lsimulator()\l__setformatstr(formatstr, result)\l__str__()\l}", shape="record", style="solid"];
 }

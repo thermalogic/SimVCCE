@@ -97,9 +97,9 @@
 <text text-anchor="start" x="550.5" y="-256.3" font-family="Times New Roman,serif" font-size="14.00">coolant : str</text>
 <text text-anchor="start" x="550.5" y="-241.3" font-family="Times New Roman,serif" font-size="14.00">index : int</text>
 <text text-anchor="start" x="550.5" y="-226.3" font-family="Times New Roman,serif" font-size="14.00">p : float</text>
-<text text-anchor="start" x="550.5" y="-211.3" font-family="Times New Roman,serif" font-size="14.00">h : float</text>
-<text text-anchor="start" x="550.5" y="-196.3" font-family="Times New Roman,serif" font-size="14.00">s : float</text>
-<text text-anchor="start" x="550.5" y="-181.3" font-family="Times New Roman,serif" font-size="14.00">t : float</text>
+<text text-anchor="start" x="550.5" y="-211.3" font-family="Times New Roman,serif" font-size="14.00">t : float</text>
+<text text-anchor="start" x="550.5" y="-196.3" font-family="Times New Roman,serif" font-size="14.00">h : float</text>
+<text text-anchor="start" x="550.5" y="-181.3" font-family="Times New Roman,serif" font-size="14.00">s : float</text>
 <text text-anchor="start" x="550.5" y="-166.3" font-family="Times New Roman,serif" font-size="14.00">x : float</text>
 <text text-anchor="start" x="550.5" y="-151.3" font-family="Times New Roman,serif" font-size="14.00">mdot : float</text>
 <text text-anchor="start" x="550.5" y="-136.3" font-family="Times New Roman,serif" font-size="14.00">stateok : bool</text>
