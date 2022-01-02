@@ -1,5 +1,5 @@
 digraph "classes" {
 rankdir=BT
 charset="utf-8"
-"vcc.vccobj.VCCycle" [color="black", fontcolor="black", label="{VCCycle|DevNum\lQin : int, float\lQlow : NoneType\lQout : int\lWc : NoneType, int\lcomps : dict\lconns\lcop : NoneType\lname\l|component_balance()\lport_state()\lsimulator()\l}", shape="record", style="solid"];
+"vcc.vccobj.VCCycle" [color="black", fontcolor="black", label="{VCCycle|name:str\lDevNum: int\lcomps : dict cycle\lconns: Connector\lQin : int, float\lQlow : float\lQout : float\lWc : float\lcop : float\l|port_state()\lcomponent_balance()\lsimulator()\l}", shape="record", style="solid"];
 }
