@@ -72,4 +72,4 @@ The mass flow rate of the refrigerant is 0.08 kg/s.
 
 ## Reference:
 
-* [Creating UML diagrams for Python code](https://gitee.com/thermalogic/sees/blob/S2019/guide/UMLPython.md)
+* [Creating UML diagrams for Python code with Pyreverse](https://gitee.com/thermalogic/sees/blob/S2019/guide/UMLPython.md)
