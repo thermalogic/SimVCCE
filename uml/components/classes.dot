@@ -1,10 +1,10 @@
 digraph "classes" {
 rankdir=BT
 charset="utf-8"
-"components.compressor.Compressor" [color="black", fontcolor="black", label="{Compressor|devtype: str\lenergy: str\lname:str \liPort: Port[1]\loPort: Port[1]\lportdict: dict port\lef: float\lWc: float\lisos: float\l|balance()\lstate()\l}", shape="record", style="solid"];
-"components.condenser.Condenser" [color="black", fontcolor="black", label="{Condenser|devtype: str\lenergy: str\lname: str\liPort : Port[1]\loPort : Port[1]\lportdict: dict port\lQout: float\l|balance()\lstate()\l}", shape="record", style="solid"];
-"components.evaporator.Evaporator" [color="black", fontcolor="black", label="{Evaporator|devtype : str\lenergy : str\lname: str\liPort : Port[1]\loPort : Port[1]\lportdict : dict port\lQin: float\l|balance()\lstate()\l}", shape="record", style="solid"];
-"components.expansionvalve.ExpansionValve" [color="black", fontcolor="black", label="{ExpansionValve|devtype : str\lenergy : str\lname: str\liPort : Port[1]\loPort : Port[1]\lportdict : dict port\l|balance()\lstate()\l}", shape="record", style="solid"];
-"components.port.Port" [color="black", fontcolor="black", label="{Port| - title : str\l - coolant : str\lcoolant : str\lindex : int\lp : float\lh : float\ls : float\lt : float\lx : float\lmdot : float\lstateok : bool\l|ph()\lps()\lpt()\lpx()\ltx()\lstate()\l}", shape="record", style="solid"];
-"components.connector.Connector" [color="black", fontcolor="black", label="{Connector|curindex : int\lnodes : Port[0..*]\l|add_node(tupConnector, comps)\lcombined_node_value(node, port)\l}", shape="record", style="solid"];
+"components.compressor.Compressor" [color="black", fontcolor="black", label="{Compressor|devtype: str\lenergy: str\lname:str \liPort: Port[1]\loPort: Port[1]\lportdict: dict port\lef: float\lWc: float\lisos: float\l|__init__(dictDev)\lbalance()\lstate()\l__str__()\l}", shape="record", style="solid"];
+"components.condenser.Condenser" [color="black", fontcolor="black", label="{Condenser|devtype: str\lenergy: str\lname: str\liPort : Port[1]\loPort : Port[1]\lportdict: dict port\lQout: float\l|__init__(dictDev)\lbalance()\lstate()\l__str__()\l}", shape="record", style="solid"];
+"components.evaporator.Evaporator" [color="black", fontcolor="black", label="{Evaporator|devtype : str\lenergy : str\lname: str\liPort : Port[1]\loPort : Port[1]\lportdict : dict port\lQin: float\l|__init__(dictDev)\lbalance()\lstate()\l__str__()\l}", shape="record", style="solid"];
+"components.expansionvalve.ExpansionValve" [color="black", fontcolor="black", label="{ExpansionValve|devtype : str\lenergy : str\lname: str\liPort : Port[1]\loPort : Port[1]\lportdict : dict port\l|__init__(dictDev)\lbalance()\lstate()\l__str__()\l}", shape="record", style="solid"];
+"components.port.Port" [color="black", fontcolor="black", label="{Port| - title : str\l - coolant : str\lcoolant : str\lindex : int\lp : float\lh : float\ls : float\lt : float\lx : float\lmdot : float\lstateok : bool\l|__init__(dictnode)\lph()\lps()\lpt()\lpx()\ltx()\lstate()\l__str__()\l}", shape="record", style="solid"];
+"components.connector.Connector" [color="black", fontcolor="black", label="{Connector|curindex : int\lnodes : Port[0..*]\l|__init__()\ladd_node(tupConnector, comps)\lcombined_node_value(node, port)\l}", shape="record", style="solid"];
 }
