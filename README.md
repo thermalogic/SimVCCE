@@ -23,7 +23,7 @@ python  vccapp.py
 
 ## The Example vapor-compression refrigeration cycles
 
-The cycles used in the demo simulator are Example 7.2-3,7.2-4 of [CHE 302 Chemical and Materials Engineering Thermodynamics I](https://www.cpp.edu/~tknguyen/che302/home.htm) by Thuan Ke Nguyen 
+The cycles used in the demo simulator are Example 7.2-3,7.2-4 of [CHE 302 Chemical and Materials Engineering Thermodynamics I](https://www.cpp.edu/~tknguyen/che302/) by Thuan Ke Nguyen 
 
 * [Example 7.2-3,7.2-4](https://www.cpp.edu/~tknguyen/che302/Notes/chap7-2.pdf)
  
