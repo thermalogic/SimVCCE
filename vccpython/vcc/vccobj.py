@@ -48,11 +48,11 @@ class VCCycle:
 
     def port_state(self):
         """ calculate the state of ports """
-        # 1 the port state of devices
+        # 1 the port state of devices: step2 state
         for key in self.comps:
             self.comps[key].state()
 
-        # 2 the node state of connectors
+        # 2 the node state of connectors: step3 state
         for item in self.conns.nodes:
             if item[0].stateok == False:
                 item[0].state()
