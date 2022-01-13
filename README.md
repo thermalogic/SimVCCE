@@ -73,7 +73,12 @@ The mass flow rate of the refrigerant is 0.08 kg/s.
 
 ![](./uml/uml-vccapp.jpg)
 
+## The flowchart of the cycle analysis
+
+![](./uml/vcr-flowchart.jpg)
 
 ## Reference:
 
 * [Creating UML diagrams for Python code with Pyreverse](https://gitee.com/thermalogic/sees/blob/S2019/guide/UMLPython.md)
+
+
