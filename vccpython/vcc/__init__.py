@@ -1,6 +1,6 @@
 
 """
- General Object-oriented Abstraction of vc Cycle 
+ General Object-oriented Abstraction of VCR Cycle 
     
     cycle Package 
 

@@ -9,10 +9,10 @@ class Port:
     coolant = 'R134a'
     title = ('{:^6} \t{:<8} \t{:>8} \t{:>10} \t{:>10} \t{:^10} \t{:>10}'.format
              ("Index", "P(MPa)", "T(°C)", "H(kJ/kg)", "S(kJ/kg.K)",  "Quality", "MDOT(kg/s)"))
-        
+
     def __init__(self, dictnode):
         """ create the node object"""
-        self.coolant=Port.coolant
+        self.coolant = Port.coolant
         self.index = None
         self.p = None
         self.t = None
@@ -46,13 +46,14 @@ class Port:
         self.h = None
         self.s = None
         self.stateok = False
-
+        # step1 state : input values
         if self.t is not None and self.x is not None:
             self.tx()
         elif self.p is not None and self.x is not None:
             self.px()
         elif self.p is not None and self.t is not None:
             self.pt()
+
     def tx(self):
         try:
             self.p = cp.PropsSI('P', 'T', 273.15+self.t,
@@ -128,6 +129,7 @@ class Port:
             self.stateok = False
 
     def state(self):
+        """ step3 state: after obtain the new parameter pairs """
         if self.stateok == False:
             if self.p is not None and self.s is not None:
                 self.ps()
