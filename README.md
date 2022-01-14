@@ -6,10 +6,9 @@ The simulator is available in Python, C++ and Modelica
 
 * branch: **B2022**`:  [Python code of sequential-modular approach](./vccpython)
 
-* branch **sm-port-conn**:  [Python, C++ and Modelica](/tree/sm-port-conn/)
+* branch **sm-port-conn**: Python, C++ and Modelica
 
-
-We wish that SimVCCE may be a helpful vehicle for you to  understand Computational Thinking and improve programming skills
+We wish that SimVCCE may be a helpful vehicle for you to understand Computational Thinking and improve programming skills
 
 ### Prerequisites：CoolProp
 
