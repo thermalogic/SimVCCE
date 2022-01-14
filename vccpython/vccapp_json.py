@@ -7,6 +7,7 @@ The Simulator of VC Cycle
 Run: 
    python vccapp_json.py
 """
+import glob
 from vcc.vccobj import VCCycle
 from vcc.utils import OutFiles
 from platform import os
@@ -24,16 +25,21 @@ def create_dictcycle_from_jsonfile(filename):
             itemtuples[i] = (itemtuples[i]["devname"], itemtuples[i]["port"])
     return dictcycle
 
-curpath = os.path.abspath(os.path.dirname(__file__))
-rankinefilename = curpath+'\\'+'./jsonmodel/ivcr723.json'
-thedictcycle = create_dictcycle_from_jsonfile(rankinefilename)
-# the simulator
-cycle = VCCycle(thedictcycle)
-cycle.simulator()
-# output to console
-OutFiles(cycle)
-# output to the file
-ResultFilePath = curpath+'/result/'
-ResultFileName = ResultFilePath+thedictcycle['name']
-OutFiles(cycle, ResultFileName + '.txt')
+if __name__ == "__main__":
+    curpath = os.path.abspath(os.path.dirname(__file__))
+    json_filename_str = curpath+'\\'+'./jsonmodel/ivcr72[0-9].json'
+    #json_filesname_str=curpath+'\\'+'./jsonmodel/ivcr724.json'
+    json_filenames = glob.glob(json_filename_str)
+    ResultFilePath = curpath+'/result/'
+
+    for i in range(len(json_filenames)):
+        thedictcycle = create_dictcycle_from_jsonfile(json_filenames[i])
+        # the simulator
+        cycle = VCCycle(thedictcycle)
+        cycle.simulator()
+        # output to console
+        OutFiles(cycle)
+        # output to the file
+        ResultFileName = ResultFilePath+thedictcycle['name']
+        OutFiles(cycle, ResultFileName + '.txt')
 

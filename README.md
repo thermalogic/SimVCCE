@@ -2,9 +2,12 @@
 
 The SimVCCE is the vapor-compression refrigeration cycle steady-state simulator for education.
 
-The simulator is available in Python, C++ and Modelica.
+The simulator is available in Python, C++ and Modelica
 
-* [Python with the sequential-modular approach](./vccpython)
+* branch: **B2022**`:  [Python code of sequential-modular approach](./vccpython)
+
+* branch **sm-port-conn**:  [Python, C++ and Modelica](/tree/sm-port-conn/)
+
 
 We wish that SimVCCE may be a helpful vehicle for you to  understand Computational Thinking and improve programming skills
 
@@ -15,10 +18,19 @@ python -m pip install coolprop
 ```
 ### Run
  
-type `python  vccapp.py` in the terminal of `./vccpython` 
+#### Using the Python Module for the Cycle Flowsheet and Data
+
+type `python vccapp.py` in the terminal of `./vccpython` 
 
 ```bash
 python  vccapp.py
+```
+#### Using JSON File for the Cycle Flowsheet and Data
+
+type `python  vccapp_json.py` in the terminal of `./vccpython` 
+
+```bash
+python  vccapp_json.py
 ```
 
 ## The Example vapor-compression refrigeration cycles

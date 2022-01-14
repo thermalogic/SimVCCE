@@ -12,7 +12,7 @@ class Connector:
         self.nodes=[]
         self.curindex=0
        
-    def combined_node_value(self, node, port):
+    def __combined_node_value(self, node, port):
         """ 
            the node is the connector of two ports ,so the node may get values from all of two ports
             the values is the union set of the non-none values within two ports 
@@ -40,7 +40,7 @@ class Connector:
         
         # 4 join comp_port1 info into  nodes[self.curindex]
         curnode = self.nodes[self.curindex]
-        self.combined_node_value(curnode, comp_port1)
+        self.__combined_node_value(curnode, comp_port1)
         # 5 set the pointer of comp_port1[0] to nodes[self.curindex][0]
         comp_port1[0] = curnode[0]
         
