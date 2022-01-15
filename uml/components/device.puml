@@ -1,0 +1,51 @@
+class Device {
+ + {static} devtype: str
+ + {static} energy: str
+ + name: str
+ + iPort*: Port[1]
+ + oPort*: Port[1]
+ + portdict: dict
+ + value*: float
+ + {static} Device(dictDev:dict)
+ + state()
+ + balance()
+  + __str()__:str
+}
+note left of Device::devtype
+  the type of device: **class**
+end note
+note left of Device::energy
+  the energy type of device: **class**
+end note
+note left of Device::name
+  the name of device
+end note
+note left of Device::iPort*
+  inlet ports
+end note
+note left of Device::oPort*
+  outlet ports
+end note
+note left of Device::state
+  get port state by thremal process
+end note
+note left of Device::balance
+  energy and mass balancing
+end note
+note left of Device::__str()__
+  print the string of the instance
+end note
+note right of Device::portdict
+  **map the port name(str) to its obj**
+   {"iPort*": self.iPort*,
+    "oPort*": self.oPort*}
+end note
+note right of Device::Device(dictDev:dict)
+  **dict** {"name": "*",
+            "devtype": "*",
+            "iPort*": {},
+            "oPort*": {},
+            "inValue*": * }
+end note
+
+

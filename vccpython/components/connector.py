@@ -28,7 +28,7 @@ class Connector:
         comp0, port0 =tupConnector[0] 
         comp1, port1 =tupConnector[1]
         
-        # 1 get the port [] list: list is mutable!
+        # 1 get the port[] list: list is mutable!
         comp_port0 = comps[comp0].portdict[port0]
         comp_port1 = comps[comp1].portdict[port1]
 

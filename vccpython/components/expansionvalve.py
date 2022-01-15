@@ -11,7 +11,7 @@ class ExpansionValve:
         self.name = dictDev['name']
         self.iPort = [Port(dictDev['iPort'])]
         self.oPort = [Port(dictDev['oPort'])]
-        # map the name of port to the port obj
+        # map the port's name(str) to the obj
         self.portdict = {
             "iPort": self.iPort,
             "oPort": self.oPort

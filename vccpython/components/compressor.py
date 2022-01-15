@@ -21,7 +21,7 @@ class Compressor:
             self.ef = None
 
         self.Wc = None
-        # map the name of port to the port obj
+        # map the port's name(str) to the obj
         self.portdict = {
             "iPort": self.iPort,
             "oPort": self.oPort
