@@ -72,13 +72,13 @@ The mass flow rate of the refrigerant is 0.08 kg/s.
 
 ![](./uml/uml-components-classes.jpg)
 
-![](./uml/uml-components-package.svg)
+![](./uml/uml-components-package.jpg)
 
 ### vcc package
 
 ![](./uml/uml-vcrcycle.jpg)
 
-![](./uml/uml-vcc-package.svg)
+![](./uml/uml-vcc-package.jpg)
 
 ### vccapp
 
