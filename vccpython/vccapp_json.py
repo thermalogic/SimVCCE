@@ -1,6 +1,6 @@
 
 """
-General Object-oriented Abstraction  of VCR Cycle 
+General Object-oriented Abstraction  of VC Cycle 
 The Simulator of VC Cycle 
   * Input :the json file of the cycle model
   * Output: text file
@@ -8,7 +8,7 @@ Run:
    python vccapp_json.py
 """
 import glob
-from vcc.vccobj import VCCycle
+from vcc.vccobj import VCRCycle
 from vcc.utils import OutFiles
 from platform import os
 
@@ -35,7 +35,7 @@ if __name__ == "__main__":
     for i in range(len(json_filenames)):
         thedictcycle = create_dictcycle_from_jsonfile(json_filenames[i])
         # the simulator
-        cycle = VCCycle(thedictcycle)
+        cycle = VCRCycle(thedictcycle)
         cycle.simulator()
         # output to console
         OutFiles(cycle)

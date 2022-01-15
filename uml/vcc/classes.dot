@@ -1,5 +1,0 @@
-digraph "classes" {
-rankdir=BT
-charset="utf-8"
-"vcc.vccobj.VCCycle" [color="black", fontcolor="black", label="{VCCycle| + name:str\l + DevNum: int\l + comps : dict cycle\l + conns: Connector\l + Qin : float\l + Qlow : float\l + Qout : float\l + Wc : float\l + cop : float\l| + __init__(dictcycle)\l + port_state()\l + component_balance()\l + simulator()\l - __setformatstr(formatstr, result)\l + __str__()\l}", shape="record", style="solid"];
-}

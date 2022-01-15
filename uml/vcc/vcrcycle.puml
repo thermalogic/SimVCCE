@@ -1,0 +1,19 @@
+class VCRCycle {
+       + name:str 
+       + DevNum: int
+       + comps : dict cycle 
+       + conns: Connector
+       + Qin : float 
+       + Qlow : float
+       + Qout : float 
+       + Wc : float
+       + cop : float
+       + {static} VCCCycle(dictcycle:dict)
+       - port_state() 
+       - component_balance() 
+       + simulator() 
+       - __setformatstr(formatstr : str, result : str):str
+       + __str__():str
+ }
+
+

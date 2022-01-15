@@ -1,9 +1,5 @@
 """
- General Object-oriented Abstraction of vcr Cycle 
-
-RefrigerationCycle: the Simulator class of VCR Cycle  
-
-
+ class VCRCycle: the Simulator class of VCR Cycle  
 """
 
 import time
@@ -14,8 +10,7 @@ from components.port import Port
 from components.connector import Connector
 from components import compdict
 
-
-class VCCycle:
+class VCRCycle:
 
     def __init__(self, dictcycle):
         """
@@ -46,7 +41,7 @@ class VCCycle:
         self.Qlow =None
         self.cop = None
 
-    def port_state(self):
+    def __port_state(self):
         """ calculate the state of ports """
         # 1 the port state of devices: step2 state
         for key in self.comps:
@@ -57,13 +52,13 @@ class VCCycle:
             if item[0].stateok == False:
                 item[0].state()
 
-    def component_balance(self):
+    def __component_balance(self):
         for curdev in self.comps:
             self.comps[curdev].balance()
 
     def simulator(self):
-        self.port_state()
-        self.component_balance()
+        self.__port_state()
+        self.__component_balance()
 
         self.Wc = 0
         self.Qin = 0
@@ -87,7 +82,7 @@ class VCCycle:
     def __str__(self):
         str_curtime = time.strftime(
             "%Y/%m/%d %H:%M:%S", time.localtime(time.time()))
-        result = "\nRefrigeration Cycle: {} (Time: {} by {} on {})\n".format(
+        result = "\nRefrigeration Cycle: {} ( {} by {} on {})\n".format(
             self.name, str_curtime, getpass.getuser(), os.popen('hostname').read())
         try:
             result = self.__setformatstr("{:>35} {:>5.2f}\n", result)

@@ -1,6 +1,6 @@
 
 """
-General Object-oriented Abstraction  of VCR Cycle 
+General Object-oriented Abstraction  of VC Cycle 
 
 The Simulator of VC Cycle 
   * Input :VC cycle dict model
@@ -8,7 +8,7 @@ The Simulator of VC Cycle
 Run: 
    python vccapp.py
 """
-from vcc.vccobj import VCCycle
+from vcc.vccobj import VCRCycle
 from vcc.utils import OutFiles
 from vccmodel import cycles
 from platform import os
@@ -21,7 +21,7 @@ if __name__ == "__main__":
     for curcycle in cycles:
         ResultFileName = ResultFilePath+curcycle.cycle['name'] + '.txt'
 
-        cycle = VCCycle(curcycle.cycle)
+        cycle = VCRCycle(curcycle.cycle)
         cycle.simulator()
         # output to text
         OutFiles(cycle)

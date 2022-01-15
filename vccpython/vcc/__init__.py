@@ -1,9 +1,6 @@
 
 """
- General Object-oriented Abstraction of VCR Cycle 
-    
-    cycle Package 
-
+ General Object-oriented Abstraction of VC Cycle 
 """
 
 import sys
