@@ -3,7 +3,7 @@ rankdir=BT
 charset="utf-8"
 "vcc.vccobj.VCRCycle" [
        color="black", fontcolor="black", 
-      label="{VCCycle|
+      label="{VCRCycle|
        + name:str\l 
        + DevNum: int\l
        + comps : dict cycle\l 

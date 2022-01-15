@@ -66,23 +66,15 @@ The mass flow rate of the refrigerant is 0.08 kg/s.
  
  * (c) the coefficient of performance
 
-## The UML Diagrams
+## The UML Class Diagrams
 
-### components package
+### The component classes  
 
 ![](./uml/uml-components-classes.jpg)
 
-![](./uml/uml-components-package.jpg)
-
-### vcc package
+### The VCRCycle Class
 
 ![](./uml/uml-vcrcycle.jpg)
-
-![](./uml/uml-vcc-package.jpg)
-
-### vccapp
-
-![](./uml/uml-vccapp.jpg)
 
 ## The flowchart of the cycle analysis
 
