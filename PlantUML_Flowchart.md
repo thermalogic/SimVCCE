@@ -51,15 +51,19 @@ note right
 end note
 :The mass and energy balance of devices on the mdot;
 note right
-    Qin,Qout, Win,Wout, etc
+    Qin,Qout, Wc, etc
 end note
 
 :The performance of cycle  on the mdot;
+note right
+    cop,cop_hp
+end note
+
 : Print results on **console**  
   Save  results to **text file**; 
 ```
 
-![vcr-flowchart](./uml/img/vcr-flowchart.svg)
+![vcr-flowchart](./uml/img/vcc-flowchart.svg)
 
 ## Simple action
 

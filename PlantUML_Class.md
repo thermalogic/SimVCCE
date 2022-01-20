@@ -134,5 +134,5 @@ vcc ..> components : <<import>>
 @enduml
 ```
 
-![packages](./uml/img/vcr-packages.svg)
+![packages](./uml/img/vcc-packages.svg)
 
