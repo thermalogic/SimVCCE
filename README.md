@@ -35,7 +35,6 @@ python  vccapp.py
 ```bash
 python  vccapp_json.py
 ```
-
 ## The Example Vapor-Compression Cycles
 
 The cycle of [Example 7.2-3,7.2-4](https://www.cpp.edu/~tknguyen/che302/Notes/chap7-2.pdf)
@@ -45,6 +44,8 @@ The cycle of [Example 7.2-3,7.2-4](https://www.cpp.edu/~tknguyen/che302/Notes/ch
 * [ivcr724.json](./vccpython/jsonmodel/ivcr724.json) 
 
 Refrigerant `134a` is the working fluid in an ideal vapor-compression refrigeration cycle 
+
+![vcr-cycle](./img/vcr-cycle.jpg)
 
 The mass flow rate of the refrigerant is `0.08 kg/s`.
 
@@ -61,7 +62,6 @@ The mass flow rate of the refrigerant is `0.08 kg/s`.
  
  * the coefficient of performance
 
-![vcr-cycle](./img/vcr-cycle.jpg)
 
 ![vcr-7234-ts](./img/vcr-7234-ts.jpg)
 
