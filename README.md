@@ -46,7 +46,7 @@ The cycle of [Example 7.2-3,7.2-4](https://www.cpp.edu/~tknguyen/che302/Notes/ch
 
 Refrigerant `134a` is the working fluid in an ideal vapor-compression refrigeration cycle 
 
-Themass flow rate of the refrigerant is `0.08 kg/s.`
+The mass flow rate of the refrigerant is `0.08 kg/s`.
 
 | No          | Cold region  | Warm region  | Enters the Compressor  | Leaves the Condenser   |
 | -------------- |:-------------:| -----------:|------------------------:|------------------------:|
