@@ -48,10 +48,10 @@ Refrigerant `134a` is the working fluid in an ideal vapor-compression refrigerat
 
 The mass flow rate of the refrigerant is `0.08 kg/s`.
 
-| No          | Cold region  | Warm region  | Enters the Compressor  | Leaves the Condenser   |
+|   VCR         | Cold region | Warm region | Enter Compressor  | Leave Condenser   |
 | -------------- |:-------------:| -----------:|------------------------:|------------------------:|
-| Example 7.2-3  |    0 °C    | 26   °C   |Saturated vapor  0°C   | Saturated liquid 26°C  |
-| Example 7.2-4   |    -10 °C  |          |Saturated vapor -10    | Saturated liquid 0.9MPa  |
+| 7.2-3  |    0 °C    | 26   °C   |Saturated vapor  0°C   | Saturated liquid 26°C  |
+| 7.2-4   |    -10 °C  |          |Saturated vapor -10    | Saturated liquid 0.9MPa  |
 
 **Determine**
 
@@ -61,5 +61,7 @@ The mass flow rate of the refrigerant is `0.08 kg/s`.
  
  * the coefficient of performance
 
-![](./img/vcr-7234-ts.jpg)
+![vcr-cycle](./img/vcr-cycle.jpg)
+
+![vcr-7234-ts](./img/vcr-7234-ts.jpg)
 
