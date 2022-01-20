@@ -1,20 +1,24 @@
 """
- class VCRCycle: the Simulator class of VCR Cycle  
+General Object-oriented Abstraction of VC Cycle 
+
+ class VCCycle: the Simulator class of VC Cycle  
+
+ Author: Cheng Maohua cmh@seu.edu.cn
 """
 
 import time
-from platform import os
 import getpass
 
 from components.port import Port
-from components.connector import Connector
 from components import compdict
+from .connector import Connector
 
-class VCRCycle:
+class VCCycle:
 
     def __init__(self, dictcycle):
         """
           dictcycle={"name":namestring,
+                     "refrigerant":refrigerantstring,
                      "components":[{component1},{component2},...],
                      "connectors":[((name1,port1),(name2,port2)),...]
                   }
@@ -23,11 +27,13 @@ class VCRCycle:
              self.conns : the connector object
         """
         self.name = dictcycle["name"]
+        self.cycle_refrigerant=dictcycle["refrigerant"]
+        Port.cycle_refrigerant = self.cycle_refrigerant
+
         dictcomps = dictcycle["components"]
         listconnectors = dictcycle["connectors"]
 
         # 1 convert dict to the dict of device objects: {device name:device obiect}
-        self.DevNum = len(dictcomps)
         self.comps = {}
         for curdev in dictcomps:
             self.comps[curdev['name']] = compdict[curdev['devtype']](curdev)
@@ -38,7 +44,6 @@ class VCRCycle:
             self.conns.add_node(tupconnector, self.comps)
 
         self.Wc = None
-        self.Qlow =None
         self.cop = None
 
     def __port_state(self):
@@ -69,21 +74,28 @@ class VCRCycle:
                 self.Wc += self.comps[key].Wc
             elif self.comps[key].energy == "QIN":
                 self.Qin += self.comps[key].Qin
+            elif self.comps[key].energy == "QOUT":
+                self.Qout += self.comps[key].Qout
+
 
         self.cop = self.Qin / self.Wc
-        self.Qin = self.Qin*60*(1/211)
+        self.cop_hp = self.Qout / self.Wc
 
     def __setformatstr(self, formatstr, result):
         result += formatstr.format('Compression Work(kW): ', self.Wc)
-        result += formatstr.format('Refrigeration Capacity(ton): ', self.Qin)
+        result += formatstr.format('Refrigeration Capacity(kW): ', self.Qin)
+        result += formatstr.format('\tCapacity(ton): ',self.Qin*60*(1/211))
+        result += formatstr.format('The heat transfer rate(kW): ', self.Qout)
         result += formatstr.format('The coefficient of performance: ', self.cop)
+        result += formatstr.format('The coefficient of performance(heat pump):', self.cop_hp)
         return result
 
     def __str__(self):
         str_curtime = time.strftime(
             "%Y/%m/%d %H:%M:%S", time.localtime(time.time()))
-        result = "\nRefrigeration Cycle: {} ( {} by {} on {})\n".format(
-            self.name, str_curtime, getpass.getuser(), os.popen('hostname').read())
+        result = "\nThe Vapor-Compression Cycle: {} ( {} by {})\n".format(
+            self.name, str_curtime, getpass.getuser())
+        result +="\nRefrigerant: {}\n".format(self.cycle_refrigerant)
         try:
             result = self.__setformatstr("{:>35} {:>5.2f}\n", result)
         except:

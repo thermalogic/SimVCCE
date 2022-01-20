@@ -1,0 +1,60 @@
+@startuml
+class Compressor {
+ + {static} devtype: str
+ + {static} energy: str
+ + name: str
+ + iPort: Port[1]
+ + oPort: Port[1]
+ + portdict: dict
+ + ef: float
+ + Wc: float
+ + isos: float
+ + {static} Compressor(dictDev:dict)
+ + balance()
+ + state()
+ + __str()__:str
+}
+class Condenser {
+ + {static} devtype: str
+ + {static} energy: str
+ + name: str
+ + iPort: Port[1]
+ + oPort: Port[1]
+ + portdict: dict
+ + Qout: float
+ + {static} Condenser(dictDev:dict)
+ + balance()
+ + state()
+ + __str()__:str
+}
+class Evaporator {
+ + {static} devtype: str
+ + {static} energy: str
+ + name: str
+ + iPort: Port[1]
+ + oPort: Port[1]
+ + portdict: dict
+ + Qin: float
+ + {static} Evaporatorr(dictDev:dict)
+ + balance()
+ + state()
+ + __str()__:str
+}
+class ExpansionValve {
+ + {static} devtype: str
+ + {static} energy: str
+ + name: str
+ + iPort: Port[1]
+ + oPort: Port[1]
+ + portdict: dict
+ + {static} ExpansionValve(dictDev:dict)
+ + balance()
+ + state()
+ + __str()__:str
+}
+Compressor "1" *-- "2" Port
+ExpansionValve "1" *-- "2" Port
+Evaporator "1" *-- "2" Port
+Condenser "1" *-- "2" Port
+@enduml
+

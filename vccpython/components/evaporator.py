@@ -1,4 +1,12 @@
 
+"""
+General Object-oriented Abstraction of VC Cycle 
+
+Evaporator:
+    Isobaric heat addition
+
+Author: Cheng Maohua cmh@seu.edu.cn    
+"""
 from .port import *
 
 
@@ -13,13 +21,17 @@ class Evaporator:
         self.iPort = [Port(dictDev['iPort'])]
         self.oPort = [Port(dictDev['oPort'])]
         # map the port's name(str) to the obj
-         self.portdict = {
+        self.portdict = {
             "iPort": self.iPort,
             "oPort": self.oPort
         }
 
     def state(self):
-        self.iPort[0].p = self.oPort[0].p
+        """ Isobaric """
+        if self.oPort[0].p is not None:
+            self.iPort[0].p = self.oPort[0].p
+        elif self.iPort[0].p is not None:
+           self.oPort[0].p = self.iPort[0].p
 
     def balance(self):
         """ mass and energy balance  """

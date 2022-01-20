@@ -1,9 +1,12 @@
 """
-    Components Package  
+General Object-oriented Abstraction of VC Cycle 
+
+   Components Package  : port and devices
+   
+ Author: Cheng Maohua cmh@seu.edu.cn    
 """
 
 from .port import Port
-from .connector import Connector
 from .compressor import Compressor
 from .condenser import Condenser
 from .expansionvalve import ExpansionValve

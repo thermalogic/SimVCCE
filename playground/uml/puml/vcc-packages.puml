@@ -1,0 +1,14 @@
+@startuml
+package components {
+  class Port
+  class Compressor
+  class Condenser
+  class Evaporator
+  class ExpansionValve
+}
+package vcc {
+  class VCCycle  
+  class Connector
+}
+vcc ..> components : <<import>>
+@enduml

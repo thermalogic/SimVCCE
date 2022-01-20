@@ -1,7 +1,11 @@
 
+"""
+General Object-oriented Abstraction of VC Cycle 
+   Condenser: Isobaric heat rejection
+ 
+ Author: Cheng Maohua cmh@seu.edu.cn
+"""
 from .port import *
-import CoolProp.CoolProp as cp
-
 
 class Condenser:
 
@@ -20,7 +24,12 @@ class Condenser:
         }
 
     def state(self):
-        self.iPort[0].p = self.oPort[0].p
+        """ Isobaric """
+        if self.oPort[0].p is not None:
+           self.iPort[0].p = self.oPort[0].p
+        elif self.iPort[0].p is not None:
+           self.oPort[0].p = self.iPort[0].p
+  
 
     def balance(self):
         """ mass and energy balance of the condenser  """

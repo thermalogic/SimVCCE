@@ -1,0 +1,42 @@
+class Compressor {
+ + {static} devtype: str
+ + {static} energy: str
+ + name: str
+ + iPort: Port[1]
+ + oPort: Port[1]
+ + portdict: dict
+ + ef: float
+ + Wc: float
+ + isos: float
+ + {static} Compressor(dictDev:dict)
+ + balance()
+ + state()
+ + __str()__:str
+}
+note left of Compressor::devtype
+  class, the type of device
+end note
+note left of Compressor::energy
+  class, the type of energy
+end note
+note left of Compressor::iPort
+  inlet port
+end note
+note left of Compressor::oPort
+  outlet port
+end note
+note left of Compressor::__str()__
+  string of the instance
+end note
+note right of Compressor::portdict
+  **map the port name(str) to its obj**
+   {"iPort": self.iPort,
+    "oPort": self.oPort}
+end note
+note right of Compressor::Compressor(dictDev:dict)
+  **dict** {"name": "Compressor",
+            "devtype": "COMPRESSOR",
+            "iPort": {},
+             "oPort": {},
+             "ef": 0 ~ 1 }
+end note

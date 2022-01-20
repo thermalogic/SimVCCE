@@ -7,8 +7,10 @@ The Simulator of VC Cycle
   * Output: text file
 Run: 
    python vccapp.py
+
+ Author: Cheng Maohua cmh@seu.edu.cn
 """
-from vcc.vccobj import VCRCycle
+from vcc.vccobj import VCCycle
 from vcc.utils import OutFiles
 from vccmodel import cycles
 from platform import os
@@ -21,7 +23,7 @@ if __name__ == "__main__":
     for curcycle in cycles:
         ResultFileName = ResultFilePath+curcycle.cycle['name'] + '.txt'
 
-        cycle = VCRCycle(curcycle.cycle)
+        cycle = VCCycle(curcycle.cycle)
         cycle.simulator()
         # output to text
         OutFiles(cycle)

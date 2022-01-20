@@ -1,87 +1,65 @@
 # SimVCCE
 
-The SimVCCE is the vapor-compression refrigeration cycle steady-state simulator for education.
+The SimVCCE is the vapor-compression refrigeration and heat pump cycle steady-state simulator for education.
 
 The simulator is available in Python, C++ and Modelica
 
-* branch: **B2022**`:  [Python code of sequential-modular approach](./vccpython)
+* branch: **B2022**`:  [Python : sequential-modular approach](./vccpython)
 
 * branch **sm-port-conn**: Python, C++ and Modelica
 
 We wish that SimVCCE may be a helpful vehicle for you to understand Computational Thinking and improve programming skills
 
-### Prerequisites：CoolProp
+### Prerequisites：CoolProp, phyprops
 
 ```bash
 python -m pip install coolprop
 ```
-### Run
- 
-#### Using the Python Module for the Cycle Flowsheet and Data
 
-type `python vccapp.py` in the terminal of `./vccpython` 
+```bash
+python -m pip install phyprops
+```
+
+### Run
+
+In the terminal of `./vccpython` 
+ 
+**1 Using the Python Module for the Cycle Flowsheet and Data**
 
 ```bash
 python  vccapp.py
 ```
-#### Using JSON File for the Cycle Flowsheet and Data
 
-type `python  vccapp_json.py` in the terminal of `./vccpython` 
+**2 Using JSON File of the Cycle Flowsheet and Data**
 
 ```bash
 python  vccapp_json.py
 ```
 
-## The Example vapor-compression refrigeration cycles
+## The Example Vapor-Compression Cycles
 
-The cycles used in the demo simulator are Example 7.2-3,7.2-4 of [CHE 302 Chemical and Materials Engineering Thermodynamics I](https://www.cpp.edu/~tknguyen/che302/) by Thuan Ke Nguyen 
+The cycle of [Example 7.2-3,7.2-4](https://www.cpp.edu/~tknguyen/che302/Notes/chap7-2.pdf)
 
-* [Example 7.2-3,7.2-4](https://www.cpp.edu/~tknguyen/che302/Notes/chap7-2.pdf)
+* [ivcr723.json](./vccpython/jsonmodel/ivcr723.json) 
+
+* [ivcr724.json](./vccpython/jsonmodel/ivcr724.json) 
+
+Refrigerant `134a` is the working fluid in an ideal vapor-compression refrigeration cycle 
+
+Themass flow rate of the refrigerant is `0.08 kg/s.`
+
+| No          | Cold region  | Warm region  | Enters the Compressor  | Leaves the Condenser   |
+| -------------- |:-------------:| -----------:|------------------------:|------------------------:|
+| Example 7.2-3  |    0 °C    | 26   °C   |Saturated vapor  0°C   | Saturated liquid 26°C  |
+| Example 7.2-4   |    -10 °C  |          |Saturated vapor -10    | Saturated liquid 0.9MPa  |
+
+**Determine**
+
+ * the compressor power, in kW
  
-### Example 7.2-3
-
-Refrigerant 134a is the working fluid in an ideal vapor-compression refrigeration cycle that communicates thermally with a cold region at 0°C and a warm region at 26°C.
-
-Saturated vapor enters the compressor at 0°C and saturated liquid leaves the condenser at 26°C.
-
-The mass flow rate of the refrigerant is 0.08 kg/s.
-
-![](./img/example723.jpg)
-
-### Example 7.2-4
-
-Refrigerant 134a is the working fluid in an ideal vapor-compression refrigeration cycle that communicates thermally with a cold region at - 10°C.
-
-Saturated vapor enters the compressor at - 10°C and saturated liquid leaves the condenser at 9 bar. 
-
-The mass flow rate of the refrigerant is 0.08 kg/s.
-
-![](./img/example724.jpg)
-
-### Determine
-
- * (a) the compressor power, in kW
+ * the refrigeration capacity, in tons
  
- * (b) the refrigeration capacity, in tons
- 
- * (c) the coefficient of performance
+ * the coefficient of performance
 
-## The UML Class Diagrams
-
-### The component classes  
-
-![](./uml/uml-components-classes.jpg)
-
-### The VCRCycle Class
-
-![](./uml/uml-vcrcycle.jpg)
-
-## The flowchart of the cycle analysis
-
-![](./uml/vcr-flowchart.jpg)
-
-## Reference:
-
-* [Creating UML diagrams for Python code with Pyreverse](https://gitee.com/thermalogic/sees/blob/S2019/guide/UMLPython.md)
-
+![](./img/vcr-7234-ts.jpg)
 

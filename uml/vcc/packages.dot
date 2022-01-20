@@ -1,7 +1,0 @@
-digraph "packages" {
-rankdir=BT
-charset="utf-8"
-"vcc" [color="black", label="vcc", shape="box", style="solid"];
-"vcc.utils" [color="black", label="vcc.utils", shape="box", style="solid"];
-"vcc.vccobj" [color="black", label="vcc.vccobj", shape="box", style="solid"];
-}

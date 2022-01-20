@@ -1,0 +1,33 @@
+@startuml
+class Port {
+ + {static} title : str
+ + {static} cycle_refrigerant : str=R134a
+ + refrigerant : str
+ + index : int
+ + p : float
+ + t : float
+ + x : float
+ + h : float
+ + s : float
+ + mdot : float
+ + stateok:bool
+ + {static} Port(dictnode : dict)
+ + pt()
+ + px()
+ + ph()
+ + ps()
+ + tx()
+ + state()
+ + __str()__:str
+}
+class Connector {
+  + curindex:int
+  + nodes:Port[0..*]
+  + {static} Connector()
+  - __combined_node_value(node : Port,port: Port)
+  + add_node(tupConnector : tuple,comps : dict of the devices)
+}
+Connector"1" *-- "2..*" Port
+@enduml
+
+

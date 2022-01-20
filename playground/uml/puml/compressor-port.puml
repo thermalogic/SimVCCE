@@ -1,0 +1,5 @@
+class Compressor{
+  + iPort : Port[1]
+  + oPort : Port[1]
+}
+Compressor "1" *-- "2" Port

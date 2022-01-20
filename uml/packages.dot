@@ -1,7 +1,0 @@
-digraph "packages" {
-rankdir=BT
-charset="utf-8"
-"vccpython.vccapp" -> "vccpython.vcc.utils" [arrowhead="open", arrowtail="none"];
-"vccpython.vccapp" -> "vccpython.vcc.vccobj" [arrowhead="open", arrowtail="none"];
-"vccpython.vccapp" -> "vccpython.vccmodel" [arrowhead="open", arrowtail="none"];
-}

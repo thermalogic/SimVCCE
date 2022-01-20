@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css"
+  height="430px" preserveAspectRatio="none" style="width:644px;height:430px;background:#FFFFFF;" version="1.1"
+  viewBox="0 0 644 430" width="644px" zoomAndPan="magnify">
+  <defs>
+    <filter height="300%" id="f1ik3lxf50bj7v" width="300%" x="-1" y="-1">
+      <feGaussianBlur result="blurOut" stdDeviation="2.0" />
+      <feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0" />
+      <feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3" />
+      <feBlend in="SourceGraphic" in2="blurOut3" mode="normal" />
+    </filter>
+  </defs>
+  <g>
+    <!--MD5=[fc539fa3f3b7db9b31467e896d367b3b]
+class Device-->
+    <rect codeLine="1" fill="#FEFECE" filter="url(#f1ik3lxf50bj7v)" height="213.2524" id="Device"
+      style="stroke:#A80036;stroke-width:1.5;" width="123" x="254" y="50.5" />
+    <ellipse cx="293.3" cy="66.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;" />
+    <path
+      d="M291.8781,71.8594 Q290.0188,71.8594 288.925,70.4688 Q287.8313,69.0781 287.8313,66.0938 Q287.8313,63.5625 288.9953,61.9063 Q290.1594,60.25 292.1438,60.25 Q293.6125,60.25 294.0813,60.375 Q294.55,60.5781 294.55,60.5781 Q294.55,60.5781 294.55,60.5078 Q294.55,60.4375 295.1594,59.5156 L296.2063,63.1719 L294.8781,63.5781 Q294.4094,62.0313 293.7453,61.3672 Q293.0813,60.7031 292.0188,60.7031 Q291.6281,60.7031 290.8625,62.2344 Q290.0969,63.7656 290.0969,66.0156 Q290.0969,68.4844 290.7609,69.875 Q291.425,71.2656 291.9563,71.2656 Q293.0188,71.2656 293.7766,70.5 Q294.5344,69.7344 294.8781,68.0781 L296.2063,68.6719 Q295.8781,70.0781 294.9797,70.9688 Q294.0813,71.8594 291.8781,71.8594 Z "
+      fill="#000000" /><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing"
+      textLength="37" x="312.7" y="72.0576">Device</text>
+    <line style="stroke:#A80036;stroke-width:1.5;" x1="255" x2="376" y1="82.5" y2="82.5" />
+    <ellipse cx="265" cy="93.5" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;fill:none;" /><text fill="#000000"
+      font-family="sans-serif" font-size="11" lengthAdjust="spacing" text-decoration="underline" textLength="58" x="274"
+      y="99.106">devtype: str</text>
+    <ellipse cx="265" cy="108.5229" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;fill:none;" /><text
+      fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" text-decoration="underline"
+      textLength="53" x="274" y="114.1289">energy: str</text>
+    <ellipse cx="265" cy="123.5459" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;fill:none;" /><text
+      fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="45" x="274"
+      y="129.1519">name: str</text>
+    <ellipse cx="265" cy="138.5688" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;fill:none;" /><text
+      fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="62" x="274"
+      y="144.1748">iPort*: Port[1]</text>
+    <ellipse cx="265" cy="153.5918" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;fill:none;" /><text
+      fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="66" x="274"
+      y="159.1978">oPort*: Port[1]</text>
+    <ellipse cx="265" cy="168.6147" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;fill:none;" /><text
+      fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="59" x="274"
+      y="174.2207">portdict: dict</text>
+    <ellipse cx="265" cy="183.6377" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;fill:none;" /><text
+      fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="57" x="274"
+      y="189.2437">value*: float</text>
+    <line style="stroke:#A80036;stroke-width:1.5;" x1="255" x2="376" y1="195.6606" y2="195.6606" />
+    <ellipse cx="265" cy="206.6606" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;" /><text
+      fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" text-decoration="underline"
+      textLength="97" x="274" y="212.2666">Device(dictDev:dict)</text>
+    <ellipse cx="265" cy="221.6836" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;" /><text
+      fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="32" x="274"
+      y="227.2896">state()</text>
+    <ellipse cx="265" cy="236.7065" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;" /><text
+      fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="46" x="274"
+      y="242.3125">balance()</text>
+    <ellipse cx="265" cy="251.7295" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;" /><text
+      fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="61" x="274"
+      y="257.3354">__str()__:str</text>
+    <path
+      d="M6,6 L6,33.7544 A0,0 0 0 0 6,33.7544 L167,33.7544 A0,0 0 0 0 167,33.7544 L167,24 L258,94.0115 L167,16 L167,16 L157,6 L6,6 A0,0 0 0 0 6,6 "
+      fill="#FBFB77" filter="url(#f1ik3lxf50bj7v)" style="stroke:#A80036;stroke-width:1.0;" />
+    <path d="M157,6 L157,16 L167,16 L157,6 " fill="#FBFB77" style="stroke:#A80036;stroke-width:1.0;" /><text
+      fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="105" x="12"
+      y="25.8979">the type of device:</text><text fill="#000000" font-family="sans-serif" font-size="13"
+      font-weight="bold" lengthAdjust="spacing" textLength="31" x="121" y="25.8979">class</text>
+    <path
+      d="M6,43.7544 L6,71.5088 A0,0 0 0 0 6,71.5088 L210,71.5088 A0,0 0 0 0 210,71.5088 L210,61.7544 L258,109.0344 L210,53.7544 L210,53.7544 L200,43.7544 L6,43.7544 A0,0 0 0 0 6,43.7544 "
+      fill="#FBFB77" filter="url(#f1ik3lxf50bj7v)" style="stroke:#A80036;stroke-width:1.0;" />
+    <path d="M200,43.7544 L200,53.7544 L210,53.7544 L200,43.7544 " fill="#FBFB77"
+      style="stroke:#A80036;stroke-width:1.0;" /><text fill="#000000" font-family="sans-serif" font-size="13"
+      lengthAdjust="spacing" textLength="148" x="12" y="63.6523">the energy type of device:</text><text fill="#000000"
+      font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="31" x="164"
+      y="63.6523">class</text>
+    <path
+      d="M6,81.5088 L6,109.2632 A0,0 0 0 0 6,109.2632 L135,109.2632 A0,0 0 0 0 135,109.2632 L135,99.5088 L258,124.0574 L135,91.5088 L135,91.5088 L125,81.5088 L6,81.5088 A0,0 0 0 0 6,81.5088 "
+      fill="#FBFB77" filter="url(#f1ik3lxf50bj7v)" style="stroke:#A80036;stroke-width:1.0;" />
+    <path d="M125,81.5088 L125,91.5088 L135,91.5088 L125,81.5088 " fill="#FBFB77"
+      style="stroke:#A80036;stroke-width:1.0;" /><text fill="#000000" font-family="sans-serif" font-size="13"
+      lengthAdjust="spacing" textLength="108" x="12" y="101.4067">the name of device</text>
+    <path
+      d="M6,119.2632 L6,147.0176 A0,0 0 0 0 6,147.0176 L84,147.0176 A0,0 0 0 0 84,147.0176 L84,137.2632 L258,139.0803 L84,129.2632 L84,129.2632 L74,119.2632 L6,119.2632 A0,0 0 0 0 6,119.2632 "
+      fill="#FBFB77" filter="url(#f1ik3lxf50bj7v)" style="stroke:#A80036;stroke-width:1.0;" />
+    <path d="M74,119.2632 L74,129.2632 L84,129.2632 L74,119.2632 " fill="#FBFB77"
+      style="stroke:#A80036;stroke-width:1.0;" /><text fill="#000000" font-family="sans-serif" font-size="13"
+      lengthAdjust="spacing" textLength="57" x="12" y="139.1611">inlet ports</text>
+    <path
+      d="M6,157.0176 L6,184.772 A0,0 0 0 0 6,184.772 L92,184.772 A0,0 0 0 0 92,184.772 L92,175.0176 L258,154.1033 L92,167.0176 L92,167.0176 L82,157.0176 L6,157.0176 A0,0 0 0 0 6,157.0176 "
+      fill="#FBFB77" filter="url(#f1ik3lxf50bj7v)" style="stroke:#A80036;stroke-width:1.0;" />
+    <path d="M82,157.0176 L82,167.0176 L92,167.0176 L82,157.0176 " fill="#FBFB77"
+      style="stroke:#A80036;stroke-width:1.0;" /><text fill="#000000" font-family="sans-serif" font-size="13"
+      lengthAdjust="spacing" textLength="65" x="12" y="176.9155">outlet ports</text>
+    <path
+      d="M6,194.772 L6,222.5264 A0,0 0 0 0 6,222.5264 L219,222.5264 A0,0 0 0 0 219,222.5264 L219,212.772 L258,222.1951 L219,204.772 L219,204.772 L209,194.772 L6,194.772 A0,0 0 0 0 6,194.772 "
+      fill="#FBFB77" filter="url(#f1ik3lxf50bj7v)" style="stroke:#A80036;stroke-width:1.0;" />
+    <path d="M209,194.772 L209,204.772 L219,204.772 L209,194.772 " fill="#FBFB77"
+      style="stroke:#A80036;stroke-width:1.0;" /><text fill="#000000" font-family="sans-serif" font-size="13"
+      lengthAdjust="spacing" textLength="192" x="12" y="214.6699">get port state by thremal process</text>
+    <path
+      d="M6,232.5264 L6,260.2808 A0,0 0 0 0 6,260.2808 L186,260.2808 A0,0 0 0 0 186,260.2808 L186,250.5264 L258,237.218 L186,242.5264 L186,242.5264 L176,232.5264 L6,232.5264 A0,0 0 0 0 6,232.5264 "
+      fill="#FBFB77" filter="url(#f1ik3lxf50bj7v)" style="stroke:#A80036;stroke-width:1.0;" />
+    <path d="M176,232.5264 L176,242.5264 L186,242.5264 L176,232.5264 " fill="#FBFB77"
+      style="stroke:#A80036;stroke-width:1.0;" /><text fill="#000000" font-family="sans-serif" font-size="13"
+      lengthAdjust="spacing" textLength="159" x="12" y="252.4243">energy and mass balancing</text>
+    <path
+      d="M6,270.2808 L6,298.0352 A0,0 0 0 0 6,298.0352 L199,298.0352 A0,0 0 0 0 199,298.0352 L199,288.2808 L258,252.241 L199,280.2808 L199,280.2808 L189,270.2808 L6,270.2808 A0,0 0 0 0 6,270.2808 "
+      fill="#FBFB77" filter="url(#f1ik3lxf50bj7v)" style="stroke:#A80036;stroke-width:1.0;" />
+    <path d="M189,270.2808 L189,280.2808 L199,280.2808 L189,270.2808 " fill="#FBFB77"
+      style="stroke:#A80036;stroke-width:1.0;" /><text fill="#000000" font-family="sans-serif" font-size="13"
+      lengthAdjust="spacing" textLength="172" x="12" y="290.1787">print the string of the instance</text>
+    <path
+      d="M412,66 L412,93.6316 L333,169.1262 L412,101.6316 L412,129.2632 A0,0 0 0 0 412,129.2632 L635,129.2632 A0,0 0 0 0 635,129.2632 L635,76 L625,66 L412,66 A0,0 0 0 0 412,66 "
+      fill="#FBFB77" filter="url(#f1ik3lxf50bj7v)" style="stroke:#A80036;stroke-width:1.0;" />
+    <path d="M625,66 L625,76 L635,76 L625,66 " fill="#FBFB77" style="stroke:#A80036;stroke-width:1.0;" /><text
+      fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="202"
+      x="418" y="85.8979">map the port name(str) to its obj</text><text fill="#000000" font-family="sans-serif"
+      font-size="13" lengthAdjust="spacing" textLength="114" x="422" y="103.6523">{"iPort*": self.iPort*,</text><text
+      fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="118" x="426"
+      y="121.4067">"oPort*": self.oPort*}</text>
+    <path
+      d="M412,139.2632 L412,184.6492 L371,207.1721 L412,192.6492 L412,238.0352 A0,0 0 0 0 412,238.0352 L554,238.0352 A0,0 0 0 0 554,238.0352 L554,149.2632 L544,139.2632 L412,139.2632 A0,0 0 0 0 412,139.2632 "
+      fill="#FBFB77" filter="url(#f1ik3lxf50bj7v)" style="stroke:#A80036;stroke-width:1.0;" />
+    <path d="M544,139.2632 L544,149.2632 L554,149.2632 L544,139.2632 " fill="#FBFB77"
+      style="stroke:#A80036;stroke-width:1.0;" /><text fill="#000000" font-family="sans-serif" font-size="13"
+      font-weight="bold" lengthAdjust="spacing" textLength="23" x="418" y="159.1611">dict</text><text fill="#000000"
+      font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="73" x="445" y="159.1611">{"name":
+      "*",</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="81"
+      x="458" y="176.9155">"devtype": "*",</text><text fill="#000000" font-family="sans-serif" font-size="13"
+      lengthAdjust="spacing" textLength="62" x="458" y="194.6699">"iPort*": {},</text><text fill="#000000"
+      font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="66" x="458" y="212.4243">"oPort*":
+      {},</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="79"
+      x="458" y="230.1787">"inValue*": * }</text>
+    <!--MD5=[a0bfe97ac0a38e6e74cc1c7c7b744b71]
+class Port-->
+    <rect fill="#FEFECE" filter="url(#f1ik3lxf50bj7v)" height="48" id="Port" style="stroke:#A80036;stroke-width:1.5;"
+      width="54" x="288.5" y="368" />
+    <ellipse cx="303.5" cy="384" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;" />
+    <path
+      d="M302.0781,389.3594 Q300.2188,389.3594 299.125,387.9688 Q298.0313,386.5781 298.0313,383.5938 Q298.0313,381.0625 299.1953,379.4063 Q300.3594,377.75 302.3438,377.75 Q303.8125,377.75 304.2813,377.875 Q304.75,378.0781 304.75,378.0781 Q304.75,378.0781 304.75,378.0078 Q304.75,377.9375 305.3594,377.0156 L306.4063,380.6719 L305.0781,381.0781 Q304.6094,379.5313 303.9453,378.8672 Q303.2813,378.2031 302.2188,378.2031 Q301.8281,378.2031 301.0625,379.7344 Q300.2969,381.2656 300.2969,383.5156 Q300.2969,385.9844 300.9609,387.375 Q301.625,388.7656 302.1563,388.7656 Q303.2188,388.7656 303.9766,388 Q304.7344,387.2344 305.0781,385.5781 L306.4063,386.1719 Q306.0781,387.5781 305.1797,388.4688 Q304.2813,389.3594 302.0781,389.3594 Z "
+      fill="#000000" /><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing"
+      textLength="22" x="317.5" y="389.5576">Port</text>
+    <line style="stroke:#A80036;stroke-width:1.5;" x1="289.5" x2="341.5" y1="400" y2="400" />
+    <line style="stroke:#A80036;stroke-width:1.5;" x1="289.5" x2="341.5" y1="408" y2="408" />
+    <!--MD5=[b13077a391d604afa1f7db31e06e6131]
+link Device$$$LEFT to Device-->
+    <!--MD5=[deccc23855af89d28b130b797b7a89f0]
+link Device to Device$$$RIGHT-->
+    <!--MD5=[5f17e4cdce0a26a5d2a251b23165386c]
+reverse link Device to Port-->
+    <path codeLine="50" d="M315.5,276.89 C315.5,311.61 315.5,346.05 315.5,367.86 " fill="none" id="Device-backto-Port"
+      style="stroke:#A80036;stroke-width:1.0;" />
+    <polygon fill="#A80036" points="315.5,263.59,311.5,269.59,315.5,275.59,319.5,269.59,315.5,263.59"
+      style="stroke:#A80036;stroke-width:1.0;" /><text fill="#000000" font-family="sans-serif" font-size="13"
+      lengthAdjust="spacing" textLength="7" x="308.2539" y="286.5979">1</text><text fill="#000000"
+      font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="20" x="292.8125"
+      y="357.0873">2..*</text>
+    <!--MD5=[6db533fbfc517d5542ceb110de82b6b5]
+@startuml
+class Device {
+ + {static} devtype: str
+ + {static} energy: str
+ + name: str
+ + iPort*: Port[1]
+ + oPort*: Port[1]
+ + portdict: dict
+ + value*: float
+ + {static} Device(dictDev:dict)
+ + state()
+ + balance()
+  + __str()__:str
+}
+note left of Device::devtype
+  the type of device: **class**
+end note
+note left of Device::energy
+  the energy type of device: **class**
+end note
+note left of Device::name
+  the name of device
+end note
+note left of Device::iPort*
+  inlet ports
+end note
+note left of Device::oPort*
+  outlet ports
+end note
+note left of Device::state
+  get port state by thremal process
+end note
+note left of Device::balance
+  energy and mass balancing
+end note
+note left of Device::__str()__
+  print the string of the instance
+end note
+note right of Device::portdict
+  **map the port name(str) to its obj**
+   {"iPort*": self.iPort*,
+    "oPort*": self.oPort*}
+end note
+note right of Device::Device(dictDev:dict)
+  **dict** {"name": "*",
+            "devtype": "*",
+            "iPort*": {},
+            "oPort*": {},
+            "inValue*": * }
+end note
+Device "1" *- - "2..*" Port 
+
+
+
+@enduml
+
+PlantUML version 1.2021.16(Thu Dec 09 01:25:22 CST 2021)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Default Encoding: GBK
+Language: zh
+Country: CN
+-->
+  </g>
+</svg>

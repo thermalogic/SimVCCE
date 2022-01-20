@@ -6,36 +6,27 @@ The Simulator of VC Cycle
   * Output: text file
 Run: 
    python vccapp_json.py
+
+ Author: Cheng Maohua cmh@seu.edu.cn
+
 """
 import glob
-from vcc.vccobj import VCRCycle
-from vcc.utils import OutFiles
+from vcc.vccobj import VCCycle
+from vcc.utils import OutFiles, create_dictcycle_from_jsonfile
 from platform import os
 
-# json
-import json
-def create_dictcycle_from_jsonfile(filename):
-    """ create dict cycle from json file"""
-    with open(filename, 'r') as f:
-        dictcycle = json.loads(f.read())
-
-    #  convert the list of dict object  to  the tuple of tuple
-    for itemtuples in dictcycle["connectors"]:
-        for i in range(len(itemtuples)):
-            itemtuples[i] = (itemtuples[i]["devname"], itemtuples[i]["port"])
-    return dictcycle
 
 if __name__ == "__main__":
     curpath = os.path.abspath(os.path.dirname(__file__))
-    json_filename_str = curpath+'\\'+'./jsonmodel/ivcr72[0-9].json'
-    #json_filesname_str=curpath+'\\'+'./jsonmodel/ivcr724.json'
-    json_filenames = glob.glob(json_filename_str)
+    json_filenames_str = curpath+'\\'+'./jsonmodel/*.json'
+    #json_filenames_str=curpath+'\\'+'./jsonmodel/ivcr724.json'
+    json_filenames = glob.glob(json_filenames_str)
     ResultFilePath = curpath+'/result/'
 
     for i in range(len(json_filenames)):
         thedictcycle = create_dictcycle_from_jsonfile(json_filenames[i])
         # the simulator
-        cycle = VCRCycle(thedictcycle)
+        cycle = VCCycle(thedictcycle)
         cycle.simulator()
         # output to console
         OutFiles(cycle)

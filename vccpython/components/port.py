@@ -1,24 +1,31 @@
 """
- The port of device
-"""
-import CoolProp.CoolProp as cp
+General Object-oriented Abstraction of VC Cycle 
+  The port of device：
+       dictNode: {"p","t","x","mdot","refrigerant"}
+       the default refrigerant  is Port.cycle_refrigerant
 
+ Author: Cheng Maohua cmh@seu.edu.cn
+"""
+from phyprops.prop_coolprop import *
 
 class Port:
-
-    coolant = 'R134a'
+    cycle_refrigerant = 'R134a'
+    
     title = ('{:^6} \t{:<8} \t{:>8} \t{:>10} \t{:>10} \t{:^10} \t{:>10}'.format
              ("Index", "P(MPa)", "T(°C)", "H(kJ/kg)", "S(kJ/kg.K)",  "Quality", "MDOT(kg/s)"))
 
     def __init__(self, dictnode):
         """ create the node object"""
-        self.coolant = Port.coolant
         self.index = None
+        if ("refrigerant" in dictnode):
+           self.refrigerant = dictnode["refrigerant"]
+        else:
+           self.refrigerant = Port.cycle_refrigerant
         self.p = None
         self.t = None
         self.x = None
         self.mdot = None
-
+        
         if('p' in dictnode):
             try:
                 self.p = float(dictnode['p'])
@@ -53,43 +60,29 @@ class Port:
             self.px()
         elif self.p is not None and self.t is not None:
             self.pt()
-
+  
     def tx(self):
         try:
-            self.p = cp.PropsSI('P', 'T', 273.15+self.t,
-                                'Q', self.x, self.coolant)/1.0e6
-            self.h = cp.PropsSI('H', 'T', 273.15+self.t,
-                                'Q', self.x, self.coolant)/1000
-            self.s = cp.PropsSI('S', 'T', 273.15+self.t,
-                                'Q', self.x, self.coolant)/1000
+            self.p = tx_p(self.t, self.x, self.refrigerant)
+            self.h = tx_h(self.t, self.x, self.refrigerant)
+            self.s = tx_s(self.t, self.x, self.refrigerant)
             self.stateok = True
         except:
             self.stateok = False
 
     def px(self):
         try:
-            self.t = cp.PropsSI('T', 'P', self.p*1.0e6,
-                                'Q', self.x, self.coolant)-273.15
-            self.h = cp.PropsSI('H', 'P', self.p*1.0e6,
-                                'Q', self.x, self.coolant)/1000
-            self.s = cp.PropsSI('S', 'P', self.p*1.0e6,
-                                'Q', self.x, self.coolant)/1000
-            print(self.t, self.h, self.s)
-
+            self.t = px_t(self.p, self.x, self.refrigerant)
+            self.h = px_h(self.p, self.x, self.refrigerant)
+            self.s = px_s(self.p, self.x, self.refrigerant)
             self.stateok = True
         except:
             self.stateok = False
 
     def pt(self):
         try:
-            self.h = cp.PropsSI('H', 'P', self.p*1.0e6, 'T',
-                                self.t+273.15, self.coolant)/1000
-            self.s = cp.PropsSI('S', 'P', self.p*1.0e6, 'T',
-                                self.t+273.15, self.coolant)/1000
-            self.x = cp.PropsSI('Q', 'P', self.p*1.0e6,
-                                'H', self.h*1000, self.coolant)
-            if self.x == -1:
-                self.x = None
+            self.h = pt_h(self.p, self.t, self.refrigerant)
+            self.s = pt_s(self.p, self.t, self.refrigerant)
             self.stateok = True
         except:
             self.stateok = False
@@ -97,16 +90,11 @@ class Port:
     def ps(self):
         try:
             if self.h is None:
-                self.h = cp.PropsSI('H', 'P', self.p*1.0e6, 'S',
-                                    self.s*1000, self.coolant)/1000
+                self.h = ps_h(self.p, self.s, self.refrigerant)
             if self.t is None:
-                self.t = cp.PropsSI('T', 'P', self.p*1.0e6, 'S',
-                                    self.s*1000, self.coolant)-273.15
+                self.t = ps_t(self.p, self.s, self.refrigerant)
             if self.x is None:
-                self.x = cp.PropsSI('Q', 'P', self.p*1.0e6, 'S',
-                                    self.s*1000, self.coolant)
-                if self.x == -1:
-                    self.x = None
+                self.x = ps_x(self.p, self.s, self.refrigerant)
             self.stateok = True
         except:
             self.stateok = False
@@ -114,16 +102,11 @@ class Port:
     def ph(self):
         try:
             if self.s is None:
-                self.s = cp.PropsSI('S', 'P', self.p*1.0e6, 'H',
-                                    self.h*1000, self.coolant)/1000
+                self.s = ph_s(self.p, self.h, self.refrigerant)
             if self.t is None:
-                self.t = cp.PropsSI('T', 'P', self.p*1.0e6, 'H',
-                                    self.h*1000, self.coolant)-273.15
+                self.t = ph_t(self.p, self.h, self.refrigerant)
             if self.x is None:
-                self.x = cp.PropsSI('Q', 'P', self.p*1.0e6, 'H',
-                                    self.h*1000, self.coolant)
-                if self.x == -1:
-                    self.x = None
+                self.x = ph_x(self.p, self.h, self.refrigerant)
             self.stateok = True
         except:
             self.stateok = False
@@ -139,13 +122,16 @@ class Port:
                 self.pt()
 
     def __str__(self):
-        result = '{:^6}'.format(self.index)
+        try:
+           result = '{:^6}'.format(self.index)
+        except:
+            result ="-"
         OutStrs = [{"fstr": '\t{:>7.4}', 'prop': self.p, "sstr": '\t{:>7}'},
                    {"fstr": '\t{:>8.2f}', 'prop': self.t, "sstr": '\t{:>8}'},
                    {"fstr": '\t{:>10.2f}', 'prop': self.h, "sstr": '\t{:>10}'},
                    {"fstr": '\t{:>8.3f}',  'prop': self.s, "sstr": '\t{:>8}'},
                    {"fstr": '\t{:>10.4f}', 'prop': self.x, "sstr": '\t{:>10}'},
-                   {"fstr": '\t{:>8.2f}',  'prop': self.mdot, "sstr": '\t{:>8}'}
+                   {"fstr": '\t{:>8.4f}',  'prop': self.mdot, "sstr": '\t{:>8}'}
                    ]
 
         for item in OutStrs:

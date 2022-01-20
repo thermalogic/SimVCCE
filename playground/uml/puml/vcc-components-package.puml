@@ -1,0 +1,5 @@
+vcc.VCCycle "1" *-[#blue]- "1" vcc.Connector 
+vcc.VCCycle "1" o-- "1" components.Compressor 
+vcc.VCCycle "1" o-- "1" components.Condenser
+vcc.VCCycle "1" o-- "1" components.Evaporator
+vcc.VCCycle "1" o-- "1" components.ExpansionValve

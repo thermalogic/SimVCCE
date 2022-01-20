@@ -1,5 +1,6 @@
 cycle = {}
 cycle["name"] = "The Ideal VCR Example 7.2-3"
+cycle["refrigerant"] = "R134a"
 cycle["components"] = [
     {
         "name": "Compressor",

@@ -1,0 +1,40 @@
+
+The Vapor-Compression Cycle: Ideal_VCR_Var ( 2022/01/20 22:33:14 by cmhnj)
+
+Refrigerant: R134a
+             Compression Work(kW):   2.93
+       Refrigeration Capacity(kW):  16.36
+                   	Capacity(ton):   4.65
+       The heat transfer rate(kW):  19.29
+   The coefficient of performance:   5.58
+The coefficient of performance(heat pump):  6.58
+
+Index  	P(MPa)   	   T(°C) 	  H(kJ/kg) 	S(kJ/kg.K) 	 Quality   	MDOT(kg/s)
+  0   	    0.5	   22.93	    414.42	   1.743	          	  0.1000
+  1   	    0.5	   15.73	    221.50	   1.076	    0.0000	  0.1000
+  2   	   0.12	  -22.31	    221.50	   1.091	    0.2371	  0.1000
+  3   	   0.12	  -22.31	    385.12	   1.743	    1.0000	  0.1000
+
+Compressor
+ PORTS Index  	P(MPa)   	   T(°C) 	  H(kJ/kg) 	S(kJ/kg.K) 	 Quality   	MDOT(kg/s)
+ iPort   3   	   0.12	  -22.31	    385.12	   1.743	    1.0000	  0.1000
+ oPort   0   	    0.5	   22.93	    414.42	   1.743	          	  0.1000
+The compressor efficiency(%): 	100.00
+Wc(kW): 	2.93
+
+Condenser
+ PORTS Index  	P(MPa)   	   T(°C) 	  H(kJ/kg) 	S(kJ/kg.K) 	 Quality   	MDOT(kg/s)
+ iPort   0   	    0.5	   22.93	    414.42	   1.743	          	  0.1000
+ oPort   1   	    0.5	   15.73	    221.50	   1.076	    0.0000	  0.1000
+Qout(kW): 	19.29
+
+ExpansionValve
+ PORTS Index  	P(MPa)   	   T(°C) 	  H(kJ/kg) 	S(kJ/kg.K) 	 Quality   	MDOT(kg/s)
+ iPort   1   	    0.5	   15.73	    221.50	   1.076	    0.0000	  0.1000
+ oPort   2   	   0.12	  -22.31	    221.50	   1.091	    0.2371	  0.1000
+
+Evaporator
+ PORTS Index  	P(MPa)   	   T(°C) 	  H(kJ/kg) 	S(kJ/kg.K) 	 Quality   	MDOT(kg/s)
+ iPort   2   	   0.12	  -22.31	    221.50	   1.091	    0.2371	  0.1000
+ oPort   3   	   0.12	  -22.31	    385.12	   1.743	    1.0000	  0.1000
+Qin(kW): 	16.36
