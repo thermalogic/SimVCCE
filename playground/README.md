@@ -1,4 +1,4 @@
-# Playground for Playing Games with Your New Ideas
+# Playground for Your New Ideas
 
 ## 1. Performance Analysis of VCR cycle under Variable Conditions
 
