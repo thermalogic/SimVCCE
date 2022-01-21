@@ -13,8 +13,9 @@ Condenser pressures: 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,0.1, 1.4 MPa
 
 Calculate the COP of the refrigeration cycle
 
-* Plot the COPs against the condenser pressure
 * Save the results to the csv file
+
+* Plot the COPs against the condenser pressure
 
  Author: Cheng Maohua cmh@seu.edu.cn
 """
@@ -85,6 +86,7 @@ if __name__ == "__main__":
             for device in newdictcycle["components"]:
                 if device["name"] == vars["name"]:
                     device["oPort"]["p"] = var
+                    break
 
              # the simulator
             cycle = VCCycle(newdictcycle)

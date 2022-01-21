@@ -9,9 +9,10 @@ General Object-oriented Abstraction of VC Cycle
 import time
 import getpass
 
-from components.port import Port
 from components import compdict
+from components.port import Port
 from .connector import Connector
+
 
 class VCCycle:
 
@@ -27,7 +28,7 @@ class VCCycle:
              self.conns : the connector object
         """
         self.name = dictcycle["name"]
-        self.cycle_refrigerant=dictcycle["refrigerant"]
+        self.cycle_refrigerant = dictcycle["refrigerant"]
         Port.cycle_refrigerant = self.cycle_refrigerant
 
         dictcomps = dictcycle["components"]
@@ -38,13 +39,10 @@ class VCCycle:
         for curdev in dictcomps:
             self.comps[curdev['name']] = compdict[curdev['devtype']](curdev)
 
+        # 2 set the nodes value and alias between the item of nodes and the port of devices
         self.conns = Connector()
-        # 2 use the listconnectors to set the nodes value and alias between the item of nodes and the port of devices
         for tupconnector in listconnectors:
             self.conns.add_node(tupconnector, self.comps)
-
-        self.Wc = None
-        self.cop = None
 
     def __port_state(self):
         """ calculate the state of ports """
@@ -58,16 +56,36 @@ class VCCycle:
                 item[0].state()
 
     def __component_balance(self):
-        for curdev in self.comps:
-            self.comps[curdev].balance()
+        # for curdev in self.comps:
+        #     self.comps[curdev].balance()
+
+        keys = list(self.comps.keys())
+        deviceok = False
+        CountsDev = len(self.comps)
+        i = 0  # i: the count of deviceok to avoid endless loop
+        while (deviceok == False and i <= CountsDev):
+            for curdev in keys:
+                try:
+                    self.comps[curdev].balance()
+                    keys.remove(curdev)
+                except:
+                    pass
+
+            i += 1
+            if (len(keys) == 0):
+                deviceok = True
+
+        # for debug: check the failed devices
+        if (len(keys) > 0):
+            print("--- the failed devices:", keys)
 
     def simulator(self):
         self.__port_state()
         self.__component_balance()
 
-        self.Wc = 0
-        self.Qin = 0
-        self.Qout = 0
+        self.Wc = 0.0
+        self.Qin = 0.0
+        self.Qout = 0.0
 
         for key in self.comps:
             if self.comps[key].energy == "CompressionWork":
@@ -77,17 +95,17 @@ class VCCycle:
             elif self.comps[key].energy == "QOUT":
                 self.Qout += self.comps[key].Qout
 
-
         self.cop = self.Qin / self.Wc
         self.cop_hp = self.Qout / self.Wc
 
     def __setformatstr(self, formatstr, result):
         result += formatstr.format('Compression Work(kW): ', self.Wc)
         result += formatstr.format('Refrigeration Capacity(kW): ', self.Qin)
-        result += formatstr.format('\tCapacity(ton): ',self.Qin*60*(1/211))
+        result += formatstr.format('\tCapacity(ton): ', self.Qin*60*(1/211))
         result += formatstr.format('The heat transfer rate(kW): ', self.Qout)
         result += formatstr.format('The coefficient of performance: ', self.cop)
-        result += formatstr.format('The coefficient of performance(heat pump):', self.cop_hp)
+        result += formatstr.format(
+            'The coefficient of performance(heat pump):', self.cop_hp)
         return result
 
     def __str__(self):
@@ -95,7 +113,7 @@ class VCCycle:
             "%Y/%m/%d %H:%M:%S", time.localtime(time.time()))
         result = "\nThe Vapor-Compression Cycle: {} ( {} by {})\n".format(
             self.name, str_curtime, getpass.getuser())
-        result +="\nRefrigerant: {}\n".format(self.cycle_refrigerant)
+        result += "\nRefrigerant: {}\n".format(self.cycle_refrigerant)
         try:
             result = self.__setformatstr("{:>35} {:>5.2f}\n", result)
         except:

@@ -1,6 +1,36 @@
-# Playground for Your New Ideas
+# Playground 
 
-## 1. Performance Analysis of VCR cycle under Variable Conditions
+## 1 Cascade Refrigeration Cycle
+
+The Cascade system  have 2 (or more) refrigeration cycles operating in series.
+
+Th eCascade cycle is used where a very wide range of temperature between `TL` and `TH `is required. 
+
+As shown in the Fig, the `condenser` for the `low` temperature refrigerator is used as the `evaporator` for the `high` temperature refrigerator
+
+![cascade cycle](./img/2stage_cascade.jpg)
+
+![ts cascade cycle](./img/2stage_cascade_ts.jpg)
+
+Consider a two-stage cascade refrigeration system operating between pressure limits of `0.8` and `0.14` MPa.
+
+Each stage operates on an ideal vapor-compression refrigeration cycle
+with refrigerant `R-134a` as working fluid. 
+
+`Heat rejection` from the `lower` cycle to the `upper` cycle takes place in an adiabatic counter flow heat exchanger where both streams enter at
+about `0.32` MPa.
+
+If the mass flow rate of the refrigerant through the `upper` cycle is `0.05`
+kg/s,
+
+**Determine**
+
+* a) the mass flow rate of the refrigerant through the lower cycle
+* b) the rate of heat removal from the refrigerated space
+* c) the power input to the compressor
+* d) COP
+
+## 2 Performance Analysis of VCR cycle under Variable Conditions
 
 * [ivcrvar.json](./jsonmodel/ivcrvar.json) 
 
@@ -21,11 +51,11 @@ The ideal vapor-compression refrigeration cycle of [Vapor-compression refrigerat
 
 Calculate the COP of the ideal vapor-compression refrigeration cycle 
 
-* **Plot** the COPs against the condenser pressure
-
 * **Save** the results to the csv file
 
-## 2. The Home Heat Pump for Space Heating
+* **Plot** the COPs against the condenser pressure
+
+## 3. The Home Heat Pump for Space Heating
 
 The Cycle of [A Home Heat Pump for Space Heating](https://www.ohio.edu/mechanical/thermo/Intro/Chapt.1_6/refrigerator/heatpump.html)
 
@@ -50,5 +80,4 @@ In this example, we evaluate the following:
 * Determine the **mass** flow rate of the air flowing in the insulated duct
 
 * Assuming that all this heat is absorbed by the air, determine the exit **temperature** of the air at station
-
 
