@@ -2,13 +2,17 @@
 
 ## VS Code Extensions
 
+Install extensions:
+
+Open VS Code, **search** the name of extension, then click **Install** button.
+
 * [Markdown Preview Enhanced](https://shd101wyy.github.io/markdown-preview-enhanced/#/zh-cn/)
 
 * [PlantUML](https://github.com/qjebbs/vscode-plantuml/)
 
-Open VS Code, **search** the name of extension, then click **Install** button.
-
 ### Local Run PlantUML
+
+Install: Java, Graphviz
 
 * [Java](https://www.java.com/en/download/)
 
