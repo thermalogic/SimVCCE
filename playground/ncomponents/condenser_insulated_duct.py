@@ -3,9 +3,9 @@ The combined condenser and insulated duct
 
                          ↓   iPort refrigerant
                    ┌─────┼─────┐
-                   │  ←┌─┼─┐   │
+                   │  ←┌─┼─┐→  │
       oPortAir   ← ┤ Q │ Z │ Q │← iPortAir
-                   │  ←└─┼─┘   │
+                   │  ←└─┼─┘→  │
                    └─────┼─────┘
                          ↓      oPort refrigerant
   
