@@ -32,7 +32,7 @@ import csv
 import matplotlib.pyplot as plt
 
 
-def var_csv(Coolants, x, y, FileName):
+def csv_vars(Coolants, x, y, FileName):
     with open(FileName, 'w', newline='') as csvfile:
         fieldnames = ['Condenser_Pressure']
         for ant in Coolants:
@@ -102,6 +102,6 @@ if __name__ == "__main__":
 
     # save to csv
     CSVFileName = ResultFilePath + thedictcycle['name']+".csv"
-    var_csv(refrigerants, vars["oPort"]["p"], results, CSVFileName)
+    csv_vars(refrigerants, vars["oPort"]["p"], results, CSVFileName)
     # plot
     plot_vars(refrigerants, vars["oPort"]["p"], results)

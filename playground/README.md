@@ -1,6 +1,6 @@
 # Playground for Playing Games with Your New Ideas
 
-## Game1 Performance analysis of VCR cycle under variable conditions
+## 1. Performance Analysis of VCR cycle under Variable Conditions
 
 * [ivcrvar.json](./jsonmodel/ivcrvar.json) 
 
@@ -25,7 +25,7 @@ Calculate the COP of the ideal vapor-compression refrigeration cycle
 
 * **Save** the results to the csv file
 
-## Game2: The Home Heat Pump for Space Heating
+## 2. The Home Heat Pump for Space Heating
 
 The Cycle of [A Home Heat Pump for Space Heating](https://www.ohio.edu/mechanical/thermo/Intro/Chapt.1_6/refrigerator/heatpump.html)
 
