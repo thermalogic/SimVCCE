@@ -18,11 +18,12 @@ from platform import os
 
 if __name__ == "__main__":
     curpath = os.path.abspath(os.path.dirname(__file__))
+    ResultFilePath = curpath+'/result/'
+
     json_filenames_str = curpath+'\\'+'./jsonmodel/*.json'
     #json_filenames_str=curpath+'\\'+'./jsonmodel/ivcr724.json'
     json_filenames = glob.glob(json_filenames_str)
-    ResultFilePath = curpath+'/result/'
-
+    
     for i in range(len(json_filenames)):
         thedictcycle = create_dictcycle_from_jsonfile(json_filenames[i])
         # the simulator
