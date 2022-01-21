@@ -46,7 +46,7 @@ if __name__ == "__main__":
     cycle_lower.simulator()
     OutFiles(cycle_lower)
 
-    # 4 the cascase cycle
+    # 4 the cascade cycle
     Wc = cycle_upper.Wc+cycle_lower.Wc
     cop = cycle_lower.Qin/Wc   
     
