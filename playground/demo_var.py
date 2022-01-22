@@ -63,7 +63,7 @@ def plot_vars(Coolants, x, y):
 
 if __name__ == "__main__":
     curpath = os.path.abspath(os.path.dirname(__file__))
-    json_filename = curpath+'\\'+'./jsonmodel/ivcrvar.json'
+    json_filename = curpath+'\\'+'./jsonmodel/ivcr_var.json'
     ResultFilePath = curpath+'/result/'
     # the base data of cycle
     thedictcycle = create_dictcycle_from_jsonfile(json_filename)

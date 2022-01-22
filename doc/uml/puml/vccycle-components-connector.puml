@@ -16,9 +16,9 @@ class VCCycle {
        + __str__():str
  }
 VCCycle "1" *-[#blue]- "1" Connector 
-VCCycle "1" o-- "1" Compressor 
-VCCycle "1" o-- "1" Condenser
-VCCycle "1" o-- "1" Evaporator
-VCCycle "1" o-- "1" ExpansionValve
+VCCycle "1" o-- "1..*" Compressor 
+VCCycle "1" o-- "1..*" Condenser
+VCCycle "1" o-- "1..*" Evaporator
+VCCycle "1" o-- "1..*" ExpansionValve
 
 

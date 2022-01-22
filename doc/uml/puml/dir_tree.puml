@@ -5,7 +5,7 @@
 *** <components> **port and devices classes**
 **** port.py\ncompressor.py\n...       
 *** <vcc> **the cycle analysis class and methods**
-****  connector.py **the class Connector**\nvccobj.py **the class VCRCycle**\nutils.py **utils methods**
+****  connector.py **the class Connector**\nvccobj.py **the class VCCycle**\nutils.py **utils methods**
 *** <vccmodel> **the dict of the cycle data**
 ****  *vcr*.py **the cycle dict**
 *** <jsonmmodel> **json of the cycle flowchart and data**

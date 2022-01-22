@@ -17,16 +17,18 @@ class Condenser:
         self.name = dictDev['name']
         self.iPort = [Port(dictDev['iPort'])]
         self.oPort = [Port(dictDev['oPort'])]
+
+        if ("Qout" in dictDev):
+            self.Qout = float(dictDev["Qout"])
+        else:
+            self.Qout = None
+
         # map the port's name(str) to the obj
         self.portdict = {
             "iPort": self.iPort,
             "oPort": self.oPort
         }
 
-        if ("Qout" in dictDev):
-            self.Qout = float(dictDev["Qout"])
-        else:
-            self.Qout = None
 
     def state(self):
         """ Isobaric """

@@ -54,6 +54,6 @@ if __name__ == "__main__":
     print("\tThe mass flow rate of the lower cycle(kg/s): {:.4f}".format(cycle_lower.conns.nodes[0][0].mdot))
     print("\tRefrigeration Capacity(kW): {: .2f}".format(cycle_lower.Qin))
     print("\tHeat Transfer Rate(kW): {: .2f}".format(cycle_upper.Qout))
-    print("\tWc(kW):{:.2f}".format(Wc))
-    print("\tCOP:{:.2f}".format(cop))
+    print("\tCompression Work(kW): {:.2f}".format(Wc))
+    print("\tThe coefficient of performance: {:.2f}".format(cop))
    

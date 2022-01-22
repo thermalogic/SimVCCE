@@ -23,11 +23,14 @@ class Compressor:
         self.name = dictDev['name']
         self.iPort = [Port(dictDev['iPort'])]
         self.oPort = [Port(dictDev['oPort'])]
-        try:
-            self.ef = float(dictDev['ef'])
-        except:
+        if ("ef" in dictDev):
+            try:
+                self.ef = float(dictDev['ef'])
+            except:
+                self.ef = None
+        else:
             self.ef = None
-
+       
         if ("win" in dictDev):
             self.Wc = float(dictDev["win"])
         else:
@@ -45,16 +48,13 @@ class Compressor:
         self.isos = self.iPort[0].s
         if self.ef == 1.0:
             self.oPort[0].s = self.iPort[0].s
-        elif self.ef != 1.0:
-            # add code to obtain the oPort state
-            pass
-
+        
     def balance(self):
         """  mass and energy balance    """
-        # ef
-        if self.ef is None:
-            # add code to obtain the ef
-            pass
+        # ef  
+        if self.ef is None or self.ef!=1.0:
+            pass #add your code here
+       
         # energy balance
         if (self.Wc is not None):
             self.iPort[0].mdot = self.Wc/(self.oPort[0].h - self.iPort[0].h)
