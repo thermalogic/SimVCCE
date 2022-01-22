@@ -20,42 +20,31 @@ class Evaporator:
         self.name = dictDev['name']
         self.iPort = [Port(dictDev['iPort'])]
         self.oPort = [Port(dictDev['oPort'])]
-      
-        if ("Qin" in dictDev):
-                self.Qin = float(dictDev["Qin"])
-        else:
-            self.Qin = None
-      
+
         # map the port's name(str) to the obj
         self.portdict = {
             "iPort": self.iPort,
             "oPort": self.oPort
         }
 
-        
-
     def state(self):
         """ Isobaric """
         if self.oPort[0].p is not None:
             self.iPort[0].p = self.oPort[0].p
         elif self.iPort[0].p is not None:
-           self.oPort[0].p = self.iPort[0].p
+            self.oPort[0].p = self.iPort[0].p
 
     def balance(self):
         """ mass and energy balance  """
 
-         # energy balance
-        if (self.Qin is not None):
-            self.iPort[0].mdot = self.Qin/(self.oPort[0].h - self.iPort[0].h)
-        
         # mass balance
         if self.iPort[0].mdot is not None:
             self.oPort[0].mdot = self.iPort[0].mdot
         elif self.oPort[0].mdot is not None:
             self.iPort[0].mdot = self.oPort[0].mdot
-        
-        if (self.Qin is None):
-             self.Qin = self.iPort[0].mdot * (self.oPort[0].h - self.iPort[0].h)
+
+        # energy balance
+        self.Qin = self.iPort[0].mdot * (self.oPort[0].h - self.iPort[0].h)
 
     def __str__(self):
         result = '\n' + self.name

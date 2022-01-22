@@ -7,6 +7,7 @@ General Object-oriented Abstraction of VC Cycle
 """
 from .port import *
 
+
 class Condenser:
 
     energy = "QOUT"
@@ -29,18 +30,17 @@ class Condenser:
             "oPort": self.oPort
         }
 
-
     def state(self):
         """ Isobaric """
         if self.oPort[0].p is not None:
-           self.iPort[0].p = self.oPort[0].p
+            self.iPort[0].p = self.oPort[0].p
         elif self.iPort[0].p is not None:
-           self.oPort[0].p = self.iPort[0].p
-   
+            self.oPort[0].p = self.iPort[0].p
+
     def balance(self):
         """ mass and energy balance of the condenser  """
         if self.Qout is not None:
-           self.iPort[0].mdot = self.Qout/(self.iPort[0].h-self.oPort[0].h)
+            self.iPort[0].mdot = self.Qout/(self.iPort[0].h-self.oPort[0].h)
 
         if self.iPort[0].mdot is not None:
             self.oPort[0].mdot = self.iPort[0].mdot
@@ -48,12 +48,12 @@ class Condenser:
             self.iPort[0].mdot = self.oPort[0].mdot
 
         if self.Qout is None:
-           self.Qout = self.iPort[0].mdot*(self.iPort[0].h-self.oPort[0].h)
+            self.Qout = self.iPort[0].mdot*(self.iPort[0].h-self.oPort[0].h)
 
     def __str__(self):
         result = '\n' + self.name
-        result += '\n' +" PORTS "+Port.title
-        result += '\n' +" iPort "+ self.iPort[0].__str__()
-        result += '\n' +" oPort "+ self.oPort[0].__str__()
+        result += '\n' + " PORTS "+Port.title
+        result += '\n' + " iPort " + self.iPort[0].__str__()
+        result += '\n' + " oPort " + self.oPort[0].__str__()
         result += '\nQout(kW): \t{:>.2f}'.format(self.Qout)
         return result

@@ -30,17 +30,13 @@ class Compressor:
                 self.ef = None
         else:
             self.ef = None
-       
-        if ("win" in dictDev):
-            self.Wc = float(dictDev["win"])
-        else:
-            self.Wc = None
+
         # map the port's name(str) to the obj
         self.portdict = {
             "iPort": self.iPort,
             "oPort": self.oPort
         }
-
+   
     def state(self):
         """
             if ef=1.0, Isentropic compression 
@@ -48,24 +44,21 @@ class Compressor:
         self.isos = self.iPort[0].s
         if self.ef == 1.0:
             self.oPort[0].s = self.iPort[0].s
-        
+
     def balance(self):
         """  mass and energy balance    """
-        # ef  
-        if self.ef is None or self.ef!=1.0:
-            pass #add your code here
-       
-        # energy balance
-        if (self.Wc is not None):
-            self.iPort[0].mdot = self.Wc/(self.oPort[0].h - self.iPort[0].h)
+        # ef
+        if self.ef is None or self.ef != 1.0:
+            pass  # add your code here
+
         # mass balance
         if self.iPort[0].mdot is not None:
             self.oPort[0].mdot = self.iPort[0].mdot
         elif self.oPort[0].mdot is not None:
             self.iPort[0].mdot = self.oPort[0].mdot
-        # wc
-        if (self.Wc is None):
-            self.Wc = self.iPort[0].mdot * (self.oPort[0].h - self.iPort[0].h)
+
+        # energy balance
+        self.Wc = self.iPort[0].mdot * (self.oPort[0].h - self.iPort[0].h)
 
     def __str__(self):
         result = '\n' + self.name
@@ -75,7 +68,7 @@ class Compressor:
         try:
             result += '\nThe compressor efficiency(%): \t{:>.2f}'.format(
                 self.ef*100.0)
+            result += '\nWc(kW): \t{:>.2f}'.format(self.Wc)
         except:
             pass
-        result += '\nWc(kW): \t{:>.2f}'.format(self.Wc)
         return result
