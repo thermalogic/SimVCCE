@@ -2,9 +2,9 @@
 """
 General Object-oriented Abstraction of VC Cycle 
 
-EXAMPLE 11–4: Multistage Compression Refrigeration: Page704-705
-Thermodynamics: An Engineering Approach, 5th Edition 
-Yunus A. Cengel, Michael A. Boles, McGraw-Hill
+EXAMPLE 11–5: Multistage Compression Refrigeration: Page627-628
+
+Yunus A. Cengel, Michael A. Boles. Thermodynamics: An Engineering Approach, 8th Edition, McGraw-Hill,2015
 
 Author: Cheng Maohua cmh@seu.edu.cn
 """
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     curpath = os.path.abspath(os.path.dirname(__file__))
     ResultFilePath = curpath+'/result/'
 
-    json_filename = curpath+'\\'+'./jsonmodel/vcr_two_stage_11_4.json'
+    json_filename = curpath+'\\'+'./jsonmodel/vcr_two_stage_11_5.json'
 
     thedictcycle = create_dictcycle_from_jsonfile(json_filename)
     cycle = VCCycle(thedictcycle)

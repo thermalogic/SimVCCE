@@ -2,9 +2,9 @@
 """
 General Object-oriented Abstraction  of VC Cycle 
 
-The Simulator of Ideal VCR 11-1 Page693
+The Simulator of Ideal VCR 11-1 Page612
 
-Yunus A. Cengel, Michael A. Boles, Thermodynamics: An Engineering Approach, Seventh Edition,McGraw-Hill, 2011.
+Yunus A. Cengel, Michael A. Boles, Thermodynamics: An Engineering Approach, 8th Edition,McGraw-Hill, 2015.
 
   * Input : The cycle dict model: ivcr_11_1.py
   * Output: text file

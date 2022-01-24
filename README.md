@@ -21,11 +21,11 @@ python -m pip install phyprops
 ```
 ## The Vapor-Compression Cycle Examples
 
-Yunus A. Cengel, Michael A. Boles,Thermodynamics: An Engineering Approach, 5th Edition, McGraw-Hill
+Yunus A. Cengel, Michael A. Boles,Thermodynamics: An Engineering Approach, 8th Edition, McGraw-Hill.2015
 
-- [1 EXAMPLE 11–1: The Ideal Vapor-Compression Refrigeration Cycle: Page 693](#1-the-ideal-vapor-compression-refrigeration-cycles)
-- [2 EXAMPLE 11–3: The Cascade Refrigeration Cycle,Page701-703](#2-the-cascade-refrigeration-cycle)
-- [3 EXAMPLE 11–4: Multistage Compression Refrigeration: Page704-705](#3-multistage-compression-refrigeration)
+- [1 EXAMPLE 11–1: The Ideal Vapor-Compression Refrigeration Cycle: Page 612](#1-the-ideal-vapor-compression-refrigeration-cycles)
+- [2 EXAMPLE 11–4: The Cascade Refrigeration Cycle,Page625-626](#2-the-cascade-refrigeration-cycle)
+- [3 EXAMPLE 11–5: Multistage Compression Refrigeration: Page627-628](#3-multistage-compression-refrigeration)
 - [4 Performance Analysis of VCR cycle under Variable Conditions](#4-performance-analysis-of-vcr-cycle-under-variable-conditions)
 
 ### 1 The Ideal Vapor-Compression Refrigeration Cycles
@@ -50,11 +50,14 @@ If the mass flow rate of the refrigerant is 0.05 kg/s,
 * (b) the rate of heat rejection to the environment, and 
 * (c) the COP of the refrigerator.
 
+![ivcr-11-1](./img/ivcr_11_1.jpg)
+
+
 ### 2 The Cascade Refrigeration Cycle
 
 * [./playground/demo_cascade.py](./playground/demo_cascade.py)
 
-EXAMPLE 11–3 A Two-Stage Cascade Refrigeration Cycle
+EXAMPLE 11–4 A Two-Stage Cascade Refrigeration Cycle,,Page625-626
 
 Consider a two-stage cascade refrigeration system operating between the pressure limits of 0.8 and 0.14 MPa.
 
@@ -72,14 +75,13 @@ If the mass flow rate of the refrigerant through the upper cycle is 0.05 kg/s,
 * (b) the rate of heat removal from the refrigerated space and the power input to the compressor, and 
 * (c) the coefficient of performance of this cascade refrigerator
 
-
-![cascade cycle](./img/two-stage-cascade.jpg)
+![11-4-ts](./img/two-stage-cascade-11-4-ts.jpg)
 
 ### 3 Multistage Compression Refrigeration 
 
 * [./playground/demo_two_stage.py](./playground/demo_two_stage.py)
 
-EXAMPLE 11–4 A Two-Stage Refrigeration Cycle with a Flash Chamber
+EXAMPLE 11–5 A Two-Stage Refrigeration Cycle with a Flash Chamber
 
 Consider a two-stage compression refrigeration system operating between the pressure limits of 0.8 and 0.14 MPa. The working fluid is  R134a.
 The refrigerant leaves the condenser as a saturated liquid and is throttled to a flash chamber operating at 0.32 MPa. 
@@ -98,7 +100,7 @@ Assuming the refrigerant leaves the evaporator as a saturated vapor and both com
 * (b) the amount of heat removed from the refrigerated space and the compressor work per unit mass of refrigerant flowing through the condenser, and
 * (c) the coefficient of performance.
 
-![two stage](./img/two_stage.jpg)
+![two stage](./img/two-stage-11-5-ts.jpg)
 
 
 ### 4 Performance Analysis of VCR cycle under Variable Conditions

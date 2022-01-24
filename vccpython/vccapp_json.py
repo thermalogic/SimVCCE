@@ -1,6 +1,10 @@
 
 """
 General Object-oriented Abstraction  of VC Cycle 
+
+Yunus A. Cengel, Michael A. Boles, Thermodynamics: An Engineering Approach, 8th Edition,McGraw-Hill, 2015.
+
+
 The Simulator of VC Cycle 
   * Input :the json file of the cycle model
   * Output: text file

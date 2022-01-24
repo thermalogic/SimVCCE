@@ -2,9 +2,9 @@
 """
 General Object-oriented Abstraction of VC Cycle 
 
-Yunus A. Cengel, Michael A. Boles,Thermodynamics: An Engineering Approach, 5th Edition, McGraw-Hill
+Yunus A. Cengel, Michael A. Boles,Thermodynamics: An Engineering Approach, 8th Edition, McGraw-Hill,2015
 
-EXAMPLE 11–3: The Cascade Refrigeration Cycle,Page701-703
+EXAMPLE 11–4: The Cascade Refrigeration Cycle,Page625-626
 
 The cascade Cycle
  
@@ -28,7 +28,7 @@ if __name__ == "__main__":
     curpath = os.path.abspath(os.path.dirname(__file__))
     
     # 1 the upper cycle 
-    json_filename = curpath+'\\'+'./jsonmodel/vcr_cascade_upper_11_3.json'
+    json_filename = curpath+'\\'+'./jsonmodel/vcr_cascade_upper_11_4.json'
     
     thedictcycle_upper = create_dictcycle_from_jsonfile(json_filename)
     cycle_upper = VCCycle(thedictcycle_upper)
@@ -36,7 +36,7 @@ if __name__ == "__main__":
     OutFiles(cycle_upper)
     
     # 2 cascade: lower condenser(Qout) -> upper evaporator(Qin)
-    json_filename_lower = curpath+'\\'+'./jsonmodel/vcr_cascade_lower_11_3.json'
+    json_filename_lower = curpath+'\\'+'./jsonmodel/vcr_cascade_lower_11_4.json'
     thedictcycle_lower = create_dictcycle_from_jsonfile(json_filename_lower)
     for device in thedictcycle_lower["components"]:
         if device["name"] == "Condenser":
