@@ -1,16 +1,14 @@
 {
-    "name": "The Ideal VCR Example 7.2-4",
+    "name": "The_Cascade_Lower_11_3",
     "refrigerant": "R134a",
     "components": [
         {
             "name": "Compressor",
             "devtype": "COMPRESSOR",
             "iPort": {
-                "t": -10.0,
-                "x": 1,
-                "mdot": 0.08
             },
-            "oPort": {},
+            "oPort": {
+            },
             "ef": 1.0
         },
         {
@@ -18,8 +16,8 @@
             "devtype": "CONDENSER",
             "iPort": {},
             "oPort": {
-                "p": 0.9,
-                "x": 0
+                "x": 0.0,
+                "p": 0.32
             }
         },
         {
@@ -32,7 +30,10 @@
             "name": "Evaporator",
             "devtype": "EVAPORATOR",
             "iPort": {},
-            "oPort": {}
+            "oPort": {
+                "p": 0.14,
+                "x": 1.0
+            }
         }
     ],
     "connectors": [

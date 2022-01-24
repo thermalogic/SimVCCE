@@ -2,31 +2,31 @@
 """
 General Object-oriented Abstraction  of VC Cycle 
 
-The Simulator of VC Cycle 
-  * Input :VC cycle dict model
-  * Output: text file
-Run: 
-   python vccapp.py
+The Simulator of Ideal VCR 11-1 Page693
 
- Author: Cheng Maohua cmh@seu.edu.cn
+Yunus A. Cengel, Michael A. Boles, Thermodynamics: An Engineering Approach, Seventh Edition,McGraw-Hill, 2011.
+
+  * Input : The cycle dict model: ivcr_11_1.py
+  * Output: text file
+
+Author: Cheng Maohua cmh@seu.edu.cn
 """
 from vcc.vccobj import VCCycle
 from vcc.utils import OutFiles
-from vccmodel import cycles
+from vccmodel.ivcr_11_1 import cycle
 from platform import os
 
 if __name__ == "__main__":
 
     curpath = os.path.abspath(os.path.dirname(__file__))
     ResultFilePath = curpath+'/result/'
+    ResultFileName = ResultFilePath+cycle['name'] + '.txt'
 
-    for curcycle in cycles:
-        cycle = VCCycle(curcycle.cycle)
-        cycle.simulator()
-        # output to console
-        OutFiles(cycle)
-        # output to text file
-        ResultFileName = ResultFilePath+curcycle.cycle['name'] + '.txt'
-        OutFiles(cycle, ResultFileName)
+    thecycle = VCCycle(cycle)
+    thecycle.simulator()
+    # output to console
+    OutFiles(thecycle)
+    # output to text file
+    OutFiles(thecycle, ResultFileName)
 
       

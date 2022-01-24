@@ -1,16 +1,16 @@
 {
-    "name": "The_TWO_STAGE_11_58",
+    "name": "The_TWO_STAGE_11_4",
     "refrigerant": "R134a",
     "components": [
         {
             "name": "Compressor_HP",
             "devtype": "COMPRESSOR",
             "iPort": {
-                "p": 0.6,
-                "mdot": 0.25
+                "p": 0.32,
+                "mdot": 0.05
             },
             "oPort": {
-                "p": 1.4
+                "p": 0.8
             },
             "ef": 1.0
         },
@@ -18,10 +18,10 @@
             "name": "Compressor_LP",
             "devtype": "COMPRESSOR",
             "iPort": {
-                "p": 0.10
+                "p": 0.14
             },
             "oPort": {
-                "p": 0.6
+                "p": 0.32
             },
                     "ef": 1.0
         },
@@ -29,18 +29,18 @@
             "name": "ExpansionValve1",
             "devtype": "EXPANSIONVALVE",
             "iPort": {
-                "p": 1.4,
+                "p": 0.8,
                 "X": 0.0
             },
             "oPort": {
-                "p": 0.6
+                "p": 0.32
             }
         },
         {
             "name": "ExpansionValve2",
             "devtype": "EXPANSIONVALVE",
             "iPort": {
-                "p": 0.6
+                "p": 0.32
             },
             "oPort": {}
         },
@@ -48,9 +48,10 @@
             "name": "Condenser",
             "devtype": "CONDENSER",
             "iPort": {
+                "p": 0.8
             },
             "oPort": {
-                "p": 1.4,
+                "p": 0.8,
                 "x": 0.0
             }
         },
@@ -58,12 +59,14 @@
             "name": "flashchamber",
             "devtype": "FLASH_CHAMBER",
             "iPort": {
-                "p": 0.6
+                "p": 0.32
             },
             "oPortL": {
+                "p": 0.32,
                 "x": 0.0
             },
             "oPortV": {
+                "p": 0.32,
                 "x": 1.0
             }
         },
@@ -72,20 +75,22 @@
             "devtype": "EVAPORATOR",
             "iPort": {},
             "oPort": {
-                "p": 0.10,
+                "p": 0.14,
                 "x": 1.0
             }
         },
         {
-            "name": "mixingchamber",
+            "name": "Mixing_Chamber",
             "devtype": "MIXING_CHAMBER",
             "iPort0": {
+                "p": 0.32,
                 "x": 1
             },
             "iPort1": {
+                "p": 0.32
             },
             "oPort": {
-                "p": 0.6
+                "p": 0.32
             }
         }
     ],
@@ -126,7 +131,7 @@
                 "port": "oPortV"
             },
             {
-                "devname": "mixingchamber",
+                "devname": "Mixing_Chamber",
                 "port": "iPort0"
             }
         ],
@@ -166,13 +171,13 @@
                 "port": "oPort"
             },
             {
-                "devname": "mixingchamber",
+                "devname": "Mixing_Chamber",
                 "port": "iPort1"
             }
         ],
         [
             {
-                "devname": "mixingchamber",
+                "devname": "Mixing_Chamber",
                 "port": "oPort"
             },
             {

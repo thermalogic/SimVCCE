@@ -21,7 +21,6 @@ if __name__ == "__main__":
     ResultFilePath = curpath+'/result/'
 
     json_filenames_str = curpath+'\\'+'./jsonmodel/*.json'
-    #json_filenames_str=curpath+'\\'+'./jsonmodel/ivcr724.json'
     json_filenames = glob.glob(json_filenames_str)
     
     for i in range(len(json_filenames)):
