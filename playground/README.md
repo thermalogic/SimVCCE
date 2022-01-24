@@ -1,12 +1,9 @@
 # Playground 
-<!-- TOC -->
 
-- [Playground](#playground)
-  - [1 Cascade Refrigeration Cycle](#1-cascade-refrigeration-cycle)
-  - [2 Multistage Compression Refrigeration](#2-multistage-compression-refrigeration)
-  - [3 Performance Analysis of VCR cycle under Variable Conditions](#3-performance-analysis-of-vcr-cycle-under-variable-conditions)
+- [1 Cascade Refrigeration Cycle](#1-cascade-refrigeration-cycle)
+- [2 Multistage Compression Refrigeration](#2-multistage-compression-refrigeration)
+- [3 Performance Analysis of VCR cycle under Variable Conditions](#3-performance-analysis-of-vcr-cycle-under-variable-conditions)
 
-<!-- /TOC -->
 ## 1 Cascade Refrigeration Cycle
 
 >Majid Bahrami. ENSC461(S11)：Energy Conversion,Simon Fraser University,Canada

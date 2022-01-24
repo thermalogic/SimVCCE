@@ -1,19 +1,11 @@
 # PlantUML Class Diagrams
 
-* [PlantUML: The Class Diagram ](https://plantuml.com/zh/class-diagram)
-<!-- TOC -->
+- [1 Class Compressor](#1-class-compressor)
+- [2 The Composition Relation](#2-the-composition-relation)
+- [3 The Aggregation Relation](#3-the-aggregation-relation)
+- [4 Package](#4-package)
 
-- [PlantUML Class Diagrams](#plantuml-class-diagrams)
-  - [The Class Diagram](#the-class-diagram)
-    - [1 Class Compressor](#1-class-compressor)
-    - [2 The Composition Relation](#2-the-composition-relation)
-    - [3 The Aggregation Relation](#3-the-aggregation-relation)
-    - [4 Package](#4-package)
-
-<!-- /TOC -->
-## The Class Diagram
-
-### 1 Class Compressor
+## 1 Class Compressor
 
 When you define methods or fields, you can use **characters** to define the **visibility** of the corresponding item:
 
@@ -71,7 +63,7 @@ end note
 
 ![compressor](./uml/img/compressor.svg)
 
-### 2 The Composition Relation 
+## 2 The Composition Relation 
 
 The Composition Relation is  defined using the following symbol:
 
@@ -94,7 +86,7 @@ Compressor "1" *-- "2" Port
 
 ![compressor-port](./uml/img/compressor-port.svg)
 
-### 3 The Aggregation Relation 
+## 3 The Aggregation Relation 
 
 The Aggregation Relation is  defined using the following symbol:
 
@@ -115,7 +107,7 @@ vcc.VCRCycle "1" o-- "1" components.ExpansionValve
 ![vcc-components-package](./uml/img/vcc-components-package.svg)
 
 
-### 4 Package
+## 4 Package
 ```puml
 @startuml
 package components {

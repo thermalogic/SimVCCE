@@ -2,37 +2,33 @@
 
 **Reference:** [PlantUML: Activity Diagram(beta)](https://plantuml.com/zh/activity-diagram-beta)
 
-<!-- TOC -->
+- [The Flowchart of the performance analysis of VC cycle](#the-flowchart-of-the-performance-analysis-of-vc-cycle)
 
-- [Flowchart using PlantUML](#flowchart-using-plantuml)
-  - [The flowchart of the performance analysis of VC cycle](#the-flowchart-of-the-performance-analysis-of-vc-cycle)
-  - [Simple action](#simple-action)
-  - [start/stop/end](#startstopend)
-  - [Conditional](#conditional)
-  - [Several tests](#several-tests)
+- [Simple action](#simple-action)
+- [start/stop/end](#startstopend)
+- [Conditional](#conditional)
+- [Several tests](#several-tests)
     - [horizontal mode](#horizontal-mode)
     - [vertical mode](#vertical-mode)
-  - [Switch, case endswitch](#switch-case-endswitch)
-  - [Conditional with stop on an action - kill, detach](#conditional-with-stop-on-an-action---kill-detach)
-  - [Repeat loop](#repeat-loop)
-    - [1 basic Repeat loop](#1-basic-repeat-loop)
-    - [2 using the `backward` keyword](#2-using-the-backward-keyword)
-    - [3 Break on a repeat loop `break`](#3-break-on-a-repeat-loop-break)
-  - [while loop](#while-loop)
-    - [1  basic while loop](#1--basic-while-loop)
-    - [2 while loop with lables](#2-while-loop-with-lables)
-    - [3 an `infinite` while loop](#3-an-infinite-while-loop)
-  - [Notes](#notes)
-  - [Colors](#colors)
-  - [Lines without arrows](#lines-without-arrows)
-  - [Arrows](#arrows)
-  - [Group, Partition, Package, Rectangle or Card](#group-partition-package-rectangle-or-card)
-  - [SDL(Specification and Description Language)](#sdlspecification-and-description-language)
-  - [Complete example](#complete-example)
+- [Switch, case endswitch](#switch-case-endswitch)
+ [Conditional with stop on an action - kill, detach](#conditional-with-stop-on-an-action---kill-detach)
+- [Repeat loop](#repeat-loop)
+  - [1 basic Repeat loop](#1-basic-repeat-loop)
+  - [2 using the `backward` keyword](#2-using-the-backward-keyword)
+  - [3 Break on a repeat loop `break`](#3-break-on-a-repeat-loop-break)
+- [while loop](#while-loop)
+  - [1  basic while loop](#1--basic-while-loop)
+  - [2 while loop with lables](#2-while-loop-with-lables)
+  - [3 an `infinite` while loop](#3-an-infinite-while-loop)
+- [Notes](#notes)
+- [Colors](#colors)
+- [Lines without arrows](#lines-without-arrows)
+- [Arrows](#arrows)
+- [Group, Partition, Package, Rectangle or Card](#group-partition-package-rectangle-or-card)
+- [SDL(Specification and Description Language)](#sdlspecification-and-description-language)
+- [Complete example](#complete-example)
 
-<!-- /TOC -->
-
-## The flowchart of the performance analysis of VC cycle
+## The Flowchart of the performance analysis of VC cycle
 
 ```puml
 : Instancing the cycle using the dict of cycle 
