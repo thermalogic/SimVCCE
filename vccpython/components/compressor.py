@@ -30,6 +30,7 @@ class Compressor:
                 self.ef = None
         else:
             self.ef = 1.0
+        # add your code here for the input Wc
 
         # map the port's name(str) to the obj
         self.portdict = {
@@ -44,15 +45,18 @@ class Compressor:
         self.isos = self.iPort[0].s
         if self.ef == 1.0:
             self.oPort[0].s = self.iPort[0].s
-      
+         # ef
+        if self.ef is None or self.ef != 1.0:
+            pass  # add your code here to get the oPort state
+
+
     def balance(self):
         """  mass and energy balance    """
-       
-        # ef
-        if self.ef is None or self.ef != 1.0:
-            pass  # add your code here
-
+            
         # mass balance
+        # add your code here to get the mass flow rate
+
+
         if self.iPort[0].mdot is None and self.oPort[0].mdot is None:
             raise ValueError("mdot not none")
         if self.iPort[0].mdot is not None:
@@ -61,6 +65,8 @@ class Compressor:
             self.iPort[0].mdot = self.oPort[0].mdot
 
         # energy balance
+        # add your code here when Wc is known
+
         self.Wc = self.iPort[0].mdot * (self.oPort[0].h - self.iPort[0].h)
 
     def __str__(self):
