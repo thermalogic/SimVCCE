@@ -21,13 +21,10 @@ python -m pip install phyprops
 ```
 ## The Vapor-Compression Cycle Examples
 
-- [SimVCCE](#simvcce)
-    - [Prerequisites：CoolProp, phyprops](#prerequisitescoolprop-phyprops)
-  - [The Vapor-Compression Cycle Examples](#the-vapor-compression-cycle-examples)
-    - [1 The Ideal Vapor-Compression Refrigeration Cycles](#1-the-ideal-vapor-compression-refrigeration-cycles)
-    - [2 The Cascade Refrigeration Cycle](#2-the-cascade-refrigeration-cycle)
-    - [3 Multistage Compression Refrigeration](#3-multistage-compression-refrigeration)
-    - [4 Performance Analysis of VCR cycle under Variable Conditions](#4-performance-analysis-of-vcr-cycle-under-variable-conditions)
+- [1 The Ideal Vapor-Compression Refrigeration Cycles](#1-the-ideal-vapor-compression-refrigeration-cycles)
+- [2 The Cascade Refrigeration Cycle](#2-the-cascade-refrigeration-cycle)
+- [3 Multistage Compression Refrigeration](#3-multistage-compression-refrigeration)
+- [4 Performance Analysis of VCR cycle under Variable Conditions](#4-performance-analysis-of-vcr-cycle-under-variable-conditions)
 
 ### 1 The Ideal Vapor-Compression Refrigeration Cycles
 
