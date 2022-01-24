@@ -1,25 +1,13 @@
 digraph "classes" {
 rankdir=BT
 charset="utf-8"
-"VCCycle" [
+"vcc.VCCycle" [
        color="black", fontcolor="black", 
       label="{VCCycle|
-       + name : str\l 
-       + refrigerant : str
-       + comps : dict cycle\l 
-       + conns : Connector\l
-       + Qin : float\l 
-       + Qout : float\l 
-       + Wc : float\l
-       + cop : float\l
-       + cop_hp : float\l|
-       + VCCycle(dictcycle:dict)\l
-       - component_simulator()\l 
-       + simulator()\l 
-       - __setformatstr(formatstr : str, result : str):str\l
-       + __str__():str\l}", shape="record", style="filled",fillcolor="gray55"];
+          \l|
+       \l}", shape="record", style="solid"];
 
-"connector.Connector" [color="black", fontcolor="black",
+"vcc.vcc.vcc.connector.Connector" [color="black", fontcolor="black",
                        label="{Connector| 
                         \l|
                         \l}",
@@ -47,24 +35,24 @@ label="{ExpansionValve|
                    \l|
                   \l}", shape="record", style="solid"];
 
-"connector.Connector"->"VCCycle"[
+"vcc.vcc.vcc.connector.Connector"->"vcc.VCCycle"[
             arrowhead="diamond", arrowtail="none",
             fontcolor="blue",
             label="1", style="solid"]
 
-"components.compressor.Compressor"->"VCCycle"[
+"components.compressor.Compressor"->"vcc.VCCycle"[
             arrowhead="odiamond", arrowtail="none",
             fontcolor="blue",
             label="1..*", style="solid"]
-"components.condenser.Condenser"->"VCCycle"[
+"components.condenser.Condenser"->"vcc.VCCycle"[
             arrowhead="odiamond", arrowtail="none",
             fontcolor="blue",
             label="1..*", style="solid"]
-"components.evaporator.Evaporator"->"VCCycle"[
+"components.evaporator.Evaporator"->"vcc.VCCycle"[
             arrowhead="odiamond", arrowtail="none",
             fontcolor="blue",
             label="1..*", style="solid"]
-"components.expansionvalve.ExpansionValve"->"VCCycle"[
+"components.expansionvalve.ExpansionValve"->"vcc.VCCycle"[
             arrowhead="odiamond", arrowtail="none",
             fontcolor="blue",
             label="1..*", style="solid"]
@@ -86,7 +74,7 @@ label="{ExpansionValve|
             arrowhead="diamond", arrowtail="none",
             fontcolor="blue",
             label="2", style="solid"]
-"components.port.Port"->"connector.Connector"[
+"components.port.Port"->"vcc.vcc.vcc.connector.Connector"[
             arrowhead="diamond", arrowtail="none",
             fontcolor="blue",
             label="2..*", style="solid"]

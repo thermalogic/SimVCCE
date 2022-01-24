@@ -2,11 +2,11 @@
 """
 General Object-oriented Abstraction of VC Cycle 
   
-  
  The cascade Cycle
  
  lower condenser(Qout) -> upper evaporator(Qin)
 
+ Majid Bahrami. ENSC461(S11)：Energy Conversion,Simon Fraser University,Canada
  
  Author: Cheng Maohua cmh@seu.edu.cn
 """

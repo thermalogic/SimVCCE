@@ -114,13 +114,17 @@ class Port:
     def state(self):
         """ step3 state: after obtain the new parameter pairs """
         if self.stateok == False:
-            if self.p is not None and self.s is not None:
+            if self.p is not None and self.t is not None:
+                self.pt()
+            elif self.p is not None and self.x is not None:
+                self.px()
+            elif self.t is not None and self.x is not None:
+                self.tx()
+            elif self.p is not None and self.s is not None:
                 self.ps()
             elif self.p is not None and self.h is not None:
                 self.ph()
-            elif self.p is not None and self.t is not None:
-                self.pt()
-
+        
     def __str__(self):
         try:
            result = '{:^6}'.format(self.index)

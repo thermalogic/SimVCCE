@@ -38,6 +38,9 @@ class Evaporator:
         """ mass and energy balance  """
 
         # mass balance
+        if self.iPort[0].mdot is None and self.oPort[0].mdot is None:
+            raise ValueError("mdot not none")
+
         if self.iPort[0].mdot is not None:
             self.oPort[0].mdot = self.iPort[0].mdot
         elif self.oPort[0].mdot is not None:

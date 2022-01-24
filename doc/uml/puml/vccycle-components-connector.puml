@@ -9,8 +9,7 @@ class VCCycle {
        + cop : float
        + cop_hp : float
        + {static} VCCycle(dictcycle:dict)
-       - port_state() 
-       - component_balance() 
+       - component_simulator() 
        + simulator() 
        - __setformatstr(formatstr : str, result : str):str
        + __str__():str

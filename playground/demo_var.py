@@ -33,10 +33,10 @@ import csv
 import matplotlib.pyplot as plt
 
 
-def csv_vars(Coolants, x, y, FileName):
+def csv_vars(refrigerants, x, y, FileName):
     with open(FileName, 'w', newline='') as csvfile:
         fieldnames = ['Condenser_Pressure']
-        for ant in Coolants:
+        for ant in refrigerants:
             fieldnames.append("COP("+ant+")")
 
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -46,8 +46,9 @@ def csv_vars(Coolants, x, y, FileName):
         for i in range(len(x)):
             rowdict = {}
             rowdict['Condenser_Pressure'] = "{:.2f}".format(x[i])
-            for j in range(len(Coolants)):
-                rowdict["COP("+Coolants[j]+")"] = "{:.2f}".format(y[j][i])
+            for j in range(len(refrigerants)):
+                rowdict["COP("+refrigerants[j] +
+                        ")"] = "{:.2f}".format(y[j][i])
             writer.writerow(rowdict)
 
 
@@ -70,21 +71,21 @@ if __name__ == "__main__":
 
     # vars
     refrigerants = ["R12", "R134a", "R22"]
-    vars = {"name": "Condenser",
+    cdpressures = {"name": "Condenser",
             "oPort": {"p": [0.4, 0.5, 0.6, 0.7, 0.8, 1.0, 1.4]}
             }
 
     results = []
     for cant in refrigerants:
-        # var coolant
+        # var refrigerants
         newdictcycle = thedictcycle.copy()
         newdictcycle["refrigerant"] = cant
         i = 0
         cur_result = []
-        for var in vars["oPort"]["p"]:
+        for var in cdpressures["oPort"]["p"]:
             # var condenser pressures
             for device in newdictcycle["components"]:
-                if device["name"] == vars["name"]:
+                if device["name"] == cdpressures["name"]:
                     device["oPort"]["p"] = var
                     break
 
@@ -104,6 +105,6 @@ if __name__ == "__main__":
 
     # save to csv
     CSVFileName = ResultFilePath + thedictcycle['name']+".csv"
-    csv_vars(refrigerants, vars["oPort"]["p"], results, CSVFileName)
+    csv_vars(refrigerants, cdpressures["oPort"]["p"], results, CSVFileName)
     # plot
-    plot_vars(refrigerants, vars["oPort"]["p"], results)
+    plot_vars(refrigerants, cdpressures["oPort"]["p"], results)

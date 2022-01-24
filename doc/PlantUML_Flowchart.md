@@ -5,7 +5,7 @@
 <!-- TOC -->
 
 - [Flowchart using PlantUML](#flowchart-using-plantuml)
-  - [The flowchart of the performance analysis of VCC cycle](#the-flowchart-of-the-performance-analysis-of-vcc-cycle)
+  - [The flowchart of the performance analysis of VC cycle](#the-flowchart-of-the-performance-analysis-of-vc-cycle)
   - [Simple action](#simple-action)
   - [start/stop/end](#startstopend)
   - [Conditional](#conditional)
@@ -32,7 +32,7 @@
 
 <!-- /TOC -->
 
-## The flowchart of the performance analysis of VCC cycle
+## The flowchart of the performance analysis of VC cycle
 
 ```puml
 : Instancing the cycle using the dict of cycle 
@@ -42,25 +42,26 @@ note right
     get the port state: pt/px/tx 
       when **create** the port of device 
 end note
+repeat
 :The port state of devices
-    1 state by **thermal process in device**
+    1 state by **thermal process in device** 
     2 state by **combined data of port**;
 note right
     1 comps[].state()
     2 node[].state()
 end note
-:The mass and energy balance of devices on the mdot;
+:The mass and energy balance;
 note right
-    Qin,Qout, Wc, etc
+    comps[].balance()
+    Qin, Qout, Wc
 end note
-
+repeat while (more devices)
 :The performance of cycle  on the mdot;
 note right
     cop,cop_hp
 end note
-
 : Print results on **console**  
-  Save  results to **text file**; 
+  Save  results to **text file**;
 ```
 
 ![vcr-flowchart](./uml/img/vcc-flowchart.svg)

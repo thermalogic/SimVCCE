@@ -44,20 +44,8 @@ class VCCycle:
         for tupconnector in listconnectors:
             self.conns.add_node(tupconnector, self.comps)
 
-    def __port_state(self):
-        """ calculate the state of ports """
-        # 1 the port state of devices: step2 state
-        for key in self.comps:
-            self.comps[key].state()
-
-        # 2 the node state of connectors: step3 state
-        for item in self.conns.nodes:
-            if item[0].stateok == False:
-                item[0].state()
-
-    def __component_balance(self):
-        # for curdev in self.comps:
-        #     self.comps[curdev].balance()
+    def __component_simulator(self):
+        state_nodes = self.conns.nodes.copy()
 
         keys = list(self.comps.keys())
         deviceok = False
@@ -66,6 +54,17 @@ class VCCycle:
         while (deviceok == False and i <= CountsDev):
             for curdev in keys:
                 try:
+                    # step 2: the port state: thermal process
+                    self.comps[curdev].state()
+
+                    # step 3  the port state: new port's parameter pairs
+                    for port in state_nodes:
+                        if port[0].stateok == False:
+                            port[0].state()
+                            if port[0].state() == True:
+                                state_nodes.remove(port)
+                    
+                    # step 4: the port state ：the energy and mass balance
                     self.comps[curdev].balance()
                     keys.remove(curdev)
                 except:
@@ -75,13 +74,11 @@ class VCCycle:
             if (len(keys) == 0):
                 deviceok = True
 
-        # for debug: check the failed devices
-        if (len(keys) > 0):
-            print("--- the failed devices:", keys)
+        if len(keys) > 0:
+            print(keys)  # for debug
 
     def simulator(self):
-        self.__port_state()
-        self.__component_balance()
+        self.__component_simulator()
 
         self.Wc = 0.0
         self.Qin = 0.0

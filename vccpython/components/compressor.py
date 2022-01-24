@@ -29,7 +29,7 @@ class Compressor:
             except:
                 self.ef = None
         else:
-            self.ef = None
+            self.ef = 1.0
 
         # map the port's name(str) to the obj
         self.portdict = {
@@ -44,14 +44,17 @@ class Compressor:
         self.isos = self.iPort[0].s
         if self.ef == 1.0:
             self.oPort[0].s = self.iPort[0].s
-
+      
     def balance(self):
         """  mass and energy balance    """
+       
         # ef
         if self.ef is None or self.ef != 1.0:
             pass  # add your code here
 
         # mass balance
+        if self.iPort[0].mdot is None and self.oPort[0].mdot is None:
+            raise ValueError("mdot not none")
         if self.iPort[0].mdot is not None:
             self.oPort[0].mdot = self.iPort[0].mdot
         elif self.oPort[0].mdot is not None:

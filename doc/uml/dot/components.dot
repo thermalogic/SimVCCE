@@ -5,4 +5,25 @@ charset="utf-8"
 "components.condenser.Condenser" [color="black", fontcolor="black", label="{Condenser| + devtype: str\l + energy: str\l + name: str\l + iPort : Port[1]\l + oPort : Port[1]\l + portdict: dict port\l + Qout: float\l| + Condenser(dictDev)\l + balance()\l + state()\l + __str()__:str\l}", shape="record", style="solid"];
 "components.evaporator.Evaporator" [color="black", fontcolor="black", label="{Evaporator| + devtype : str\l + energy : str\l + name: str\l + iPort : Port[1]\l + oPort : Port[1]\l + portdict : dict port\l + Qin: float\l| + Evaporator(dictDev)\l + balance()\l + state()\l + __str()__:str\l}", shape="record", style="solid"];
 "components.expansionvalve.ExpansionValve" [color="black", fontcolor="black", label="{ExpansionValve| + devtype : str\l + energy : str\l + name: str\l + iPort : Port[1]\l + oPort : Port[1]\l + portdict : dict port\l| + ExpansionValue(dictDev)\l + balance()\l + state()\l + __str()__:str\l}", shape="record", style="solid"];
+"components.port.Port" [color="black", fontcolor="black", 
+               label="{Port|
+                        \l|
+                        \l}", 
+                       shape="record", style="solid"];
+"components.port.Port"->"components.compressor.Compressor"[
+            arrowhead="diamond", arrowtail="none",
+            fontcolor="blue",
+            label="2", style="solid"];
+"components.port.Port"->"components.condenser.Condenser"[
+            arrowhead="diamond", arrowtail="none",
+            fontcolor="blue",
+            label="2", style="solid"];
+"components.port.Port"->"components.evaporator.Evaporator"[
+            arrowhead="diamond", arrowtail="none",
+            fontcolor="blue",
+            label="2", style="solid"];
+"components.port.Port"->"components.expansionvalve.ExpansionValve"[
+            arrowhead="diamond", arrowtail="none",
+            fontcolor="2",
+            label="2", style="solid"];
 }
