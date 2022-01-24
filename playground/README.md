@@ -14,9 +14,7 @@ Th Cascade cycle is used where a very wide range of temperature between `TL` and
 
 As shown in the Fig, the `condenser` for the `low` temperature refrigerator is used as the `evaporator` for the `high` temperature refrigerator
 
-![cascade cycle](./img/2stage_cascade.jpg)
-
-![ts cascade cycle](./img/2stage_cascade_ts.jpg)
+![cascade cycle](./img/two-stage-cascade.jpg)
 
 Consider a two-stage cascade refrigeration system operating between pressure limits of `0.8` and `0.14` MPa.
 
@@ -44,7 +42,6 @@ kg/s,
 Consider a two-stage compression refrigeration system 
 
 ![two stage](./img/two_stage.jpg)
-
 
 The system is operating between  pressure limits of 1.4 and 0.1 MPa.
 
