@@ -26,7 +26,7 @@ sys.path.append(curpath+'/../vccpython/')
 
 from vcc.vccobj import VCCycle
 from vcc.utils import OutFiles, create_dictcycle_from_jsonfile
-from components.port import Port
+from ncomponents.port import Port
 
 
 import csv
