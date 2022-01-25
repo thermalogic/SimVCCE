@@ -8,9 +8,10 @@ General Object-oriented Abstraction of VC Cycle
 """
 from phyprops.prop_coolprop import *
 
+
 class Port:
     cycle_refrigerant = 'R134a'
-    
+
     title = ('{:^6} \t{:<8} \t{:>8} \t{:>10} \t{:>10} \t{:^10} \t{:>10}'.format
              ("Index", "P(MPa)", "T(°C)", "H(kJ/kg)", "S(kJ/kg.K)",  "Quality", "MDOT(kg/s)"))
 
@@ -18,14 +19,16 @@ class Port:
         """ create the node object"""
         self.index = None
         if ("refrigerant" in dictnode):
-           self.refrigerant = dictnode["refrigerant"]
+            self.refrigerant = dictnode["refrigerant"]
         else:
-           self.refrigerant = Port.cycle_refrigerant
+            self.refrigerant = Port.cycle_refrigerant
         self.p = None
         self.t = None
         self.x = None
+        self.h = None
+        self.s = None
         self.mdot = None
-        
+
         if('p' in dictnode):
             try:
                 self.p = float(dictnode['p'])
@@ -43,24 +46,17 @@ class Port:
                 self.x = float(dictnode['x'])
             except:
                 pass
-
+       
         if ('mdot' in dictnode):
             try:
                 self.mdot = float(dictnode['mdot'])
             except:
                 pass
 
-        self.h = None
-        self.s = None
-        self.stateok = False
         # step1 state : input values
-        if self.t is not None and self.x is not None:
-            self.tx()
-        elif self.p is not None and self.x is not None:
-            self.px()
-        elif self.p is not None and self.t is not None:
-            self.pt()
-  
+        self.stateok = False
+        self.state()
+
     def tx(self):
         try:
             self.p = tx_p(self.t, self.x, self.refrigerant)
@@ -124,12 +120,12 @@ class Port:
                 self.ps()
             elif self.p is not None and self.h is not None:
                 self.ph()
-        
+
     def __str__(self):
         try:
-           result = '{:^6}'.format(self.index)
+            result = '{:^6}'.format(self.index)
         except:
-            result ="-"
+            result = "-"
         OutStrs = [{"fstr": '\t{:>7.4}', 'prop': self.p, "sstr": '\t{:>7}'},
                    {"fstr": '\t{:>8.2f}', 'prop': self.t, "sstr": '\t{:>8}'},
                    {"fstr": '\t{:>10.2f}', 'prop': self.h, "sstr": '\t{:>10}'},

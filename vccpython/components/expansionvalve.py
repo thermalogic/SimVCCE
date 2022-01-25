@@ -1,8 +1,7 @@
 """
 General Object-oriented Abstraction of VC Cycle 
   ExpansionValve:
-     Isenthalpic expansion 
-
+ 
  Author: Cheng Maohua cmh@seu.edu.cn   
 """
 from .port import *
@@ -25,10 +24,10 @@ class ExpansionValve:
         }
 
     def state(self):
-        """ Isenthalpic expansion """
-        if self.iPort[0].h is  not None:
+        """ ideal Isenthalpic expansion """
+        if self.iPort[0].h is not None and self.oPort[0].h is None:
            self.oPort[0].h = self.iPort[0].h
-        elif self.oPort[0].h is not None:
+        elif self.oPort[0].h is not None and self.iPort[0].h is None:
             self.iPort[0].h = self.oPort[0].h
       
     def balance(self):

@@ -1,7 +1,7 @@
 
 """
 General Object-oriented Abstraction of VC Cycle 
-   Condenser: Isobaric heat rejection
+   Condenser: heat rejection
  
  Author: Cheng Maohua cmh@seu.edu.cn
 """
@@ -31,7 +31,7 @@ class Condenser:
         }
 
     def state(self):
-        """ ideal vcr: Isobaric """
+        """ ideal  Isobaric """
         if self.oPort[0].p is not None and self.iPort[0].p is None:
             self.iPort[0].p = self.oPort[0].p
         elif self.iPort[0].p is not None and self.oPort[0].p is None:

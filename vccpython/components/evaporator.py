@@ -3,7 +3,7 @@
 General Object-oriented Abstraction of VC Cycle 
 
 Evaporator:
-    Isobaric heat addition
+    heat addition
 
 Author: Cheng Maohua cmh@seu.edu.cn    
 """
@@ -28,10 +28,10 @@ class Evaporator:
         }
 
     def state(self):
-        """ Isobaric """
-        if self.oPort[0].p is not None:
+        """ ideal Isobaric """
+        if self.oPort[0].p is not None and self.iPort[0].p is None:
             self.iPort[0].p = self.oPort[0].p
-        elif self.iPort[0].p is not None:
+        elif self.iPort[0].p is not None and self.oPort[0].p is None:
             self.oPort[0].p = self.iPort[0].p
 
     def balance(self):
