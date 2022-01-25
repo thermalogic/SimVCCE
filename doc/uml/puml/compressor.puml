@@ -7,7 +7,6 @@ class Compressor {
  + portdict: dict
  + ef: float
  + Wc: float
- + isos: float
  + {static} Compressor(dictDev:dict)
  + balance()
  + state()

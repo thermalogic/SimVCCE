@@ -1,9 +1,10 @@
 # PlantUML Class Diagrams
 
-- [1 Class Compressor](#1-class-compressor)
-- [2 The Composition Relation](#2-the-composition-relation)
-- [3 The Aggregation Relation](#3-the-aggregation-relation)
-- [4 Package](#4-package)
+- [PlantUML Class Diagrams](#plantuml-class-diagrams)
+  - [1 Class Compressor](#1-class-compressor)
+  - [2 The Composition Relation](#2-the-composition-relation)
+  - [3 The Aggregation Relation](#3-the-aggregation-relation)
+  - [4 Package](#4-package)
 
 ## 1 Class Compressor
 
@@ -26,7 +27,6 @@ class Compressor {
  + portdict: dict
  + ef: float
  + Wc: float
- + isos: float
  + {static} Compressor(dictDev:dict)
  + balance()
  + state()

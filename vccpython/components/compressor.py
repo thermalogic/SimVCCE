@@ -42,7 +42,6 @@ class Compressor:
         """
             if ef=1.0, Isentropic compression 
         """
-        self.isos = self.iPort[0].s
         if self.ef == 1.0:
             self.oPort[0].s = self.iPort[0].s
          # ef
