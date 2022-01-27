@@ -7,7 +7,7 @@
             "devtype": "COMPRESSOR",
             "iPort": {
                 "p": 0.32,
-                "mdot": 0.05
+                "mdot": 1.0
             },
             "oPort": {
                 "p": 0.8

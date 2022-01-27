@@ -7,8 +7,8 @@ class FlashChamber
                    │           │→  oPortV
                    │────────── │
                    └─────┬─────┘
-                         ↓      oPortL 
-json object example:
+                         ↓  oPortL 
+json example:
       {
             "name": "flashchamber",
             "devtype": "FLASH_CHAMBER",
@@ -18,7 +18,7 @@ json object example:
             "oPortL": {
                 "x": 0.0
             },
-            "oPortV": {
+            "oPortV": {  "x": 1.0
             }
         },
      

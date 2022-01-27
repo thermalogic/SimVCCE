@@ -3,17 +3,17 @@ MixingChamber
                          ↑ oPort 
                    ┌─────┴─────┐
                    │           │
-                 → │           │  oPortV
+                 → │           │ 
           iPort0   │           │
                    └─────┬─────┘
-                         ↑ iPort 
+                         ↑ iPort1 
  
- json object example:
+ json example:
   {
             "name": "mixingchamber",
             "devtype": "MIXING_CHAMBER",
             "iPort0": {
-                "x": 1
+                "x": 1.0
             },
             "iPort1": {
             },
@@ -56,13 +56,12 @@ class MixingChamber:
         elif self.oPort[0].p is not None:
             self.iPort0[0].p = self.oPort1[0].p
             self.iPort1[0].p = self.oPort1[0].p
-           
+
     def balance(self):
         self.oPort[0].mdot = self.iPort0[0].mdot+self.iPort1[0].mdot
         self.oPort[0].h = (self.iPort0[0].mdot*self.iPort0[0].h +
                            self.iPort1[0].mdot*self.iPort1[0].h)/self.oPort[0].mdot
-    
-   
+
     def __str__(self):
         result = '\n' + self.name
         result += '\n' + " PORT " + Port.title
