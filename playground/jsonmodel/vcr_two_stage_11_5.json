@@ -30,7 +30,7 @@
             "devtype": "EXPANSIONVALVE",
             "iPort": {
                 "p": 0.8,
-                "X": 0.0
+                "x": 0.0
             },
             "oPort": {
                 "p": 0.32

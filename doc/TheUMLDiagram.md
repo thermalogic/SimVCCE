@@ -1,9 +1,10 @@
 # The UML Class Diagrams
 
-- [The Port and Connector class](#the-port-and-connector-class)
-- [The Component class](#the-component-class)
-- [The VCCycle Class](#the-vccycle-class)
-- [The Flowchart of the cycle analysis](#the-flowchart-of-the-cycle-analysis)
+- [The UML Class Diagrams](#the-uml-class-diagrams)
+  - [The Port and Connector class](#the-port-and-connector-class)
+  - [The Component class](#the-component-class)
+  - [The VCCycle Class](#the-vccycle-class)
+  - [The Flowchart of the cycle analysis](#the-flowchart-of-the-cycle-analysis)
 
 <!-- /TOC -->
 ## The Port and Connector class  
@@ -12,9 +13,9 @@
 
 ## The Component class
 
-![device-port](./uml/img/device-port.svg)
+![component-port](./uml/img/components_port.jpg)
 
-![components-device-port](./uml/img/components-device-port.svg)
+![components and Device_SISO](./uml/img/components_device_siso_inheritance.jpg)
 
 ## The VCCycle Class
 

@@ -3,7 +3,7 @@
 ** <vccpython>
 *** vccapp.py  **main app**\nvccapp_json.py  **main app using json**
 *** <components> **port and devices classes**
-**** port.py\ncompressor.py\n...       
+**** port.py\ndevice_siso.py\ncompressor.py\n...       
 *** <vcc> **the cycle analysis class and methods**
 ****  connector.py **the class Connector**\nvccobj.py **the class VCCycle**\nutils.py **utils methods**
 *** <vccmodel> **the dict of the cycle data**

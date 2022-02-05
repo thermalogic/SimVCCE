@@ -11,133 +11,63 @@ from phyprops.prop_coolprop import *
 
 class Port:
     cycle_refrigerant = 'R134a'
+    w = 12
+    title = f'{"Index":^6s} {"P(MPa)":^{w}s} {"T(°C)":^{w}s} {"H(kJ/kg)":^{w}s} {"S(kJ/kg.K)":^{w}s} {"Quality":^{w}s} {"MDOT(kg/s)":^{w}s}'
 
-    title = ('{:^6} \t{:<8} \t{:>8} \t{:>10} \t{:>10} \t{:^10} \t{:>10}'.format
-             ("Index", "P(MPa)", "T(°C)", "H(kJ/kg)", "S(kJ/kg.K)",  "Quality", "MDOT(kg/s)"))
+    pairs = {('p', 't'): {'h': pt_h, 's': pt_s},
+             ('t', 'x'): {'p': tx_p, 'h': tx_h, 's': tx_s},
+             ('p', 'x'): {'t': px_t, 'h': px_h, 's': px_s},
+             ('p', 's'): {'h': ps_h, 't': ps_t, 'x': ps_x},
+             ('p', 'h'): {'s': ph_s, 't': ph_t, 'x': ph_x}}
 
     def __init__(self, dictnode):
         """ create the node object"""
+        self.refrigerant = Port.cycle_refrigerant
         self.index = None
-        if ("refrigerant" in dictnode):
-            self.refrigerant = dictnode["refrigerant"]
-        else:
-            self.refrigerant = Port.cycle_refrigerant
         self.p = None
         self.t = None
-        self.x = None
         self.h = None
         self.s = None
+        self.x = None
         self.mdot = None
-
-        if('p' in dictnode):
-            try:
-                self.p = float(dictnode['p'])
-            except:
-                pass
-
-        if ('t' in dictnode):
-            try:
-                self.t = float(dictnode['t'])
-            except:
-                pass
-
-        if ('x' in dictnode):
-            try:
-                self.x = float(dictnode['x'])
-            except:
-                pass
-       
-        if ('mdot' in dictnode):
-            try:
-                self.mdot = float(dictnode['mdot'])
-            except:
-                pass
+        # update the instance attributes with  dictnode
+        self.__dict__.update(dictnode)
 
         # step1 state : input values
         self.stateok = False
         self.state()
 
-    def tx(self):
-        try:
-            self.p = tx_p(self.t, self.x, self.refrigerant)
-            self.h = tx_h(self.t, self.x, self.refrigerant)
-            self.s = tx_s(self.t, self.x, self.refrigerant)
-            self.stateok = True
-        except:
-            self.stateok = False
-
-    def px(self):
-        try:
-            self.t = px_t(self.p, self.x, self.refrigerant)
-            self.h = px_h(self.p, self.x, self.refrigerant)
-            self.s = px_s(self.p, self.x, self.refrigerant)
-            self.stateok = True
-        except:
-            self.stateok = False
-
-    def pt(self):
-        try:
-            self.h = pt_h(self.p, self.t, self.refrigerant)
-            self.s = pt_s(self.p, self.t, self.refrigerant)
-            self.stateok = True
-        except:
-            self.stateok = False
-
-    def ps(self):
-        try:
-            if self.h is None:
-                self.h = ps_h(self.p, self.s, self.refrigerant)
-            if self.t is None:
-                self.t = ps_t(self.p, self.s, self.refrigerant)
-            if self.x is None:
-                self.x = ps_x(self.p, self.s, self.refrigerant)
-            self.stateok = True
-        except:
-            self.stateok = False
-
-    def ph(self):
-        try:
-            if self.s is None:
-                self.s = ph_s(self.p, self.h, self.refrigerant)
-            if self.t is None:
-                self.t = ph_t(self.p, self.h, self.refrigerant)
-            if self.x is None:
-                self.x = ph_x(self.p, self.h, self.refrigerant)
-            self.stateok = True
-        except:
-            self.stateok = False
-
     def state(self):
-        """ step3 state: after obtain the new parameter pairs """
         if self.stateok == False:
-            if self.p is not None and self.t is not None:
-                self.pt()
-            elif self.p is not None and self.x is not None:
-                self.px()
-            elif self.t is not None and self.x is not None:
-                self.tx()
-            elif self.p is not None and self.s is not None:
-                self.ps()
-            elif self.p is not None and self.h is not None:
-                self.ph()
+            for pair, keyfun in Port.pairs.items():
+                v0 = self.__dict__[pair[0]]
+                v1 = self.__dict__[pair[1]]
+                if v0 is not None and v1 is not None:
+                    stateok = True
+                    # loop to get all props of (v0,v1)
+                    for key, fun in keyfun.items():
+                        if self.__dict__[key] is None:
+                            try:
+                                self.__dict__[key] = fun(
+                                    v0, v1, self.refrigerant)
+                            except:
+                                stateok = False
+                    # end loop to get all props of (v0,v1)
+                    self.stateok = stateok
+                    break  # exit for pair,keyfun
 
     def __str__(self):
-        try:
-            result = '{:^6}'.format(self.index)
-        except:
-            result = "-"
-        OutStrs = [{"fstr": '\t{:>7.4}', 'prop': self.p, "sstr": '\t{:>7}'},
-                   {"fstr": '\t{:>8.2f}', 'prop': self.t, "sstr": '\t{:>8}'},
-                   {"fstr": '\t{:>10.2f}', 'prop': self.h, "sstr": '\t{:>10}'},
-                   {"fstr": '\t{:>8.3f}',  'prop': self.s, "sstr": '\t{:>8}'},
-                   {"fstr": '\t{:>10.4f}', 'prop': self.x, "sstr": '\t{:>10}'},
-                   {"fstr": '\t{:>8.4f}',  'prop': self.mdot, "sstr": '\t{:>8}'}
-                   ]
+        result = f'{self.index:^6d}' if type(
+            self.index) is int else f'{3*"-":^6s}'
 
-        for item in OutStrs:
-            try:
-                result += item["fstr"].format(item["prop"])
-            except:
-                result += item["sstr"].format("")
-
+        OutStrs = {self.p: '.3f',
+                   self.t: '.2f',
+                   self.h: '.2f',
+                   self.s: '.3f',
+                   self.x: '.3f',
+                   self.mdot: '.4f'}
+        for value, fstr in OutStrs.items():
+            valuestr = f' {value:^{Port.w}{fstr}}' if type(
+                value) is float else f'{5*"-":>10s}'
+            result += valuestr
         return result

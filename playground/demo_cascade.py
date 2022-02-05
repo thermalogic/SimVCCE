@@ -49,9 +49,8 @@ if __name__ == "__main__":
     cop = cycle_lower.Qin/Wc
 
     print("\nThe Cascade Refrigeration Cycle")
-    print("\tThe mass flow rate of the lower cycle(kg/s): {:.4f}".format(
-        cycle_lower.conns.nodes[0][0].mdot))
-    print("\tRefrigeration Capacity(kW): {: .2f}".format(cycle_lower.Qin))
-    print("\tHeat Transfer Rate(kW): {: .2f}".format(cycle_upper.Qout))
-    print("\tCompression Work(kW): {:.2f}".format(Wc))
-    print("\tThe coefficient of performance: {:.2f}".format(cop))
+    print(f"\tThe mass flow rate of the lower cycle(kg/s): {cycle_lower.conns.nodes[0].mdot:.4f}")
+    print(f"\tRefrigeration Capacity(kW): {cycle_lower.Qin:.2f}")
+    print(f"\tHeat Transfer Rate(kW): {cycle_upper.Qout:.2f}")
+    print(f"\tCompression Work(kW): {Wc:.2f}")
+    print(f"\tThe coefficient of performance: {cop:.2f}")

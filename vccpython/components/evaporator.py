@@ -7,52 +7,35 @@ Evaporator:
 
 Author: Cheng Maohua cmh@seu.edu.cn    
 """
-from .port import *
+from .device_siso import Device_SISO
 
-
-class Evaporator:
+class Evaporator(Device_SISO):
 
     energy = "QIN"
     devtype = "EVAPORATOR"
 
     def __init__(self, dictDev):
         """ Initializes the Evaporator """
-        self.name = dictDev['name']
-        self.iPort = [Port(dictDev['iPort'])]
-        self.oPort = [Port(dictDev['oPort'])]
-
-        # map the port's name(str) to the obj
-        self.portdict = {
-            "iPort": self.iPort,
-            "oPort": self.oPort
-        }
+        super().__init__(dictDev)
+        self.Qin=None
 
     def state(self):
         """ ideal Isobaric """
-        if self.oPort[0].p is not None and self.iPort[0].p is None:
-            self.iPort[0].p = self.oPort[0].p
-        elif self.iPort[0].p is not None and self.oPort[0].p is None:
-            self.oPort[0].p = self.iPort[0].p
+        if self.oPort.p is not None and self.iPort.p is None:
+            self.iPort.p = self.oPort.p
+        elif self.iPort.p is not None and self.oPort.p is None:
+            self.oPort.p = self.iPort.p
 
     def balance(self):
         """ mass and energy balance  """
 
         # mass balance
-        if self.iPort[0].mdot is None and self.oPort[0].mdot is None:
-            raise ValueError("mdot not none")
-
-        if self.iPort[0].mdot is not None:
-            self.oPort[0].mdot = self.iPort[0].mdot
-        elif self.oPort[0].mdot is not None:
-            self.iPort[0].mdot = self.oPort[0].mdot
+        super().mass_balance()
 
         # energy balance
-        self.Qin = self.iPort[0].mdot * (self.oPort[0].h - self.iPort[0].h)
+        self.Qin = self.iPort.mdot * (self.oPort.h - self.iPort.h)
 
     def __str__(self):
-        result = '\n' + self.name
-        result += '\n' + " PORTS "+Port.title
-        result += '\n' + " iPort " + self.iPort[0].__str__()
-        result += '\n' + " oPort " + self.oPort[0].__str__()
-        result += '\nQin(kW): \t{:>.2f}'.format(self.Qin)
+        result = super().__str__()
+        result += f'\nQin(kW): \t{self.Qin:{">.2f" if type(self.Qin) is float  else ""}}'
         return result

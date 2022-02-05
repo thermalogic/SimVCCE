@@ -1,0 +1,17 @@
+digraph "classes" {
+rankdir=BT
+charset="utf-8"
+"components.device_siso.Device_SISO" [color="black", fontcoor="black", 
+              label="{Device_SISO|
+               + devtype: str\l
+               + energy: str\l 
+               + name:str \l 
+               + iPort: Port\l 
+               + oPort: Port\l|
+               + Device_SISO(dictDev)\l 
+               + state()\l 
+               + mass_balance()\l 
+               + balance()\l 
+               + __str()__:str\l}",
+               shape="record", style="solid"];
+}

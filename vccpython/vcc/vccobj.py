@@ -6,8 +6,8 @@ General Object-oriented Abstraction of VC Cycle
  Author: Cheng Maohua cmh@seu.edu.cn
 """
 
-import time
-import getpass
+from time import time, localtime, strftime
+from getpass import getuser
 
 from components import compdict
 from components.port import Port
@@ -59,11 +59,11 @@ class VCCycle:
 
                     # step 3  the port state: new port's parameter pairs
                     for port in state_nodes:
-                        if port[0].stateok == False:
-                            port[0].state()
-                            if port[0].state() == True:
+                        if port.stateok == False:
+                            port.state()
+                            if port.state() == True:
                                 state_nodes.remove(port)
-                    
+
                     # step 4: the port state ：the energy and mass balance
                     self.comps[curdev].balance()
                     keys.remove(curdev)
@@ -95,24 +95,17 @@ class VCCycle:
         self.cop = self.Qin / self.Wc
         self.cop_hp = self.Qout / self.Wc
 
-    def __setformatstr(self, formatstr, result):
-        result += formatstr.format('Compression Work(kW): ', self.Wc)
-        result += formatstr.format('Refrigeration Capacity(kW): ', self.Qin)
-        result += formatstr.format('\tCapacity(ton): ', self.Qin*60*(1/211))
-        result += formatstr.format('The heat transfer rate(kW): ', self.Qout)
-        result += formatstr.format('The coefficient of performance: ', self.cop)
-        result += formatstr.format(
-            'The coefficient of performance(heat pump):', self.cop_hp)
-        return result
-
     def __str__(self):
-        str_curtime = time.strftime(
-            "%Y/%m/%d %H:%M:%S", time.localtime(time.time()))
-        result = "\nThe Vapor-Compression Cycle: {} ( {} by {})\n".format(
-            self.name, str_curtime, getpass.getuser())
-        result += "\nRefrigerant: {}\n".format(self.cycle_refrigerant)
-        try:
-            result = self.__setformatstr("{:>35} {:>5.2f}\n", result)
-        except:
-            result = self.__setformatstr("{} {}\n", result)
+        curtime = strftime("%Y/%m/%d %H:%M:%S", localtime(time()))
+        result = f"\nThe Vapor-Compression Cycle: {self.name} ({curtime} by {getuser()})\n"
+        result += f"\nRefrigerant: {self.cycle_refrigerant}\n"
+        
+        rusult_items = {'Compression Work(kW): ': self.Wc,
+                        'Refrigeration Capacity(kW): ': self.Qin,
+                        '\tCapacity(ton): ': self.Qin*60*(1/211),
+                        'The heat transfer rate(kW): ': self.Qout,
+                        'The coefficient of performance: ': self.cop,
+                        'The coefficient of performance(heat pump):': self.cop_hp}
+        for name, value in rusult_items.items():
+            result += f'{name:>35} {value:{">5.2f" if type(value) is float else ""}}\n'
         return result

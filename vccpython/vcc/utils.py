@@ -24,7 +24,7 @@ def OutFiles(cycle, outfilename=None):
     # 2 output nodes
     print(Port.title)
     for item in cycle.conns.nodes:
-        print(item[0])
+        print(item)
     # 3 output devices
     for key in cycle.comps:
         print(cycle.comps[key])

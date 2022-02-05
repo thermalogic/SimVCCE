@@ -1,0 +1,92 @@
+digraph "classes" {
+rankdir=BT
+charset="utf-8"
+"VCCycle" [
+       color="black", fontcolor="black", 
+      label="{VCCycle|
+       + name : str\l 
+       + refrigerant : str
+       + comps : dict cycle\l 
+       + conns : Connector\l
+       + Qin : float\l 
+       + Qout : float\l 
+       + Wc : float\l
+       + cop : float\l
+       + cop_hp : float\l|
+       + VCCycle(dictcycle:dict)\l
+       - component_simulator()\l 
+       + simulator()\l 
+       + __str__():str\l}", shape="record", style="solid"];
+
+"connector.Connector" [color="black", fontcolor="black",
+                       label="{Connector| 
+                        \l|
+                        \l}",
+                        shape="record", style="solid"];
+
+"components.port.Port" [color="black", fontcoor="black",
+         label="{Port|
+                    \l|
+                  \l}", shape="record", style="solid"];
+
+"components.compressor.Compressor" [color="black", fontcoor="black",
+         label="{Compressor|
+                    \l|
+                  \l}", shape="record", style="solid"];
+"components.condenser.Condenser" [color="black", fontcolor="black", 
+    label="{Condenser|
+                   \l|
+                  \l}", shape="record", style="solid"];
+"components.evaporator.Evaporator" [color="black", fontcolor="black", 
+  label="{Evaporator| 
+                   \l|
+                  \l}", shape="record", style="solid"];
+"components.expansionvalve.ExpansionValve" [color="black", fontcolor="black", 
+label="{ExpansionValve|
+                   \l|
+                  \l}", shape="record", style="solid"];
+
+"connector.Connector"->"VCCycle"[
+            arrowhead="diamond", arrowtail="none",
+            fontcolor="blue",
+            label="1", style="solid"]
+
+"components.compressor.Compressor"->"VCCycle"[
+            arrowhead="odiamond", arrowtail="none",
+            fontcolor="blue",
+            label="1..*", style="solid"]
+"components.condenser.Condenser"->"VCCycle"[
+            arrowhead="odiamond", arrowtail="none",
+            fontcolor="blue",
+            label="1..*", style="solid"]
+"components.evaporator.Evaporator"->"VCCycle"[
+            arrowhead="odiamond", arrowtail="none",
+            fontcolor="blue",
+            label="1..*", style="solid"]
+"components.expansionvalve.ExpansionValve"->"VCCycle"[
+            arrowhead="odiamond", arrowtail="none",
+            fontcolor="blue",
+            label="1..*", style="solid"]
+
+
+"components.port.Port"->"components.expansionvalve.ExpansionValve"[
+            arrowhead="diamond", arrowtail="none",
+            fontcolor="blue",
+            label="2", style="solid"]
+"components.port.Port"->"components.evaporator.Evaporator"[
+            arrowhead="diamond", arrowtail="none",
+            fontcolor="blue",
+            label="2", style="solid"]
+"components.port.Port"->"components.condenser.Condenser"[
+            arrowhead="diamond", arrowtail="none",
+            fontcolor="blue",
+            label="2", style="solid"]
+"components.port.Port"->"components.compressor.Compressor"[
+            arrowhead="diamond", arrowtail="none",
+            fontcolor="blue",
+            label="2", style="solid"]
+"components.port.Port"->"connector.Connector"[
+            arrowhead="diamond", arrowtail="none",
+            fontcolor="blue",
+            label="2..*", style="solid"]
+}

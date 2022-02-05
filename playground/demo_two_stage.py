@@ -23,9 +23,9 @@ from vcc.utils import OutFiles, create_dictcycle_from_jsonfile
 
 
 if __name__ == "__main__":
-    # add new the components to compdict
-    compdict["FLASH_CHAMBER"] = FlashChamber
-    compdict["MIXING_CHAMBER"] = MixingChamber
+    # add the newc omponents to compdict
+    compdict[FlashChamber.devtype] = FlashChamber
+    compdict[MixingChamber.devtype] = MixingChamber
 
     curpath = os.path.abspath(os.path.dirname(__file__))
     ResultFilePath = curpath+'/result/'

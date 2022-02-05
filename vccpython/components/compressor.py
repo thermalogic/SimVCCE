@@ -7,22 +7,17 @@ General Object-oriented Abstraction of VC Cycle
  
  Author: Cheng Maohua cmh@seu.edu.cn   
 """
-from .port import *
-from phyprops.prop_coolprop import *
+from .device_siso import Device_SISO
 
 
-class Compressor:
+class Compressor(Device_SISO):
     """ compression of the refrigerant"""
     energy = "CompressionWork"
     devtype = "COMPRESSOR"
 
     def __init__(self, dictDev):
-        """
-        Initializes 
-        """
-        self.name = dictDev['name']
-        self.iPort = [Port(dictDev['iPort'])]
-        self.oPort = [Port(dictDev['oPort'])]
+        """  Initializes  """
+        super().__init__(dictDev)
         if ("ef" in dictDev):
             try:
                 self.ef = float(dictDev['ef'])
@@ -31,52 +26,34 @@ class Compressor:
         else:
             self.ef = 1.0
         # add your code here for the input Wc
+        pass
 
-        # map the port's name(str) to the obj
-        self.portdict = {
-            "iPort": self.iPort,
-            "oPort": self.oPort
-        }
-   
     def state(self):
         """
             if ef=1.0, Isentropic compression 
         """
         if self.ef == 1.0:
-            self.oPort[0].s = self.iPort[0].s
+            self.oPort.s = self.iPort.s
          # ef
         if self.ef is None or self.ef != 1.0:
             pass  # add your code here to get the oPort state
 
-
     def balance(self):
         """  mass and energy balance    """
-            
-        # mass balance
+
         # add your code here to get the mass flow rate
+        pass
 
-
-        if self.iPort[0].mdot is None and self.oPort[0].mdot is None:
-            raise ValueError("mdot not none")
-        if self.iPort[0].mdot is not None:
-            self.oPort[0].mdot = self.iPort[0].mdot
-        elif self.oPort[0].mdot is not None:
-            self.iPort[0].mdot = self.oPort[0].mdot
-
+        # mass balance
+        super().mass_balance()
         # energy balance
-        # add your code here when Wc is known
 
-        self.Wc = self.iPort[0].mdot * (self.oPort[0].h - self.iPort[0].h)
+        # add your code here when Wc is known
+        pass
+        self.Wc = self.iPort.mdot * (self.oPort.h - self.iPort.h)
 
     def __str__(self):
-        result = '\n' + self.name
-        result += '\n' + " PORTS "+Port.title
-        result += '\n' + " iPort " + self.iPort[0].__str__()
-        result += '\n' + " oPort " + self.oPort[0].__str__()
-        try:
-            result += '\nThe compressor efficiency(%): \t{:>.2f}'.format(
-                self.ef*100.0)
-            result += '\nWc(kW): \t{:>.2f}'.format(self.Wc)
-        except:
-            pass
+        result = super().__str__()
+        result += f'\nThe compressor efficiency(%): \t{self.ef:{">.2%" if self.ef is not None else ""}}'
+        result += f'\nWc(kW): \t{self.Wc:{">.2f" if type(self.Wc) is float else ""}}'
         return result

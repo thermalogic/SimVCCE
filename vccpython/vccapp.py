@@ -28,5 +28,3 @@ if __name__ == "__main__":
     OutFiles(thecycle)
     # output to text file
     OutFiles(thecycle, ResultFileName)
-
-      

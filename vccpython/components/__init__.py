@@ -6,22 +6,21 @@ General Object-oriented Abstraction of VC Cycle
  Author: Cheng Maohua cmh@seu.edu.cn    
 """
 
-from .port import Port
 from .compressor import Compressor
 from .condenser import Condenser
 from .expansionvalve import ExpansionValve
 from .evaporator import Evaporator
 
-
 # ------------------------------------------------------------------------------
-# compdict(jump table)
-#  1: key:value-> Type String: class  name
-#  2    add the new key:value to the dict after you add the new device class/type
+# compdict
+#  typedev: class
+#     Note: add  typedev: class to the dict after you add the new device class
 # --------------------------------------------------------------------------------
 
 compdict = {
-    "COMPRESSOR": Compressor,
-    "CONDENSER": Condenser,
-    "EXPANSIONVALVE": ExpansionValve,
-    "EVAPORATOR": Evaporator
+    Compressor.devtype: Compressor,
+    Condenser.devtype: Condenser,
+    ExpansionValve.devtype: ExpansionValve,
+    Evaporator.devtype: Evaporator
 }
+

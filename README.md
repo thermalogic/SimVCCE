@@ -1,5 +1,13 @@
 # SimVCCE
 
+- [SimVCCE](#simvcce)
+    - [Prerequisites：CoolProp, phyprops](#prerequisitescoolprop-phyprops)
+  - [The Vapor-Compression Cycle Examples](#the-vapor-compression-cycle-examples)
+    - [1 The Ideal Vapor-Compression Refrigeration Cycles](#1-the-ideal-vapor-compression-refrigeration-cycles)
+    - [2 The Cascade Refrigeration Cycle](#2-the-cascade-refrigeration-cycle)
+    - [3 Multistage Compression Refrigeration](#3-multistage-compression-refrigeration)
+    - [4 Performance Analysis of VCR cycle under Variable Conditions](#4-performance-analysis-of-vcr-cycle-under-variable-conditions)
+
 The SimVCCE is the vapor-compression refrigeration and heat pump cycle steady-state simulator for education.
 
 The simulator is available in Python, C++ and Modelica
@@ -8,7 +16,7 @@ The simulator is available in Python, C++ and Modelica
 
 * branch **sm-port-conn**: Python, C++ and Modelica
 
-We wish that SimVCCE may be a helpful vehicle for you to understand Computational Thinking and improve programming skills
+We wish that SimVCCE may be a helpful vehicle for you to understand the object-oriented programming and improve programming skills
 
 ### Prerequisites：CoolProp, phyprops
 
@@ -22,11 +30,6 @@ python -m pip install phyprops
 ## The Vapor-Compression Cycle Examples
 
 Yunus A. Cengel, Michael A. Boles,Thermodynamics: An Engineering Approach, 8th Edition, McGraw-Hill.2015
-
-- [1 EXAMPLE 11–1: The Ideal Vapor-Compression Refrigeration Cycle: Page 612](#1-the-ideal-vapor-compression-refrigeration-cycles)
-- [2 EXAMPLE 11–4: The Cascade Refrigeration Cycle,Page625-626](#2-the-cascade-refrigeration-cycle)
-- [3 EXAMPLE 11–5: Multistage Compression Refrigeration: Page627-628](#3-multistage-compression-refrigeration)
-- [4 Performance Analysis of VCR cycle under Variable Conditions](#4-performance-analysis-of-vcr-cycle-under-variable-conditions)
 
 ### 1 The Ideal Vapor-Compression Refrigeration Cycles
 

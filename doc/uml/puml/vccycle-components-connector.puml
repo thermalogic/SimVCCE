@@ -11,7 +11,6 @@ class VCCycle {
        + {static} VCCycle(dictcycle:dict)
        - component_simulator() 
        + simulator() 
-       - __setformatstr(formatstr : str, result : str):str
        + __str__():str
  }
 VCCycle "1" *-[#blue]- "1" Connector 
