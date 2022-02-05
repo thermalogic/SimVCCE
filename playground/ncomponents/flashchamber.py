@@ -61,8 +61,8 @@ class FlashChamber:
        
     def __str__(self):
         result = '\n' + self.name
-        result += '\n' + " PORT " + Port.title
-        result += '\n' + " iPort "+self.iPort.__str__()
+        result += '\n' + "  PORT  " + Port.title
+        result += '\n' + "  iPort "+self.iPort.__str__()
         result += '\n' + " oPortV " + self.oPortV.__str__()
         result += '\n' + " oPortL " + self.oPortL.__str__()
         return result

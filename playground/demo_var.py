@@ -21,16 +21,15 @@ Calculate the COP of the refrigeration cycle
 """
 import os
 import sys
+import matplotlib.pyplot as plt
+import csv
+
 curpath = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(curpath+'/../vccpython/')
 
-from vcc.vccobj import VCCycle
-from vcc.utils import OutFiles, create_dictcycle_from_jsonfile
 from components.port import Port
-
-
-import csv
-import matplotlib.pyplot as plt
+from vcc.utils import OutFiles, create_dictcycle_from_jsonfile
+from vcc.vccobj import VCCycle
 
 
 def csv_vars(refrigerants, x, y, FileName):
@@ -45,10 +44,9 @@ def csv_vars(refrigerants, x, y, FileName):
         # rows
         for i in range(len(x)):
             rowdict = {}
-            rowdict['Condenser_Pressure'] = "{:.2f}".format(x[i])
+            rowdict['Condenser_Pressure'] = f"{x[i]:.2f}"
             for j in range(len(refrigerants)):
-                rowdict["COP("+refrigerants[j] +
-                        ")"] = "{:.2f}".format(y[j][i])
+                rowdict["COP("+refrigerants[j] +")"] = f"{y[j][i]:.2f}"
             writer.writerow(rowdict)
 
 
@@ -72,17 +70,16 @@ if __name__ == "__main__":
     # vars
     refrigerants = ["R12", "R134a", "R22"]
     cdpressures = {"name": "Condenser",
-            "oPort": {"p": [0.4, 0.5, 0.6, 0.7, 0.8, 1.0, 1.4]}
-            }
+                   "oPort": {"p": [0.4, 0.5, 0.6, 0.7, 0.8, 1.0, 1.4]}
+                   }
 
     results = []
     for cant in refrigerants:
         # var refrigerants
         newdictcycle = thedictcycle.copy()
         newdictcycle["refrigerant"] = cant
-        i = 0
         cur_result = []
-        for var in cdpressures["oPort"]["p"]:
+        for i, var in enumerate(cdpressures["oPort"]["p"]):
             # var condenser pressures
             for device in newdictcycle["components"]:
                 if device["name"] == cdpressures["name"]:
@@ -93,12 +90,11 @@ if __name__ == "__main__":
             cycle = VCCycle(newdictcycle)
             cycle.simulator()
             cur_result.append(cycle.cop)
-            i += 1
             # output to console
             OutFiles(cycle)
             # output to the file
             ResultFileName = ResultFilePath + \
-                thedictcycle['name']+"_"+cant+"_"+str(i)+"_"
+                thedictcycle['name']+"_"+cant+"_"+str(i+1)+"_"
             OutFiles(cycle, ResultFileName + '.txt')
         # after the analysis
         results.append(cur_result)

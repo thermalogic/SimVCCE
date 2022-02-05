@@ -48,8 +48,7 @@ class Port:
                     for key, fun in keyfun.items():
                         if self.__dict__[key] is None:
                             try:
-                                self.__dict__[key] = fun(
-                                    v0, v1, self.refrigerant)
+                                self.__dict__[key] = fun(v0, v1, self.refrigerant)
                             except:
                                 stateok = False
                     # end loop to get all props of (v0,v1)
@@ -57,17 +56,14 @@ class Port:
                     break  # exit for pair,keyfun
 
     def __str__(self):
-        result = f'{self.index:^6d}' if type(
-            self.index) is int else f'{3*"-":^6s}'
+        result = f'{self.index:^6d}' if type(self.index) is int else f'{3*"-":^6s}'
 
-        OutStrs = {self.p: '.3f',
+        out_strs = {self.p: '.3f',
                    self.t: '.2f',
                    self.h: '.2f',
                    self.s: '.3f',
                    self.x: '.3f',
                    self.mdot: '.4f'}
-        for value, fstr in OutStrs.items():
-            valuestr = f' {value:^{Port.w}{fstr}}' if type(
-                value) is float else f'{5*"-":>10s}'
-            result += valuestr
+        for value, fstr in out_strs.items():
+            result += f' {value:^{Port.w}{fstr}}' if type(value) is float else f'{5*"-":>10s}'
         return result

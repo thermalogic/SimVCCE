@@ -35,7 +35,7 @@ class Device_SISO:
 
     def __str__(self):
         result = '\n' + self.name
-        result += '\n' + " PORTS " + Port.title
+        result += '\n' + " PORT  " + Port.title
         result += '\n' + " iPort " + self.iPort.__str__()
         result += '\n' + " oPort " + self.oPort.__str__()
         return result
