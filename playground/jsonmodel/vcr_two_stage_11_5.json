@@ -56,7 +56,7 @@
             }
         },
         {
-            "name": "flashchamber",
+            "name": "Flash_Chamber",
             "devtype": "FLASH_CHAMBER",
             "iPort": {
                 "p": 0.32
@@ -94,96 +94,15 @@
             }
         }
     ],
-    "connectors": [
-        [
-            {
-                "devname": "Compressor_HP",
-                "port": "oPort"
-            },
-            {
-                "devname": "Condenser",
-                "port": "iPort"
-            }
-        ],
-        [
-            {
-                "devname": "Condenser",
-                "port": "oPort"
-            },
-            {
-                "devname": "ExpansionValve1",
-                "port": "iPort"
-            }
-        ],
-        [
-            {
-                "devname": "ExpansionValve1",
-                "port": "oPort"
-            },
-            {
-                "devname": "flashchamber",
-                "port": "iPort"
-            }
-        ],
-        [
-            {
-                "devname": "flashchamber",
-                "port": "oPortV"
-            },
-            {
-                "devname": "Mixing_Chamber",
-                "port": "iPort0"
-            }
-        ],
-        [
-            {
-                "devname": "flashchamber",
-                "port": "oPortL"
-            },
-            {
-                "devname": "ExpansionValve2",
-                "port": "iPort"
-            }
-        ],
-        [
-            {
-                "devname": "ExpansionValve2",
-                "port": "oPort"
-            },
-            {
-                "devname": "Evaporator",
-                "port": "iPort"
-            }
-        ],
-        [
-            {
-                "devname": "Evaporator",
-                "port": "oPort"
-            },
-            {
-                "devname": "Compressor_LP",
-                "port": "iPort"
-            }
-        ],
-        [
-            {
-                "devname": "Compressor_LP",
-                "port": "oPort"
-            },
-            {
-                "devname": "Mixing_Chamber",
-                "port": "iPort1"
-            }
-        ],
-        [
-            {
-                "devname": "Mixing_Chamber",
-                "port": "oPort"
-            },
-            {
-                "devname": "Compressor_HP",
-                "port": "iPort"
-            }
-        ]
-    ]
+    "connectors": {
+        "Compressor_HP.oPort": "Condenser.iPort",
+        "Condenser.oPort": "ExpansionValve1.iPort",
+        "ExpansionValve1.oPort": "Flash_Chamber.iPort",
+        "Flash_Chamber.oPortV": "Mixing_Chamber.iPort0",
+        "Flash_Chamber.oPortL": "ExpansionValve2.iPort",
+        "ExpansionValve2.oPort": "Evaporator.iPort",
+        "Evaporator.oPort": "Compressor_LP.iPort",
+        "Compressor_LP.oPort": "Mixing_Chamber.iPort1",
+        "Mixing_Chamber.oPort": "Compressor_HP.iPort"
+    }
 }

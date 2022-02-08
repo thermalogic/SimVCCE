@@ -23,12 +23,13 @@ import os
 import sys
 import matplotlib.pyplot as plt
 import csv
+import json
 
 curpath = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(curpath+'/../vccpython/')
 
 from components.port import Port
-from vcc.utils import OutFiles, create_dictcycle_from_jsonfile
+from vcc.utils import OutFiles
 from vcc.vccobj import VCCycle
 
 
@@ -65,7 +66,8 @@ if __name__ == "__main__":
     json_filename = curpath+'\\'+'./jsonmodel/ivcr_var.json'
     ResultFilePath = curpath+'/result/'
     # the base data of cycle
-    thedictcycle = create_dictcycle_from_jsonfile(json_filename)
+    with open(json_filename, 'r') as f:
+        thedictcycle = json.loads(f.read())
 
     # vars
     refrigerants = ["R12", "R134a", "R22"]

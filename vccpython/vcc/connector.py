@@ -25,10 +25,10 @@ class Connector:
             if portvalue is not None and nodevalue is None:
                 node.__dict__[key] = portvalue
       
-    def add_node(self, tupConnector, comps):
-        """ node : (("comp0", "port0"), ("comp1", "port1"))"""
-        comp0, port0 = tupConnector[0]
-        comp1, port1 = tupConnector[1]
+    def add_node(self, portpairs, comps):
+        """ node : ("comp0.port0", "comp1.port1")"""
+        comp0, port0 = portpairs[0].split(".")
+        comp1, port1 = portpairs[1].split(".")
 
         # 1 get the index of port in nodes
         comps[comp0].__dict__[port0].index = self.curindex

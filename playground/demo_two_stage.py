@@ -10,6 +10,7 @@ Author: Cheng Maohua cmh@seu.edu.cn
 """
 import sys
 import os
+import json
 curpath = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(curpath+'/../vccpython/')
 
@@ -19,7 +20,7 @@ from ncomponents.mixingchamber import MixingChamber
 
 from components import compdict
 from vcc.vccobj import VCCycle
-from vcc.utils import OutFiles, create_dictcycle_from_jsonfile
+from vcc.utils import OutFiles
 
 
 if __name__ == "__main__":
@@ -31,8 +32,9 @@ if __name__ == "__main__":
     ResultFilePath = curpath+'/result/'
 
     json_filename = curpath+'\\'+'./jsonmodel/vcr_two_stage_11_5.json'
-
-    thedictcycle = create_dictcycle_from_jsonfile(json_filename)
+    with open(json_filename, 'r') as f:
+        thedictcycle = json.loads(f.read())
+  
     cycle = VCCycle(thedictcycle)
     cycle.simulator()
     OutFiles(cycle)

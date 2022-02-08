@@ -14,10 +14,11 @@ lower condenser(Qout) -> upper evaporator(Qin)
 """
 import sys
 import os
+import json
 curpath = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(curpath+'/../vccpython/')
 
-from vcc.utils import OutFiles, create_dictcycle_from_jsonfile
+from vcc.utils import OutFiles
 from vcc.vccobj import VCCycle
 
 if __name__ == "__main__":
@@ -26,14 +27,18 @@ if __name__ == "__main__":
     # 1 the upper cycle
     json_filename = curpath+'\\'+'./jsonmodel/vcr_cascade_upper_11_4.json'
 
-    thedictcycle_upper = create_dictcycle_from_jsonfile(json_filename)
+    with open(json_filename, 'r') as f:
+        thedictcycle_upper = json.loads(f.read())
+
     cycle_upper = VCCycle(thedictcycle_upper)
     cycle_upper.simulator()
     OutFiles(cycle_upper)
 
     # 2 cascade: lower condenser(Qout) -> upper evaporator(Qin)
-    json_filename_lower = curpath+'\\'+'./jsonmodel/vcr_cascade_lower_11_4.json'
-    thedictcycle_lower = create_dictcycle_from_jsonfile(json_filename_lower)
+    json_filename = curpath+'\\'+'./jsonmodel/vcr_cascade_lower_11_4.json'
+    with open(json_filename, 'r') as f:
+        thedictcycle_lower = json.loads(f.read())
+
     for device in thedictcycle_lower["components"]:
         if device["name"] == "Condenser":
             device["Qout"] = cycle_upper.Qin

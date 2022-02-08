@@ -21,7 +21,7 @@ class VCCycle:
           dictcycle={"name":namestring,
                      "refrigerant":refrigerantstring,
                      "components":[{component1},{component2},...],
-                     "connectors":[((name1,port1),(name2,port2)),...]
+                     "connectors":{"name1.port1":"name2.port2",...}
                   }
           TO:     
              self.comps : dict of all component objects      
@@ -41,8 +41,8 @@ class VCCycle:
 
         # 2 set the nodes value and alias between the item of nodes and the port of devices
         self.conns = Connector()
-        for tupconnector in listconnectors:
-            self.conns.add_node(tupconnector, self.comps)
+        for item in listconnectors.items():
+            self.conns.add_node(item, self.comps)
 
     def __component_simulator(self):
         state_nodes = self.conns.nodes.copy()

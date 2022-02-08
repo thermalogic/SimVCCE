@@ -37,46 +37,12 @@
             }
         }
     ],
-    "connectors": [
-        [
-            {
-                "devname": "Compressor",
-                "port": "oPort"
-            },
-            {
-                "devname": "Condenser",
-                "port": "iPort"
-            }
-        ],
-        [
-            {
-                "devname": "Condenser",
-                "port": "oPort"
-            },
-            {
-                "devname": "ExpansionValve",
-                "port": "iPort"
-            }
-        ],
-        [
-            {
-                "devname": "ExpansionValve",
-                "port": "oPort"
-            },
-            {
-                "devname": "Evaporator",
-                "port": "iPort"
-            }
-        ],
-        [
-            {
-                "devname": "Evaporator",
-                "port": "oPort"
-            },
-            {
-                "devname": "Compressor",
-                "port": "iPort"
-            }
-        ]
-    ]
+    "connectors":     {
+        "Compressor.oPort": "Condenser.iPort",
+        "Condenser.oPort": "ExpansionValve.iPort",
+        "ExpansionValve.oPort": "Evaporator.iPort",
+        "Evaporator.oPort": "Compressor.iPort"
+    }
+    
+
 }

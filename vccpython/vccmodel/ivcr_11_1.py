@@ -30,8 +30,7 @@ cycle["components"] = [
     }
 ]
 
-cycle["connectors"] = [
-    (("Compressor", "oPort"), ("Condenser", "iPort")),
-    (("Condenser", "oPort"), ("ExpansionValve", "iPort")),
-    (("ExpansionValve", "oPort"), ("Evaporator", "iPort")),
-    (("Evaporator", "oPort"), ("Compressor", "iPort"))]
+cycle["connectors"] = {"Compressor.oPort":"Condenser.iPort",
+                       "Condenser.oPort":"ExpansionValve.iPort",
+                       "ExpansionValve.oPort":"Evaporator.iPort",
+                       "Evaporator.oPort":"Compressor.iPort"}

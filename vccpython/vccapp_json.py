@@ -18,7 +18,7 @@ import glob
 from vcc.vccobj import VCCycle
 from vcc.utils import OutFiles, create_dictcycle_from_jsonfile
 from platform import os
-
+import json
 
 if __name__ == "__main__":
     curpath = os.path.abspath(os.path.dirname(__file__))
@@ -28,7 +28,10 @@ if __name__ == "__main__":
     json_filenames = glob.glob(json_filenames_str)
     
     for i in range(len(json_filenames)):
-        thedictcycle = create_dictcycle_from_jsonfile(json_filenames[i])
+        with open(json_filenames[i], 'r') as f:
+             thedictcycle = json.loads(f.read())
+
+        #thedictcycle = create_dictcycle_from_jsonfile(json_filenames[i])
         # the simulator
         cycle = VCCycle(thedictcycle)
         cycle.simulator()

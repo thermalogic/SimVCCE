@@ -33,15 +33,3 @@ def OutFiles(cycle, outfilename=None):
     if (outfilename != None):
         datafile.close()
         sys.stdout = savedStdout
-
-
-def create_dictcycle_from_jsonfile(filename):
-    """ create dict cycle from json file"""
-    with open(filename, 'r') as f:
-        dictcycle = json.loads(f.read())
-
-    #  convert the dict  to  the tuple
-    for itemtuples in dictcycle["connectors"]:
-        for i in range(len(itemtuples)):
-            itemtuples[i] = (itemtuples[i]["devname"], itemtuples[i]["port"])
-    return dictcycle
