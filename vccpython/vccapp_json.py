@@ -31,7 +31,6 @@ if __name__ == "__main__":
         with open(json_filenames[i], 'r') as f:
              thedictcycle = json.loads(f.read())
 
-        #thedictcycle = create_dictcycle_from_jsonfile(json_filenames[i])
         # the simulator
         cycle = VCCycle(thedictcycle)
         cycle.simulator()
