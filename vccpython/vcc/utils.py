@@ -2,7 +2,6 @@
 General Object-oriented Abstraction of VC Cycle 
 
  - OutFiles(cycle, outfilename=None)
- - create_dictcycle_from_jsonfile(filename):
 
  Author: Cheng Maohua cmh@seu.edu.cn
 """
