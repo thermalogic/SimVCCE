@@ -14,11 +14,11 @@ Run:
  Author: Cheng Maohua cmh@seu.edu.cn
 
 """
+import json
+import os
 import glob
 from vcc.vccobj import VCCycle
-from vcc.utils import OutFiles, create_dictcycle_from_jsonfile
-from platform import os
-import json
+from vcc.utils import OutFiles
 
 if __name__ == "__main__":
     curpath = os.path.abspath(os.path.dirname(__file__))
@@ -26,10 +26,10 @@ if __name__ == "__main__":
 
     json_filenames_str = curpath+'\\'+'./jsonmodel/*.json'
     json_filenames = glob.glob(json_filenames_str)
-    
+
     for i in range(len(json_filenames)):
         with open(json_filenames[i], 'r') as f:
-             thedictcycle = json.loads(f.read())
+            thedictcycle = json.loads(f.read())
 
         # the simulator
         cycle = VCCycle(thedictcycle)
@@ -39,4 +39,3 @@ if __name__ == "__main__":
         # output to the file
         ResultFileName = ResultFilePath+thedictcycle['name']
         OutFiles(cycle, ResultFileName + '.txt')
-
