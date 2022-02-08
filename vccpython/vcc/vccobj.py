@@ -31,19 +31,14 @@ class VCCycle:
         self.cycle_refrigerant = dictcycle["refrigerant"]
         Port.cycle_refrigerant = self.cycle_refrigerant
 
-        dictcomps = dictcycle["components"]
-        listconnectors = dictcycle["connectors"]
-
         # 1 convert dict to the dict of device objects: {device name:device obiect}
         self.comps = {}
-        for curdev in dictcomps:
+        for curdev in dictcycle["components"]:
             self.comps[curdev['name']] = compdict[curdev['devtype']](curdev)
 
         # 2 set the nodes value and alias between the item of nodes and the port of devices
-        self.conns = Connector()
-        for item in listconnectors.items():
-            self.conns.add_node(item, self.comps)
-
+        self.conns = Connector(dictcycle["connectors"], self.comps)
+    
     def __component_simulator(self):
         state_nodes = self.conns.nodes.copy()
 

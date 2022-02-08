@@ -1,37 +1,12 @@
 digraph "classes" {
 rankdir=BT
 charset="utf-8"
-"components.port.Port" [color="black", fontcolor="black", 
-               label="{Port|
-                       + cycle_refrigerant : str\l
-                       + w:int\l
-                       + title : str\l 
-                       + pairs: dict\l
-                       + refrigerant : str\l
-                       + index : int\l
-                       + p : float\l
-                       + t : float\l
-                       + x : float\l
-                       + h : float\l
-                       + s : float\l
-                       + mdot : float\l
-                       + stateok : bool\l|
-                       + Port(dictnode:dict)\l
-                       + state()\l
-                       + __str()__:str\l}", 
-                       shape="record", style="solid"];
 "components.connector.Connector" [color="black", fontcolor="black",
                        label="{Connector| 
-                        + curindex : int\l
                          + nodes : Port[0..*]\l|
-                        + Connector()\l 
-                        + add_node(tupConnector, comps)\l
+                        + Connector(connectors, comps)\l 
+                        - __add_node(index,portpairs, comps)\l
                         - __combined_node_value(node, port)\l}",
                         shape="record", style="solid"];
-"components.port.Port"->"components.connector.Connector"[
-            arrowhead="diamond", arrowtail="none",
-            fontcolor="green",
-            label="nodes", style="solid"];
-}
 
 }

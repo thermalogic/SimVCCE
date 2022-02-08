@@ -18,11 +18,10 @@ class Port {
  + __str()__:str
 }
 class Connector {
-  + curindex:int
   + nodes:Port[0..*]
-  + {static} Connector()
+  + {static} Connector(dictconnector : dict, comps : dict of the devices)
   - __combined_node_value(node : Port,port: Port)
-  + add_node(tupConnector : tuple,comps : dict of the devices)
+  - __add_node(index,portpairs : tuple,comps)
 }
 Connector"1" *-- "2..*" Port
 @enduml

@@ -9,7 +9,7 @@
 <!-- /TOC -->
 ## The Port and Connector class  
 
-![port-connector](./uml/img/port-connector.svg)
+![connector_port](./uml/img/connector_port.jpg)
 
 ## The Component class
 
