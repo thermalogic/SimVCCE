@@ -1,0 +1,13 @@
+@startuml
+class Compressor {
+    + {static} devtype: str
+    + {static} energy: str
+    + ef: float
+    + Wc: float
+    + {static} Compressor(dictDev:dict)
+    + state()
+    + balance()
+    + __str()__:str
+}
+Device_SISO  <|-up- Compressor
+@enduml

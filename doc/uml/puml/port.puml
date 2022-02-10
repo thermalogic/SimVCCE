@@ -1,0 +1,22 @@
+@startuml
+class Port {
+  + {static} cycle_refrigerant : str=R134a
+  + {static} w : int
+  + {static} title : str
+  + {static} pairs : dict
+  + refrigerant : str
+  + index : int
+  + p : float
+  + t : float
+  + x : float
+  + h : float
+  + s : float
+  + mdot : float
+  + stateok:bool
+  + {static} Port(dictnode : dict)
+  + state()
+  + __str()__:str
+}
+@enduml
+
+

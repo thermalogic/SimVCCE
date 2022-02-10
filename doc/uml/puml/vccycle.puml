@@ -1,0 +1,17 @@
+@startuml
+class VCCycle {
+      + name:str
+      + refrigerant:str
+      + comps : dict of device
+      + conns: Connector
+      + Qin : float
+      + Qout : float
+      + Wc : float
+      + cop : float
+      + cop_hp : float
+      + {static} VCCycle(dictcycle:dict)
+      - component_simulator()
+      + simulator()
+      + __str__():str
+}
+@enduml

@@ -17,9 +17,9 @@
 
 When you define methods or fields, you can use **characters** to define the **visibility** of the corresponding item:
 
-| Visibility | Character |Icon for field                        |Icon for method |
-|:---------:|:--------: |:------------------------------------: |:--------------: |
-| private   |  -        |  <font color="red">red □ </font>      |   <font color="green">red ■  </font>     |
+| Visibility | UML Character |Icon for field in PlantUML       |Icon for method in PlantUML|
+|:---------:|:--------: |:------------------------------------: |:------------------------: |
+| private   |  -        |  <font color="red">red □ </font>      |   <font color="red">red ■  </font>     |
 | public    |  +       |  <font color="green">green ○ </font>   |  <font color="green">green ●  </font>    |
   
 

@@ -1,0 +1,10 @@
+@startuml
+class ExpansionValve {
+    + {static} devtype: str
+    + {static} energy: str
+    + state()
+}
+Device_SISO  <|-up- ExpansionValve
+@enduml
+
+     
