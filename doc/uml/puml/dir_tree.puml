@@ -2,14 +2,14 @@
 * SimVCCE
 ** <vccpython>
 *** vccapp.py  **main app**\nvccapp_json.py  **main app using json**
-*** <components> **port and devices classes**
-**** port.py\ndevice_siso.py\ncompressor.py\n...       
+*** <components> **port and device classes**
+**** port.py\ndevice_siso.py\ncompressor.py\n...
 *** <vcc> **the cycle analysis class and methods**
-****  connector.py **the class Connector**\nvccobj.py **the class VCCycle**\nutils.py **utils methods**
-*** <vccmodel> **the dict of the cycle data**
-****  *vcr*.py **the cycle dict**
+****  connector.py **class Connector**\nvccobj.py **class VCCycle**\nutils.py **utils methods**
+*** <vccmodel> **the dict of cycle data**
+****  *.py **the dict of cycle **
 *** <jsonmmodel> **json of the cycle flowchart and data**
-****  *vcr*.py **the cycle json file**
+****  *.json **the json of cycle**
 *** <result> **result text files**
 ****  *.txt
 @endwbs

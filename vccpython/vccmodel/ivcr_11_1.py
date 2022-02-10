@@ -1,6 +1,6 @@
-cycle = {}
-cycle["name"] = "The Ideal VCR Example 11-1"
-cycle["refrigerant"] = "R134a"
+cycle = {"name": "The Ideal VCR Example 11-1",
+         "refrigerant":"R134a"}
+
 cycle["components"] = [
     {
         "name": "Compressor",

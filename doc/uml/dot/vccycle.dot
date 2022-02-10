@@ -6,7 +6,7 @@ charset="utf-8"
       label="{VCCycle|
        + name : str\l 
        + refrigerant : str\l
-       + comps : dict cycle\l 
+       + comps : dict of device\l 
        + conns : Connector\l
        + Qin : float\l 
        + Qout : float\l 

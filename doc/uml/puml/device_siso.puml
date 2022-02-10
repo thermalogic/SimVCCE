@@ -1,48 +1,50 @@
+@startuml
 class Device_SISO {
- + {static} devtype: str
- + {static} energy: str
- + name: str
- + iPort: Port
- + oPort: Port
- + {static} Device_SISO(dictDev:dict)
- + state()
- + mass_balance()
- + balance()
- + __str()__:str
+  + {static} devtype: str
+  + {static} energy: str
+  + name: str
+  + iPort: Port
+  + oPort: Port
+  + {static} Device_SISO(dictDev:dict)
+  + state()
+  + mass_balance()
+  + balance()
+  + __str()__:str
 }
 note left of Device_SISO::devtype
-  the type of device: **class**
+the type of device: **class**
 end note
 note left of Device_SISO::energy
-  the energy type of device: **class**
+the energy type of device: **class**
 end note
 note left of Device_SISO::name
-  the name of device
+the name of device
 end note
 note left of Device_SISO::iPort
-  inlet port
+inlet port
 end note
 note left of Device_SISO::oPort
-  outlet port
+outlet port
 end note
 note left of Device_SISO::Device_SISO(dictDev:dict)
-  **dict** {"name": "*",
-            "devtype": "*",
-            "iPort*": {},
-            "oPort*": {}}
-end note
-note right of Device_SISO::state
+{
+  "name": "*",
+  "devtype": "*",
+  "iPort": {},
+  "oPort": {}}
+  end note
+  note right of Device_SISO::state
   get port state by thremal process
-end note
-note right of Device_SISO::mass_balance()
+  end note
+  note right of Device_SISO::mass_balance()
   mass balance
-end note
-note right of Device_SISO::balance
+  end note
+  note right of Device_SISO::balance
   energy and mass balancing
-end note
-note right of Device_SISO::__str()__
+  end note
+  note right of Device_SISO::__str()__
   the string of the instance
-end note
-
+  end note
+@enduml
 
 

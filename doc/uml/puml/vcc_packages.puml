@@ -8,7 +8,7 @@ package components {
   class ExpansionValve
 }
 package vcc {
-  class VCCycle  
+  class VCCycle
   class Connector
 }
 vcc ..> components : <<import>>

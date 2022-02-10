@@ -14,9 +14,9 @@ Run:
  Author: Cheng Maohua cmh@seu.edu.cn
 
 """
-import json
 import os
 import glob
+import json
 from vcc.vccobj import VCCycle
 from vcc.utils import OutFiles
 

@@ -11,20 +11,19 @@ Yunus A. Cengel, Michael A. Boles, Thermodynamics: An Engineering Approach, 8th 
 
 Author: Cheng Maohua cmh@seu.edu.cn
 """
+from vccmodel.ivcr_11_1 import cycle
 from vcc.vccobj import VCCycle
 from vcc.utils import OutFiles
-from vccmodel.ivcr_11_1 import cycle
-from platform import os
+import os
 
 if __name__ == "__main__":
-
-    curpath = os.path.abspath(os.path.dirname(__file__))
-    ResultFilePath = curpath+'/result/'
-    ResultFileName = ResultFilePath+cycle['name'] + '.txt'
-
     thecycle = VCCycle(cycle)
     thecycle.simulator()
     # output to console
     OutFiles(thecycle)
+
     # output to text file
+    curpath = os.path.abspath(os.path.dirname(__file__))
+    ResultFilePath = curpath+'/result/'
+    ResultFileName = ResultFilePath+cycle['name'] + '.txt'
     OutFiles(thecycle, ResultFileName)

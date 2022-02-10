@@ -1,0 +1,18 @@
+@startuml
+VCCycle "1" *-[#blue]- "1" Connector 
+VCCycle "1" o-- "1..*" Compressor 
+VCCycle "1" o-- "1..*" Condenser
+VCCycle "1" o-- "1..*" Evaporator
+VCCycle "1" o-- "1..*" ExpansionValve
+
+Connector "1" *-[#blue]- "2..*" Port
+Compressor "1" *-[#blue]- "2" Port
+ExpansionValve "1" *-[#blue]- "2" Port
+Evaporator "1" *-[#blue]- "2" Port
+Condenser "1" *-[#blue]- "2" Port
+
+Compressor <|-[#green]- Device_SISO  
+Condenser <|-[#green]- Device_SISO  
+Evaporator <|-[#green]- Device_SISO  
+ExpansionValve <|-[#green]- Device_SISO  
+@enduml

@@ -1,27 +1,30 @@
-: Instancing the cycle using the dict of cycle 
-      1 the instance of **devices**    
-      2 the instance of **connector**;
+
+@startuml
+: Instancing the cycle using the dict of cycle
+1 comps{}: the dict of **devices**
+2 conns: the instance of **connector**;
 note right
-    get the port state: pt/px/tx 
-      when **create** the port of device 
+    get the port state: pt/px/tx
+    when **create** the port of device
 end note
 repeat
-:The port state of devices
-    1 state by **thermal process in device** 
+    :The port state of devices
+    1 state by **thermal process in device**
     2 state by **combined data of port**;
-note right
-    1 comps[].state()
-    2 node[].state()
-end note
-:The mass and energy balance;
-note right
-    comps[].balance()
-    Qin, Qout, Wc
-end note
+    note right
+        1 comps[key].state()
+        2 conns.node[i].state()
+    end note
+    :The mass and energy balance;
+    note right
+        comps[key].balance()
+        Qin, Qout, Wc
+    end note
 repeat while (more devices)
 :The performance of cycle  on the mdot;
 note right
     cop,cop_hp
 end note
-: Print results on **console**  
-  Save  results to **text file**;
+: Print results on **console**
+Save  results to **text file**;
+@enduml

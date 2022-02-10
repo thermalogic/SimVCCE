@@ -4,18 +4,18 @@ charset="utf-8"
 "components.device_siso.Device_SISO" [color="black", fontcoor="black", 
               label="{Device_SISO|
                \l|
-               +Device_SISO(dictDev:dict)\l
+               + Device_SISO(dictDev:dict)\l
                }",
                shape="record", style="solid"];
 
-"components.expansionvalue.ExpansionValue" [color="black", fontcoor="black", 
+"components.expansionvalve.ExpansionValve" [color="black", fontcoor="black", 
               label="{ExpansionValue|
                + devtype: str\l
                + energy: str\l|
                + state()\l}",
                shape="record", style="solid"];
 
-"components.device_siso.Device_SISO"->"components.expansionvalue.ExpansionValue"[
+"components.device_siso.Device_SISO"->"components.expansionvalve.ExpansionValve"[
             arrowhead="empty", arrowtail="none",
             style="solid"];
 }

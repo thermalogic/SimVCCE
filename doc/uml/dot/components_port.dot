@@ -3,41 +3,28 @@ rankdir=BT
 charset="utf-8"
 "components.compressor.Compressor" [color="black", fontcoor="black", 
               label="{Compressor|
-               + devtype: str\l
-               + energy: str\l 
-                + ef: float\l 
-               + Wc: float\l|
-               + Compressor(dictDev)\l 
-               + balance()\l 
-               + state()\l 
-               + __str()__:str\l}",
+               + iPort: Port\l
+               + oPort: Port\l |
+                 \l}",
                shape="record", style="solid"];
 "components.condenser.Condenser" [color="black", fontcolor="black", 
              label="{Condenser| 
-                   + devtype: str\l
-                   + energy: str\l 
-                   + Qout: float\l|
-                   + Condenser(dictDev)\l 
-                   + balance()\l
-                   + state()\l
-                   + __str()__:str\l}", 
+                  + iPort: Port\l
+                  + oPort: Port\l |
+                   \l}",
                    shape="record", style="solid"];
 "components.evaporator.Evaporator" [color="black", fontcolor="black",
             label="{Evaporator|
-                    + devtype : str\l
-                    + energy : str\l
-                    + Qin: float\l|
-                    + Evaporator(dictDev)\l
-                    + balance()\l
-                    + state()\l
-                    + __str()__:str\l}", 
+                  + iPort: Port\l
+                  + oPort: Port\l |
+                   \l}",
                     shape="record", style="solid"];
 "components.expansionvalve.ExpansionValve" [color="black", fontcolor="black",
              label="{ExpansionValve|
-                    + devtype : str\l 
-                    + energy : str\l|
-                    + state()\l}", 
-                    shape="record", style="solid"];
+                  + iPort: Port\l
+                  + oPort: Port\l |
+                   \l}",
+                 shape="record", style="solid"];
 
 "components.port.Port" [color="black", fontcolor="black", 
                label="{Port|
@@ -45,20 +32,11 @@ charset="utf-8"
                         \l}", 
                        shape="record", style="solid"];
 
-"components.port.Port"->"components.compressor.Compressor"[
-            arrowhead="diamond", arrowtail="none",
-            fontcolor="blue",
-            label="2", style="solid"];
-"components.port.Port"->"components.condenser.Condenser"[
-            arrowhead="diamond", arrowtail="none",
-            fontcolor="blue",
-            label="2", style="solid"];
-"components.port.Port"->"components.evaporator.Evaporator"[
-            arrowhead="diamond", arrowtail="none",
-            fontcolor="blue",
-            label="2", style="solid"];
-"components.port.Port"->"components.expansionvalve.ExpansionValve"[
-            arrowhead="diamond", arrowtail="none",
-            fontcolor="2",
-            label="2", style="solid"];
+"components.port.Port"->{"components.compressor.Compressor",
+      "components.condenser.Condenser",
+      "components.evaporator.Evaporator",
+      "components.expansionvalve.ExpansionValve"}
+      [arrowhead="diamond", arrowtail="none",
+       fontcolor="blue",
+       label="2", style="solid"];
 }

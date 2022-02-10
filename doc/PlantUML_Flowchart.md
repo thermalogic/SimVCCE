@@ -12,28 +12,38 @@
     - [vertical mode](#vertical-mode)
 - [Switch, case endswitch](#switch-case-endswitch)
  [Conditional with stop on an action - kill, detach](#conditional-with-stop-on-an-action---kill-detach)
-- [Repeat loop](#repeat-loop)
-  - [1 basic Repeat loop](#1-basic-repeat-loop)
-  - [2 using the `backward` keyword](#2-using-the-backward-keyword)
-  - [3 Break on a repeat loop `break`](#3-break-on-a-repeat-loop-break)
-- [while loop](#while-loop)
-  - [1  basic while loop](#1--basic-while-loop)
-  - [2 while loop with lables](#2-while-loop-with-lables)
-  - [3 an `infinite` while loop](#3-an-infinite-while-loop)
-- [Notes](#notes)
-- [Colors](#colors)
-- [Lines without arrows](#lines-without-arrows)
-- [Arrows](#arrows)
-- [Group, Partition, Package, Rectangle or Card](#group-partition-package-rectangle-or-card)
-- [SDL(Specification and Description Language)](#sdlspecification-and-description-language)
-- [Complete example](#complete-example)
+- [Flowchart using PlantUML](#flowchart-using-plantuml)
+  - [The Flowchart of the performance analysis of VC cycle](#the-flowchart-of-the-performance-analysis-of-vc-cycle)
+  - [Simple action](#simple-action)
+  - [start/stop/end](#startstopend)
+  - [Conditional](#conditional)
+  - [Several tests](#several-tests)
+    - [horizontal mode](#horizontal-mode)
+    - [vertical mode](#vertical-mode)
+  - [Switch, case endswitch](#switch-case-endswitch)
+  - [Conditional with stop on an action - kill, detach](#conditional-with-stop-on-an-action---kill-detach)
+  - [Repeat loop](#repeat-loop)
+    - [1 basic Repeat loop](#1-basic-repeat-loop)
+    - [2 using the `backward` keyword](#2-using-the-backward-keyword)
+    - [3 Break on a repeat loop `break`](#3-break-on-a-repeat-loop-break)
+  - [while loop](#while-loop)
+    - [1  basic while loop](#1--basic-while-loop)
+    - [2 while loop with lables](#2-while-loop-with-lables)
+    - [3 an `infinite` while loop](#3-an-infinite-while-loop)
+  - [Notes](#notes)
+  - [Colors](#colors)
+  - [Lines without arrows](#lines-without-arrows)
+  - [Arrows](#arrows)
+  - [Group, Partition, Package, Rectangle or Card](#group-partition-package-rectangle-or-card)
+  - [SDL(Specification and Description Language)](#sdlspecification-and-description-language)
+  - [Complete example](#complete-example)
 
 ## The Flowchart of the performance analysis of VC cycle
 
 ```puml
 : Instancing the cycle using the dict of cycle 
-      1 the instance of **devices**    
-      2 the instance of **connector**;
+      1 comps{}: the dict of **devices**    
+      2 conns: the instance of **connector**;
 note right
     get the port state: pt/px/tx 
       when **create** the port of device 
@@ -43,12 +53,12 @@ repeat
     1 state by **thermal process in device** 
     2 state by **combined data of port**;
 note right
-    1 comps[].state()
-    2 node[].state()
+    1 comps[key].state()
+    2 conns.node[i].state()
 end note
 :The mass and energy balance;
 note right
-    comps[].balance()
+    comps[key].balance()
     Qin, Qout, Wc
 end note
 repeat while (more devices)
@@ -60,7 +70,7 @@ end note
   Save  results to **text file**;
 ```
 
-![vcr-flowchart](./uml/img/vcc-flowchart.svg)
+![vcr_flowchart](./uml/img/vcc_flowchart.jpg)
 
 ## Simple action
 
