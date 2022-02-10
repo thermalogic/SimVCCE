@@ -1,8 +1,8 @@
 digraph {
 rankdir=BT
 node [shape="record"]
-{
-   "Compressor",
+    {
+     "Compressor",
     "Condenser",
     "Evaporator",
     "ExpansionValve"}->"Device_SISO"

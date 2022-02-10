@@ -8,7 +8,7 @@
     - [Instance Relation of Components and Port](#instance-relation-of-components-and-port)
   - [Class VCCycle](#class-vccycle)
     - [Class VCCycle and Instance Relations](#class-vccycle-and-instance-relations)
-    - [Class and Instance Relations of Class VCCycle](#class-and-instance-relations-of-class-vccycle)
+    - [Class and Instance Relations of Classes](#class-and-instance-relations-of-classes)
     - [Flowchart of VC Cycle Analysis](#flowchart-of-vc-cycle-analysis)
 
 <!-- /TOC -->
@@ -36,7 +36,7 @@
 
 ![vccycle_relation_instance](./uml/img/vccycle_relation_instance.jpg)
 
-### Class and Instance Relations of Class VCCycle
+### Class and Instance Relations of Classes
 
 ![vccycle_relations_all](./uml/img/vccycle_relations_all.jpg)
 

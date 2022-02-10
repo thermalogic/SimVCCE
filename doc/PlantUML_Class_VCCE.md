@@ -185,19 +185,19 @@ Device_SISO  <|-- ExpansionValve
 VCCycle "1" *-[#blue]- "1" Connector 
 VCCycle "1" o-- "1..*" Compressor 
 VCCycle "1" o-- "1..*" Condenser
-VCCycle "1" o-- "1..*" Evaporator
 VCCycle "1" o-- "1..*" ExpansionValve
+VCCycle "1" o-- "1..*" Evaporator
 
 Connector "1" *-[#blue]- "2..*" Port
 Compressor "1" *-[#blue]- "2" Port
+Condenser "1" *-[#blue]- "2" Port
 ExpansionValve "1" *-[#blue]- "2" Port
 Evaporator "1" *-[#blue]- "2" Port
-Condenser "1" *-[#blue]- "2" Port
 
-Device_SISO <|-[#green]- Compressor   
-Device_SISO <|-[#green]- Condenser    
-Device_SISO <|-[#green]-  Evaporator  
-Device_SISO <|-[#green]-ExpansionValve    
+Device_SISO <|-up[#green]- Compressor   
+Device_SISO <|-up[#green]- Condenser    
+Device_SISO <|-up[#green]-ExpansionValve    
+Device_SISO <|-up[#green]- Evaporator  
 ```
 ![vccycle_relations_all](./uml/img/vccycle_relations_all.jpg)
 

@@ -1,0 +1,35 @@
+digraph {
+rankdir=BT
+
+node [shape="record"]
+
+"Connector" -> "VCCycle"
+  [arrowhead="diamond", arrowtail="none",fontcolor="blue",
+  label="1..*", style="solid"]
+
+{ "Compressor",
+  "Condenser",
+  "ExpansionValve",
+  "Evaporator"
+  } -> "VCCycle"
+  [arrowhead="odiamond", arrowtail="none",fontcolor="blue",
+  label="1..*", style="solid",color="red"]
+
+"Port"-> {
+    "Connector",
+    "Compressor",
+    "Condenser",
+    "ExpansionValve",
+    "Evaporator"
+    }
+    [arrowhead="diamond", arrowtail="none",
+    fontcolor="blue",label="2", style="solid"]
+
+  { "Compressor",
+    "Condenser",
+    "ExpansionValve",
+    "Evaporator"
+    } ->"Device_SISO"
+     [arrowhead="empty", arrowtail="none",style="solid",color="green"];
+
+}
