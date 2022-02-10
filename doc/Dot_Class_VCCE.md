@@ -4,9 +4,10 @@
   - [Class Method or Field](#class-method-or-field)
     - [Visibility](#visibility)
     - [Scope](#scope)
-  - [Class and Instance Relationships](#class-and-instance-relationships)
-    - [Instance-level Relationships](#instance-level-relationships)
-    - [Class-level  Relationship](#class-level--relationship)
+  - [Class and Instance Relations](#class-and-instance-relations)
+    - [Instance Relations](#instance-relations)
+    - [Class Relation](#class-relation)
+    - [Class and Instance Relations](#class-and-instance-relations-1)
 
 ## Class Method or Field
 
@@ -71,9 +72,9 @@ charset="utf-8"
 
 ```
 
-##  Class and Instance Relationships
+##  Class and Instance Relations
 
-### Instance-level Relationships
+### Instance Relations
 
 * Composition： a filled diamond shape (diamond)
 * Aggregation： a filled diamond shape (odiamond)
@@ -106,7 +107,7 @@ node [shape="record"]
 } 
 ```
 
-### Class-level  Relationship
+### Class Relation
  
 * Inheritance： a hollow triangle shape(empty)
 
@@ -120,5 +121,45 @@ node [shape="record"]
     "Evaporator",
     "ExpansionValve"}->"Device_SISO"
      [arrowhead="empty", arrowtail="none",style="solid"];
+}
+```
+
+### Class and Instance Relations
+
+```dot
+digraph {
+rankdir=BT
+
+node [shape="record"]
+
+"Connector" -> "VCCycle"
+  [arrowhead="diamond", arrowtail="none",fontcolor="blue",
+  label="1..*", style="solid"]
+
+{ "Compressor",
+  "Condenser",
+  "ExpansionValve",
+  "Evaporator"
+  } -> "VCCycle"
+  [arrowhead="odiamond", arrowtail="none",fontcolor="blue",
+  label="1..*", style="solid",color="red"]
+
+"Port"-> {
+    "Connector",
+    "Compressor",
+    "Condenser",
+    "ExpansionValve",
+    "Evaporator"
+    }
+    [arrowhead="diamond", arrowtail="none",
+    fontcolor="blue",label="2", style="solid"]
+
+  { "Compressor",
+    "Condenser",
+    "ExpansionValve",
+    "Evaporator"
+    } ->"Device_SISO"
+     [arrowhead="empty", arrowtail="none",style="solid",color="green"];
+
 }
 ```
