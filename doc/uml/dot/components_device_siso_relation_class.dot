@@ -1,0 +1,10 @@
+digraph {
+rankdir=BT
+node [shape="record"]
+{
+   "Compressor",
+    "Condenser",
+    "Evaporator",
+    "ExpansionValve"}->"Device_SISO"
+     [arrowhead="empty", arrowtail="none",style="solid"];
+}

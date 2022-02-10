@@ -20,7 +20,7 @@ When you define methods or fields, you can use **characters** to define the **vi
 | Character | Visibility |
 | --------- | :--------: |
 | -         |  private   |
-| +         |   public   |
+| +         |  public   |
   
 
 ```puml
@@ -168,16 +168,16 @@ The class Inheritance Relationship  is  defined using the following symbol:
 <|--
 ```
 
-The Inheritance Relationship of components and Device_SISO
+The Inheritance Relationship of Device_SISO and components  
 
 ```puml
-Compressor <|-- Device_SISO  
-Condenser <|-- Device_SISO  
-Evaporator <|-- Device_SISO  
-ExpansionValve <|-- Device_SISO  
+Device_SISO  <|--Compressor  
+Device_SISO  <|-- Condenser  
+Device_SISO <|-- Evaporator   
+Device_SISO  <|-- ExpansionValve  
 ```
 
-![components and Device_SISO](./uml/img/components_device_siso_inheritance.jpg)
+![components_device_siso_inheritance](./uml/img/components_device_siso_inheritance.jpg)
 
 ## Class and Instance Relations 
 
@@ -194,12 +194,11 @@ ExpansionValve "1" *-[#blue]- "2" Port
 Evaporator "1" *-[#blue]- "2" Port
 Condenser "1" *-[#blue]- "2" Port
 
-Compressor <|-[#green]- Device_SISO  
-Condenser <|-[#green]- Device_SISO  
-Evaporator <|-[#green]- Device_SISO  
-ExpansionValve <|-[#green]- Device_SISO  
+Device_SISO <|-[#green]- Compressor   
+Device_SISO <|-[#green]- Condenser    
+Device_SISO <|-[#green]-  Evaporator  
+Device_SISO <|-[#green]-ExpansionValve    
 ```
-
 ![vccycle_relations_all](./uml/img/vccycle_relations_all.jpg)
 
 ## Package

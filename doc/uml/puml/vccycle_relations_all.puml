@@ -11,8 +11,8 @@ ExpansionValve "1" *-[#blue]- "2" Port
 Evaporator "1" *-[#blue]- "2" Port
 Condenser "1" *-[#blue]- "2" Port
 
-Compressor <|-[#green]- Device_SISO  
-Condenser <|-[#green]- Device_SISO  
-Evaporator <|-[#green]- Device_SISO  
-ExpansionValve <|-[#green]- Device_SISO  
+Device_SISO  <|-[#green]- Compressor  
+Device_SISO  <|-[#green]- Condenser
+Device_SISO  <|-[#green]-  Evaporator
+Device_SISO  <|-[#green]-   ExpansionValve
 @enduml

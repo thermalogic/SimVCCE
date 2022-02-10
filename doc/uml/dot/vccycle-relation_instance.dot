@@ -12,7 +12,7 @@ node [shape="record"]
   "Evaporator",
   "ExpansionValve"} -> "VCCycle"
   [arrowhead="odiamond", arrowtail="none",fontcolor="blue",
-  label="1..*", style="solid"]
+  label="1..*", style="solid",color="red"]
 
 "Port"-> {
     "Connector",
@@ -21,13 +21,5 @@ node [shape="record"]
     "Condenser",
     "Compressor"}
     [arrowhead="diamond", arrowtail="none",
-     fontcolor="blue",label="2", style="solid"]
-
-"Device_SISO"-> {
-   "Compressor",
-    "Condenser",
-    "Evaporator",
-    "ExpansionValve"}
-     [arrowhead="empty", arrowtail="none",style="solid",color="red"];
-
+    fontcolor="blue",label="2", style="solid"]
 }

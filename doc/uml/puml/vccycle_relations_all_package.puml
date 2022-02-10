@@ -11,8 +11,8 @@ components.ExpansionValve "1" *-[#blue]- "2" components.Port
 components.Evaporator "1" *-[#blue]- "2" components.Port
 components.Condenser "1" *-[#blue]- "2" components.Port
 
-components.Compressor <|-[#green]- components.Device_SISO  
-components.Condenser <|-[#green]- components.Device_SISO  
-components.Evaporator <|-[#green]- components.Device_SISO  
-components.ExpansionValve <|-[#green]- components.Device_SISO  
+components.Device_SISO   <|-[#green]- components.Compressor
+components.Device_SISO <|-[#green]-   components.Condenser
+components.Device_SISO  <|-[#green]-  components.Evaporator
+components.Device_SISO <|-[#green]-   components.ExpansionValve
 @enduml

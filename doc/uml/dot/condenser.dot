@@ -1,5 +1,5 @@
 digraph "classes" {
-rankdir=BT
+rankdir=TB
 charset="utf-8"
 "components.device_siso.Device_SISO" [color="black", fontcoor="black", 
               label="{Device_SISO|
@@ -19,7 +19,7 @@ charset="utf-8"
                + __str()__:str\l}",
                shape="record", style="solid"];
 
-"components.device_siso.Device_SISO"->"components.condenser.Condenser"[
+"components.condenser.Condenser"->"components.device_siso.Device_SISO"[
             arrowhead="empty", arrowtail="none",
             style="solid"];
 }
