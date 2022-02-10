@@ -14,32 +14,32 @@
 <!-- /TOC -->
 ## Port and Connector Class  
 
-![connector_port](./uml/img/connector_port.jpg)
+![connector_port](./img/connector_port.jpg)
 
 ## Component Classes
 
 ### Class Device_SISO 
 
-![device_siso](./uml/img/device_siso.jpg)
+![device_siso](./img/device_siso.jpg)
 
 ### Class Inheritance Relation of Device_SISO and Components
 
-![components and Device_SISO](./uml/img/components_device_siso_inheritance.jpg)
+![components and Device_SISO](./img/components_device_siso_inheritance.jpg)
 
 ### Instance Relation of Components and Port
 
-![component-port](./uml/img/components_port.jpg)
+![component-port](./img/components_port.jpg)
 
 ## Class VCCycle
 
 ### Class VCCycle and Instance Relations
 
-![vccycle_relation_instance](./uml/img/vccycle_relation_instance.jpg)
+![vccycle_relation_instance](./img/vccycle_relation_instance.jpg)
 
 ### Class and Instance Relations of Classes
 
-![vccycle_relations_all](./uml/img/vccycle_relations_all.jpg)
+![vccycle_relations_all](./img/vccycle_relations_all.jpg)
 
 ### Flowchart of VC Cycle Analysis
 
-![vcc_flowchart](./uml/img/vcc_flowchart.jpg)
+![vcc_flowchart](./img/vcc_flowchart.jpg)

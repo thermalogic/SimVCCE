@@ -41,7 +41,7 @@ class VCCycle {
  }
 ```
 
-![vcc_class](./uml/img/vcc_class.jpg)
+![vcc_class](./img/vcc_class.jpg)
 
 ### Scope
 
@@ -96,7 +96,7 @@ note right of Device_SISO::__str()__
   the string of the instance
 end note
 ```
-![device_siso](./uml/img/device_siso.jpg)
+![device_siso](./img/device_siso.jpg)
 
 ## Instance-level Relationships
 
@@ -138,7 +138,7 @@ Condenser "1" *-- "2" Port
 
 ```
 
-![components_port](./uml/img/components_port.jpg)
+![components_port](./img/components_port.jpg)
 
 ### Aggregation
 
@@ -157,7 +157,7 @@ VCRCycle "1" o-- "1" Condenser
 VCRCycle "1" o-- "1" Evaporator
 VCRCycle "1" o-- "1" ExpansionValve
 ```
-![vcc_components_aggregation](./uml/img/vcc_components_aggregation.jpg)
+![vcc_components_aggregation](./img/vcc_components_aggregation.jpg)
 
 
 ## Class-level Inheritance Relationship
@@ -177,7 +177,7 @@ Device_SISO <|-- Evaporator
 Device_SISO  <|-- ExpansionValve  
 ```
 
-![components_device_siso_inheritance](./uml/img/components_device_siso_inheritance.jpg)
+![components_device_siso_inheritance](./img/components_device_siso_inheritance.jpg)
 
 ## Class and Instance Relations 
 
@@ -199,7 +199,7 @@ Device_SISO <|-up[#green]- Condenser
 Device_SISO <|-up[#green]-ExpansionValve    
 Device_SISO <|-up[#green]- Evaporator  
 ```
-![vccycle_relations_all](./uml/img/vccycle_relations_all.jpg)
+![vccycle_relations_all](./img/vccycle_relations_all.jpg)
 
 ## Package
 
@@ -222,5 +222,5 @@ vcc ..> components : <<import>>
 @enduml
 ```
 
-![vcc_components](./uml/img/vcc_components.jpg)
+![vcc_components](./img/vcc_components.jpg)
 

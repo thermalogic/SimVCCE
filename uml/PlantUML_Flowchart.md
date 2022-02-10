@@ -70,7 +70,7 @@ end note
   Save  results to **text file**;
 ```
 
-![vcr_flowchart](./uml/img/vcc_flowchart.jpg)
+![vcr_flowchart](./img/vcc_flowchart.jpg)
 
 ## Simple action
 
