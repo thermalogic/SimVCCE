@@ -1,4 +1,4 @@
-@startwbs
+@startwbs SimVCCE
 * SimVCCE
 ** <vccpython>
 *** vccapp.py  **main app**\nvccapp_json.py  **main app using json**

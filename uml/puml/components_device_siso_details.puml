@@ -1,0 +1,68 @@
+@startuml components_device_siso details
+!theme  mars
+class Device_SISO {
+  + {static} devtype: str
+  + {static} energy: str
+  + name: str
+  + iPort: Port
+  + oPort: Port
+  + {static} Device_SISO(dictDev:dict)
+  + state()
+  + mass_balance()
+  + balance()
+  + __str()__:str
+}
+
+class Compressor {
+    + {static} devtype: str
+    + {static} energy: str
+    + ef: float
+    + Wc: float
+    + {static} Compressor(dictDev:dict)
+    + state()
+    + balance()
+    + __str()__:str
+}
+
+class Condenser {
+    + {static} devtype: str
+    + {static} energy: str
+    + Qout: float
+    + {static} Condenser(dictDev:dict)
+    + state()
+    + balance()
+    + __str()__:str
+}
+
+class Evaporator {
+    + {static} devtype: str
+    + {static} energy: str
+    + Qin: float
+    + {static} Evaporator(dictDev:dict)
+    + state()
+    + balance()
+    + __str()__:str
+}
+
+class ExpansionValve {
+    + {static} devtype: str
+    + {static} energy: str
+    + state()
+}
+
+
+Device_SISO  <|--Compressor  
+Device_SISO  <|-- Condenser  
+Device_SISO <|-- Evaporator   
+Device_SISO  <|-- ExpansionValve  
+
+note as dict
+dictDev
+{ "name": "*", 
+  "devtype": "*",
+  "iPort": {},
+  "oPort": {}}
+port
+{ "p": *,  "t":*,  "x":*,  "mdot": *}
+end note
+@enduml

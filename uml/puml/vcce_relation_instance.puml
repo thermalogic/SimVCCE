@@ -1,4 +1,4 @@
-@startuml
+@startuml instance relations
 VCCycle "1" *-[#blue]- "1" Connector
 VCCycle "1" o-- "1..*" Compressor
 VCCycle "1" o-- "1..*" Condenser

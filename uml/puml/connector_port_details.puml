@@ -1,4 +1,4 @@
-@startuml
+@startuml Port
 class Port {
   + {static} cycle_refrigerant : str=R134a
   + {static} w : int
@@ -17,6 +17,15 @@ class Port {
   + state()
   + __str()__:str
 }
+
+class Connector {
+  + nodes:Port[0..*]
+  + {static} Connector(dictconnector : dict, comps : dict of the devices)
+  - __combined_node_value(node : Port,port: Port)
+  - __add_node(index,portpairs : tuple,comps)
+}
+Connector"1" *-- "2..*" Port
+
 @enduml
 
 

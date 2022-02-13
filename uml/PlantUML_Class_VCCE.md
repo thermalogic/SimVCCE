@@ -17,10 +17,10 @@
 
 When you define methods or fields, you can use **characters** to define the **visibility** of the corresponding item:
 
-| Visibility | UML Character |Icon for field in PlantUML       |Icon for method in PlantUML|
-|:---------:|:--------: |:------------------------------------: |:------------------------: |
-| private   |  -        |  <font color="red">red □ </font>      |   <font color="red">red ■  </font>     |
-| public    |  +       |  <font color="green">green ○ </font>   |  <font color="green">green ●  </font>    |
+| Visibility | UML Character |Icon for field in PlantUML   |Icon for method in PlantUML|
+|:---------:|:--------: |:-------------------------------: |:------------------------: |
+| private   |  -       |     □       |  ■       |
+| public    |  +       |     ○       |   ●      |
   
 
 ```puml
@@ -40,8 +40,6 @@ class VCCycle {
        + __str__():str
  }
 ```
-
-![vcc_class](./img/vcc_class.jpg)
 
 ### Scope
 
@@ -96,7 +94,6 @@ note right of Device_SISO::__str()__
   the string of the instance
 end note
 ```
-![device_siso](./img/device_siso.jpg)
 
 ## Instance-level Relationships
 
@@ -135,10 +132,7 @@ Compressor "1" *-- "2" Port
 ExpansionValve "1" *-- "2" Port
 Evaporator "1" *-- "2" Port
 Condenser "1" *-- "2" Port
-
 ```
-
-![components_port](./img/components_port.jpg)
 
 ### Aggregation
 
@@ -157,7 +151,6 @@ VCRCycle "1" o-- "1" Condenser
 VCRCycle "1" o-- "1" Evaporator
 VCRCycle "1" o-- "1" ExpansionValve
 ```
-![vcc_components_aggregation](./img/vcc_components_aggregation.jpg)
 
 
 ## Class-level Inheritance Relationship
@@ -176,8 +169,6 @@ Device_SISO  <|-- Condenser
 Device_SISO <|-- Evaporator   
 Device_SISO  <|-- ExpansionValve  
 ```
-
-![components_device_siso_inheritance](./img/components_device_siso_inheritance.jpg)
 
 ## Class and Instance Relations 
 
@@ -199,7 +190,6 @@ Device_SISO <|-up[#green]- Condenser
 Device_SISO <|-up[#green]-ExpansionValve    
 Device_SISO <|-up[#green]- Evaporator  
 ```
-![vccycle_relations_all](./img/vccycle_relations_all.jpg)
 
 ## Package
 
@@ -221,6 +211,4 @@ package vcc {
 vcc ..> components : <<import>>
 @enduml
 ```
-
-![vcc_components](./img/vcc_components.jpg)
 

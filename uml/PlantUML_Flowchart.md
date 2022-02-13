@@ -70,8 +70,6 @@ end note
   Save  results to **text file**;
 ```
 
-![vcr_flowchart](./img/vcc_flowchart.jpg)
-
 ## Simple action
 
 Activities label starts with `:` and ends with `;`
