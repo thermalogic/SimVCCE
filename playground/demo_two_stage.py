@@ -24,7 +24,7 @@ from vcc.utils import OutFiles
 
 
 if __name__ == "__main__":
-    # add the newc omponents to compdict
+    # add the new components to compdict
     compdict[FlashChamber.devtype] = FlashChamber
     compdict[MixingChamber.devtype] = MixingChamber
 

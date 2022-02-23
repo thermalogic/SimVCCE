@@ -51,12 +51,12 @@ def csv_vars(refrigerants, x, y, FileName):
             writer.writerow(rowdict)
 
 
-def plot_vars(Coolants, x, y):
+def plot_vars(refrigerants, x, y):
     plt.title('Variance of Condenser Pressure on Coefficient of Performance')
     plt.xlabel('Pressure(MPa)')
     plt.ylabel('COP')
-    for i in range(len(Coolants)):
-        plt.plot(x, y[i], "-s", label=Coolants[i])
+    for i in range(len(refrigerants)):
+        plt.plot(x, y[i], "-s", label=refrigerants[i])
     plt.legend(loc="best")
     plt.show()
 
