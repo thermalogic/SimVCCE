@@ -18,8 +18,27 @@ $sudo make install
 
 ## Build and Run
 
+### make
+
 type `make` in the terminal of `./vcccpp`
 
 ```bash
 >make
+```
+### cmake
+
+### TDM-GCC-64 on Windows
+
+in terminal of build:
+
+```bash
+cmake .. -G "MinGW Makefiles" -D"CMAKE_MAKE_PROGRAM:PATH=C:/TDM-GCC-64/bin/make.exe" 
+```
+
+### GCC on Linux 
+
+in terminal of build:
+
+```bash
+cmake ..  
 ```

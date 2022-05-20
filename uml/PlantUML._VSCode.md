@@ -16,7 +16,7 @@ Install: Java, Graphviz
 
 * [Java](https://www.java.com/en/download/)
 
-* [Graphviz](https://plantuml.com/en/graphviz-dot)
+* [Graphviz](https://graphviz.org)
 
 ## Makedown and PlantUML
 
