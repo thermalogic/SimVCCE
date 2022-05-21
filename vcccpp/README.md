@@ -38,10 +38,10 @@ in the terminal of `./build`
 cmake ..  
 ```
 
-#### TDM-GCC-64 on Windows
+#### MinGW-GCC on Windows
 
 in the terminal of `./build`:
 
 ```bash
-cmake .. -G "MinGW Makefiles" -D"CMAKE_MAKE_PROGRAM:PATH=C:/TDM-GCC-64/bin/make.exe" 
+cmake .. -G "MinGW Makefiles"  
 ```
