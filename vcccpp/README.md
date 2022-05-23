@@ -25,7 +25,7 @@ $sudo make install
 type `make` in the terminal of `./vcccpp`
 
 ```bash
->make
+make
 ```
 
 ### cmake
