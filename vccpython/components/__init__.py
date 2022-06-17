@@ -10,6 +10,10 @@ from .compressor import Compressor
 from .condenser import Condenser
 from .expansionvalve import ExpansionValve
 from .evaporator import Evaporator
+# add the new device class
+from .flashchamber import FlashChamber
+from .mixingchamber import MixingChamber
+
 
 # ------------------------------------------------------------------------------
 # compdict
@@ -21,6 +25,9 @@ compdict = {
     Compressor.devtype: Compressor,
     Condenser.devtype: Condenser,
     ExpansionValve.devtype: ExpansionValve,
-    Evaporator.devtype: Evaporator
+    Evaporator.devtype: Evaporator,
+    #  add the new device class
+    FlashChamber.devtype:  FlashChamber,
+    MixingChamber.devtype:  MixingChamber
 }
 
