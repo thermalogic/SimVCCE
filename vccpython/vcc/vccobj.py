@@ -41,15 +41,15 @@ class VCCycle:
     
     def __component_simulator(self):
         """ calculate the state of ports """
-        # the ports state of device
+        # 2 the ports state of device
         for key in self.comps:
             self.comps[key].state()
 
-        # the nodes state of connectors
+        # 3 the nodes state of connectors
         for item in self.conns.nodes:
             if item.stateok == False:
                 item.state()
-
+        # 4 comps[key].balance()
         for curdev in self.comps:
             self.comps[curdev].balance()
     
