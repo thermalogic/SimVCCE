@@ -4,10 +4,14 @@ VCCycle "1" o-- "1..*" Compressor
 VCCycle "1" o-- "1..*" Condenser
 VCCycle "1" o-- "1..*" Evaporator
 VCCycle "1" o-- "1..*" ExpansionValve
+VCCycle "1" o-- "1" FlashChamber
+VCCycle "1" o-- "1" MixingChamber
 
 Connector "1" *-[#blue]- "2..*" Port
 Compressor "1" *-[#blue]- "2"  Port
 Condenser "1" *-[#blue]- "2" Port
 Evaporator "1" *-[#blue]- "2" Port
 ExpansionValve "1" *-[#blue]- "2" Port
+FlashChamber "1" *-[#blue]- "3" Port
+MixingChamber "1" *-[#blue]- "3" Port
 @enduml

@@ -128,10 +128,26 @@ class ExpansionValve {
  + iPort: Port
  + oPort: Port
 }
+
+class  FlashChamber {
+ + iPort: Port
+ + oPortV: Port
+ + oPortL: Port 
+}
+
+class MixingChamber {
+ + iPort0: Port
+ + iPort1: Port
+ + oPort: Port 
+}
+
 Compressor "1" *-- "2" Port
 ExpansionValve "1" *-- "2" Port
 Evaporator "1" *-- "2" Port
 Condenser "1" *-- "2" Port
+FlashChamber "1" *-- "3" Port
+MixingChamber "1" *-- "3" Port
+
 ```
 
 ### Aggregation
@@ -145,11 +161,13 @@ o--
 The Aggregation and Compositionrelation of VCR Cycle and it's components 
 
 ```puml
-VCRCycle "1" *-[#blue]- "1" Connector 
-VCRCycle "1" o-- "1" Compressor 
-VCRCycle "1" o-- "1" Condenser
-VCRCycle "1" o-- "1" Evaporator
-VCRCycle "1" o-- "1" ExpansionValve
+VCCycle "1" *-[#blue]- "1" Connector 
+VCCycle "1" o-- "1" Compressor 
+VCCycle "1" o-- "1" Condenser
+VCCycle "1" o-- "1" Evaporator
+VCCycle "1" o-- "1" ExpansionValve
+VCCycle "1" o-- "1" FlashChamber
+VCCycle "1" o-- "1" MixingChamber
 ```
 
 
@@ -178,12 +196,16 @@ VCCycle "1" o-- "1..*" Compressor
 VCCycle "1" o-- "1..*" Condenser
 VCCycle "1" o-- "1..*" ExpansionValve
 VCCycle "1" o-- "1..*" Evaporator
+VCCycle "1" o-- "1" FlashChamber
+VCCycle "1" o-- "1" MixingChamber
 
 Connector "1" *-[#blue]- "2..*" Port
 Compressor "1" *-[#blue]- "2" Port
 Condenser "1" *-[#blue]- "2" Port
 ExpansionValve "1" *-[#blue]- "2" Port
 Evaporator "1" *-[#blue]- "2" Port
+FlashChamber "1" *-[#blue]- "3" Port
+MixingChamber "1" *-[#blue]- "3" Port
 
 Device_SISO <|-up[#green]- Compressor   
 Device_SISO <|-up[#green]- Condenser    
@@ -202,6 +224,8 @@ package components {
   class Condenser
   class Evaporator
   class ExpansionValve
+  class FlashChamber
+  class MixingChamber
 }
 package vcc {
   class VCRCycle   

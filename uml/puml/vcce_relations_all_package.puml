@@ -3,13 +3,17 @@ vcc.VCCycle "1" *-[#blue]- "1" vcc.Connector
 vcc.VCCycle "1" o-- "1..*" components.Compressor 
 vcc.VCCycle "1" o-- "1..*" components.Condenser
 vcc.VCCycle "1" o-- "1..*" components.Evaporator
-vcc.VCCycle "1" o-- "1..*" components.ExpansionValve
+vcc.VCCycle "1" o-- "1..*" components.FlashChamber
+vcc.VCCycle "1" o-- "1..*" components.MixingChamber
 
 vcc.Connector "1" *-[#blue]- "2..*" components.Port
 components.Compressor "1" *-[#blue]- "2" components.Port
 components.ExpansionValve "1" *-[#blue]- "2" components.Port
 components.Evaporator "1" *-[#blue]- "2" components.Port
 components.Condenser "1" *-[#blue]- "2" components.Port
+components.FlashChamber "1" *-- "3" components.Port
+components.MixingChamber "1" *-- "3" components.Port
+
 
 components.Device_SISO   <|-up[#green]- components.Compressor
 components.Device_SISO <|-up[#green]-   components.Condenser
