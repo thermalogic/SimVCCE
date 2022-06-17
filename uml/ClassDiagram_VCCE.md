@@ -6,8 +6,6 @@
     - [Class Device_SISO](#class-device_siso)
     - [Class Inheritance Relation of Device_SISO and Components](#class-inheritance-relation-of-device_siso-and-components)
     - [Instance Relation of Components and Port](#instance-relation-of-components-and-port)
-  - [Class VCCycle](#class-vccycle)
-    - [Class VCCycle and Instance Relations](#class-vccycle-and-instance-relations)
     - [Class and Instance Relations of Classes](#class-and-instance-relations-of-classes)
     - [Flowchart of VC Cycle Analysis](#flowchart-of-vc-cycle-analysis)
 
@@ -30,11 +28,6 @@
 
 ![component-port](./img/components_port.jpg)
 
-## Class VCCycle
-
-### Class VCCycle and Instance Relations
-
-![vccycle_relation_instance](./img/vccycle_relation_instance.jpg)
 
 ### Class and Instance Relations of Classes
 
