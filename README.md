@@ -38,7 +38,7 @@ Yunus A. Cengel, Michael A. Boles,Thermodynamics: An Engineering Approach, 8th E
   
 * using JSON File of the Cycle Flowsheet and Data
 
-   * [./vccpython/vccapp_json.appn](./vccpython/vccapp_json.app) 
+   * [./vccpython/vccapp_json.app](./vccpython/vccapp_json.app) 
 
 EXAMPLE 11–1 The Ideal Vapor-Compression Refrigeration  Cycle
 
