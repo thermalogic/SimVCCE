@@ -6,8 +6,12 @@
     - [Scope](#scope)
   - [Instance-level Relationships](#instance-level-relationships)
     - [Composition](#composition)
+      - [The Composition relation of Compressor and Port's instance](#the-composition-relation-of-compressor-and-ports-instance)
+      - [The Composition relation of Port and Connector's instance](#the-composition-relation-of-port-and-connectors-instance)
     - [Aggregation](#aggregation)
+      - [The Aggregation and Compositionrelation of VCR Cycle and it's components](#the-aggregation-and-compositionrelation-of-vcr-cycle-and-its-components)
   - [Class-level Inheritance Relationship](#class-level-inheritance-relationship)
+    - [The Inheritance Relationship of Device_SISO and components](#the-inheritance-relationship-of-device_siso-and-components)
   - [Class and Instance Relations](#class-and-instance-relations)
   - [Package](#package)
 
@@ -109,7 +113,7 @@ For cardinality, you can use double-quotes `" "` on each side of the relation.
 
 It is possible to add a label on the relation, using `:`, followed by the text of the label.
 
-The Composition relation of Compressor and Port's instance
+#### The Composition relation of Compressor and Port's instance
 
 ```puml
 class Compressor {
@@ -134,6 +138,37 @@ Evaporator "1" *-- "2" Port
 Condenser "1" *-- "2" Port
 ```
 
+#### The Composition relation of Port and Connector's instance
+
+```puml
+class Port {
+  + {static} cycle_refrigerant : str=R134a
+  + {static} w : int
+  + {static} title : str
+  + {static} pairs : dict
+  + refrigerant : str
+  + index : int
+  + p : float
+  + t : float
+  + x : float
+  + h : float
+  + s : float
+  + mdot : float
+  + stateok:bool
+  + {static} Port(dictnode : dict)
+  + state()
+  + __str()__:str
+}
+
+class Connector {
+  + nodes:Port[0..*]
+  + {static} Connector(dictconnector : dict, comps : dict of the devices)
+  - __combined_node_value(node : Port,port: Port)
+  - __add_node(index,portpairs : tuple,comps)
+}
+Connector"1" *-- "2..*" Port
+```
+
 ### Aggregation
 
 The Aggregation Relationship is  defined using the following symbol:
@@ -142,7 +177,7 @@ The Aggregation Relationship is  defined using the following symbol:
 o-- 
 ```
 
-The Aggregation and Compositionrelation of VCR Cycle and it's components 
+#### The Aggregation and Compositionrelation of VCR Cycle and it's components 
 
 ```puml
 VCRCycle "1" *-[#blue]- "1" Connector 
@@ -161,7 +196,7 @@ The class Inheritance Relationship  is  defined using the following symbol:
 <|--
 ```
 
-The Inheritance Relationship of Device_SISO and components  
+### The Inheritance Relationship of Device_SISO and components 
 
 ```puml
 Device_SISO  <|--Compressor  
@@ -211,4 +246,5 @@ package vcc {
 vcc ..> components : <<import>>
 @enduml
 ```
+
 

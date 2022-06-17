@@ -1,4 +1,4 @@
-# USinng PlantUML in VS Code
+# PlantUML in VS Code
 
 ## VS Code Extensions
 
@@ -18,7 +18,7 @@ Install: Java, Graphviz
 
 * [Graphviz](https://graphviz.org)
 
-## Makedown and PlantUML
+## Markdown and PlantUML
 
 * [markdown-preview-enhanced: text diagrams](https://shd101wyy.github.io/markdown-preview-enhanced/#/zh-cn/diagrams)
 

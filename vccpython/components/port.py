@@ -22,8 +22,11 @@ class Port:
 
     def __init__(self, dictnode):
         """ create the node object"""
-        self.refrigerant = Port.cycle_refrigerant
         self.index = None
+        if ("refrigerant" in dictnode):
+           self.refrigerant = dictnode["refrigerant"]
+        else:
+           self.refrigerant = Port.cycle_refrigerant
         self.p = None
         self.t = None
         self.h = None

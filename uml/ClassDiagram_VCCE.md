@@ -9,7 +9,7 @@
   - [Class VCCycle](#class-vccycle)
     - [Class VCCycle and Instance Relations](#class-vccycle-and-instance-relations)
     - [Class and Instance Relations of Classes](#class-and-instance-relations-of-classes)
-    - [Flowchart of VC Cycle Analysis](#flowchart-of-vc-cycle-analysis)
+  - [Flowchart of VC Cycle Analysis](#flowchart-of-vc-cycle-analysis)
 
 <!-- /TOC -->
 ## Port and Connector Class  
@@ -40,6 +40,6 @@
 
 ![vccycle_relations_all](./img/vccycle_relations_all.jpg)
 
-### Flowchart of VC Cycle Analysis
+## Flowchart of VC Cycle Analysis
 
 ![vcc_flowchart](./img/vcc_flowchart.jpg)

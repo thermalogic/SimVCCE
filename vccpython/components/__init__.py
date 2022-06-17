@@ -1,7 +1,7 @@
 """
 General Object-oriented Abstraction of VC Cycle 
 
-   Components Package  : port and devices
+   Components Package: port and devices
    
  Author: Cheng Maohua cmh@seu.edu.cn    
 """
@@ -11,10 +11,11 @@ from .condenser import Condenser
 from .expansionvalve import ExpansionValve
 from .evaporator import Evaporator
 
+
 # ------------------------------------------------------------------------------
 # compdict
-#  typedev: class
-#     Note: add  typedev: class to the dict after you add the new device class
+#      devtype : class
+# Note: add devtype of the class to the dict after you add the new device class
 # --------------------------------------------------------------------------------
 
 compdict = {
@@ -23,4 +24,3 @@ compdict = {
     ExpansionValve.devtype: ExpansionValve,
     Evaporator.devtype: Evaporator
 }
-
