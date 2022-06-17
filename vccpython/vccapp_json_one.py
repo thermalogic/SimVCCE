@@ -15,6 +15,7 @@ from vcc.utils import OutFiles
 if __name__ == "__main__":
     import sys
     jsonname=sys.argv[1]
+    #  jsonname="ivcr_11_1.json"
 
     curpath = os.path.abspath(os.path.dirname(__file__))
     json_filename = curpath+'\\'+'jsonmodel/'+jsonname
