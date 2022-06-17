@@ -40,38 +40,19 @@ class VCCycle:
         self.conns = Connector(dictcycle["connectors"], self.comps)
     
     def __component_simulator(self):
-        state_nodes = self.conns.nodes.copy()
+        """ calculate the state of ports """
+        # the ports state of device
+        for key in self.comps:
+            self.comps[key].state()
 
-        keys = list(self.comps.keys())
-        deviceok = False
-        CountsDev = len(self.comps)
-        i = 0  # i: the count of deviceok to avoid endless loop
-        while (deviceok == False and i <= CountsDev):
-            for curdev in keys:
-                try:
-                    # step 2: the port state: thermal process
-                    self.comps[curdev].state()
+        # the nodes state of connectors
+        for item in self.conns.nodes:
+            if item.stateok == False:
+                item.state()
 
-                    # step 3  the port state: new port's parameter pairs
-                    for port in state_nodes:
-                        if port.stateok == False:
-                            port.state()
-                            if port.state() == True:
-                                state_nodes.remove(port)
-
-                    # step 4: the port state ：the energy and mass balance
-                    self.comps[curdev].balance()
-                    keys.remove(curdev)
-                except:
-                    pass
-
-            i += 1
-            if (len(keys) == 0):
-                deviceok = True
-
-        if len(keys) > 0:
-            print(keys)  # for debug
-
+        for curdev in self.comps:
+            self.comps[curdev].balance()
+    
     def simulator(self):
         self.__component_simulator()
 
