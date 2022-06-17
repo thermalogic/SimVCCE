@@ -5,18 +5,14 @@ Branch 1: The Ideal Vapor-Compression Refrigeration Cycles
 - [SimVCCE](#simvcce)
     - [Prerequisites：CoolProp, phyprops](#prerequisitescoolprop-phyprops)
   - [The Vapor-Compression Cycle Examples](#the-vapor-compression-cycle-examples)
-    - [1 The Ideal Vapor-Compression Refrigeration Cycles](#1-the-ideal-vapor-compression-refrigeration-cycles)
+    - [The Ideal Vapor-Compression Refrigeration Cycles](#the-ideal-vapor-compression-refrigeration-cycles)
   
 The SimVCCE is the vapor-compression refrigeration and heat pump cycle steady-state simulator for education.
 
-The simulator is available in Python, C++ and Modelica with sequential-modular approach
-
-* branch: **B2022**`: 
+The simulator is available in Python, C++ with sequential-modular approach
   
   *  [Python](./vccpython)
   *  [C++](./vcccpp)
-
-* branch **sm-port-conn**: Python, C++ and Modelica
 
 We wish that SimVCCE may be a helpful vehicle for you to understand the object-oriented programming and improve programming skills
 
@@ -33,7 +29,7 @@ python -m pip install phyprops
 
 Yunus A. Cengel, Michael A. Boles,Thermodynamics: An Engineering Approach, 8th Edition, McGraw-Hill.2015
 
-### 1 The Ideal Vapor-Compression Refrigeration Cycles
+### The Ideal Vapor-Compression Refrigeration Cycles
 
 * using the Python Module for the Cycle Flowsheet and Data
 
