@@ -2,19 +2,20 @@ ifneq ($(OS),Windows_NT)
 	UNAME_S := $(shell uname -s)
 endif
 
+SRC=./src/
 BIN=./bin/
 INC=./include/
 LIBFLAGS=-L./bin -lCoolProp
 CFLAGES=-std=c++17 -O3 -DCOOLPROP_LIB 
 
 SRCS=./demovcc.cpp \
-	./src/vcc.cpp \
-	./src/port.cpp \
-	./src/connector.cpp \
-	./src/compressor.cpp \
-	./src/condenser.cpp \
-	./src/evaporator.cpp \
-	./src/expansionvalve.cpp 
+	$(SRC)/vcc.cpp \
+	$(SRC)/port.cpp \
+	$(SRC)/connector.cpp \
+	$(SRC)/compressor.cpp \
+	$(SRC)/condenser.cpp \
+	$(SRC)/evaporator.cpp \
+	$(SRC)/expansionvalve.cpp 
 
 OUTFILE=$(BIN)demovcc
 
@@ -22,7 +23,7 @@ all: $(OUTFILE)
 	$(OUTFILE)
 
 $(OUTFILE): $(SRCS)  
-	g++ $(CFLAGES) -o $@ $^ -I$(INC) $(LIBFLAGS)
+	g++ $(CFLAGES) -o $@ $^ -I$(INC) -I$(SRC) $(LIBFLAGS)
 
 run:
 	$(OUTFILE)
