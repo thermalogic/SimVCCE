@@ -2,7 +2,7 @@
 """
 General Object-oriented Abstraction of VC Cycle 
 
-   python vccapp_json_one.py jsonfilename_of_cycle  
+   python vccapp_json_one.py ivcr_11_1.json  
 
 Author: Cheng Maohua cmh@seu.edu.cn
 """
@@ -15,10 +15,10 @@ from vcc.utils import OutFiles
 if __name__ == "__main__":
     import sys
     jsonname=sys.argv[1]
-    #  jsonname="ivcr_11_1.json"
+    #jsonname="ivcr_11_1.json"
 
     curpath = os.path.abspath(os.path.dirname(__file__))
-    json_filename = curpath+'\\'+'jsonmodel/'+jsonname
+    json_filename = curpath+'/jsonmodel/'+jsonname
     with open(json_filename, 'r') as f:
         thedictcycle = json.loads(f.read())
   
