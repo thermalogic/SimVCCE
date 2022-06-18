@@ -23,7 +23,7 @@ all: $(OUTFILE)
 	$(OUTFILE)
 
 $(OUTFILE): $(SRCS)  
-	g++ $(CFLAGES) -o $@ $^ -I$(INC) -I$(SRC) $(LIBFLAGS)
+	g++ $(CFLAGES) -o $@ $^  $(LIBFLAGS) -I$(INC) -I$(SRC)
 
 run:
 	$(OUTFILE)
