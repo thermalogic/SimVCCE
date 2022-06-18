@@ -24,7 +24,7 @@ if __name__ == "__main__":
     curpath = os.path.abspath(os.path.dirname(__file__))
     ResultFilePath = curpath+'/result/'
 
-    json_filenames_str = curpath+'\\'+'./jsonmodel/*.json'
+    json_filenames_str = curpath+'/jsonmodel/*.json'
     json_filenames = glob.glob(json_filenames_str)
 
     for i in range(len(json_filenames)):
