@@ -10,7 +10,7 @@ if(MSVC)
    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc /Wv:18")
 endif()
 
-include_directories(include) 
+include_directories(include src) 
 link_directories(bin)
 aux_source_directory(./src/ SRC)
 
