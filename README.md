@@ -6,6 +6,7 @@ Branch 1: The Ideal Vapor-Compression Refrigeration Cycles
     - [Prerequisites：CoolProp, phyprops](#prerequisitescoolprop-phyprops)
   - [The Vapor-Compression Cycle Examples](#the-vapor-compression-cycle-examples)
     - [The Ideal Vapor-Compression Refrigeration Cycles](#the-ideal-vapor-compression-refrigeration-cycles)
+    - [2 Performance Analysis of VCR cycle under Variable Conditions](#2-performance-analysis-of-vcr-cycle-under-variable-conditions)
   
 The SimVCCE is the vapor-compression refrigeration and heat pump cycle steady-state simulator for education.
 
@@ -25,6 +26,7 @@ python -m pip install coolprop
 ```bash
 python -m pip install phyprops
 ```
+
 ## The Vapor-Compression Cycle Examples
 
 Yunus A. Cengel, Michael A. Boles,Thermodynamics: An Engineering Approach, 8th Edition, McGraw-Hill.2015
@@ -55,4 +57,28 @@ If the mass flow rate of the refrigerant is 0.05 kg/s,
 * (c) the COP of the refrigerator.
 
 ![ivcr-11-1](./img/ivcr_11_1.jpg)
+
+### 2 Performance Analysis of VCR cycle under Variable Conditions
+
+```
+./vccpython/vccapp_json_one_var.py)
+```
+The ideal vapor-compression refrigeration cycle of [Vapor-compression refrigeration simulation and tutorial](https://peer.asee.org/vapor-compression-refrigeration-simulation-and-tutorial.pdf)
+
+* the evaporator pressure is maintained constant at 0.12MPa
+* the mass flow rate of refrigerant is 1 kg/s.
+
+**Variable conditions**
+
+* **refrigerants**: R12,R134a,R22
+
+* **condenser pressures**:0.4, 0.5, 0.6, 0.7, 0.8, 0.9,0.1, 1.4 MPa.
+
+**Analysis**
+
+Calculate the COP of the ideal vapor-compression refrigeration cycle 
+
+* **Save** the results to the csv file
+
+* **Plot** the COPs against the condenser pressure
 
