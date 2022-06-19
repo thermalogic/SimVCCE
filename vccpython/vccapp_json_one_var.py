@@ -42,7 +42,7 @@ def csv_vars(refrigerants, x, y, FileName):
             rowdict = {}
             rowdict['Condenser_Pressure'] = f"{x[i]:.2f}"
             for j in range(len(refrigerants)):
-                rowdict["COP("+refrigerants[j] +")"] = f"{y[j][i]:.2f}"
+                rowdict["COP("+refrigerants[j] + ")"] = f"{y[j][i]:.2f}"
             writer.writerow(rowdict)
 
 
@@ -59,7 +59,7 @@ def plot_vars(refrigerants, x, y):
 if __name__ == "__main__":
     import sys
     #jsonname = sys.argv[1]
-    jsonname="ivcr_11_1.json"
+    jsonname = "ivcr_11_1.json"
 
     curpath = os.path.abspath(os.path.dirname(__file__))
     json_filename = curpath+'/jsonmodel/'+jsonname
@@ -88,21 +88,23 @@ if __name__ == "__main__":
                     device["oPort"]["p"] = var
                     break
 
-             # the simulator
+            # the simulator
             cycle = VCCycle(newdictcycle)
             cycle.simulator()
             cur_result.append(cycle.cop)
+
             # output to console
-            OutFiles(cycle)
+            # OutFiles(cycle)
             # output to the file
-            ResultFileName = ResultFilePath + \
-                thedictcycle['name']+"_"+cant+"_"+str(i+1)+"_"
-            OutFiles(cycle, ResultFileName + '.txt')
+            # ResultFileName = ResultFilePath + \
+            #    thedictcycle['name']+"_"+cant+"_"+str(i+1)+"_"
+            #OutFiles(cycle, ResultFileName + '.txt')
+
         # after the analysis
         results.append(cur_result)
 
     # save to csv
-    CSVFileName = ResultFilePath + thedictcycle['name']+".csv"
+    CSVFileName = ResultFilePath + thedictcycle['name']+"_var.csv"
     csv_vars(refrigerants, cdpressures["oPort"]["p"], results, CSVFileName)
     # plot
     plot_vars(refrigerants, cdpressures["oPort"]["p"], results)
