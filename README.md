@@ -6,7 +6,8 @@ Branch 2 : The Ideal Vapor-Compression and Multistage Compression Refrigeration
     - [Prerequisites：CoolProp, phyprops](#prerequisitescoolprop-phyprops)
   - [The Vapor-Compression Cycle Examples](#the-vapor-compression-cycle-examples)
     - [1 The Ideal Vapor-Compression Refrigeration Cycles](#1-the-ideal-vapor-compression-refrigeration-cycles)
-    - [2 Multistage Compression Refrigeration](#2-multistage-compression-refrigeration)
+    - [2 Performance Analysis of VCR cycle under Variable Conditions](#2-performance-analysis-of-vcr-cycle-under-variable-conditions)
+    - [3 Multistage Compression Refrigeration](#3-multistage-compression-refrigeration)
 
 The SimVCCE is the vapor-compression refrigeration and heat pump cycle steady-state simulator for education.
 
@@ -54,8 +55,31 @@ If the mass flow rate of the refrigerant is 0.05 kg/s,
 
 ![ivcr-11-1](./img/ivcr_11_1.jpg)
 
-### 2 Multistage Compression Refrigeration 
+### 2 Performance Analysis of VCR cycle under Variable Conditions
 
+```
+./vccpython/vccapp_json_one_var.py
+```
+The ideal vapor-compression refrigeration cycle of [Vapor-compression refrigeration simulation and tutorial](https://peer.asee.org/vapor-compression-refrigeration-simulation-and-tutorial.pdf)
+
+* the evaporator pressure is maintained constant at 0.12MPa
+* the mass flow rate of refrigerant is 1 kg/s.
+
+**Variable conditions**
+
+* **refrigerants**: R12,R134a,R22
+
+* **condenser pressures**:0.4, 0.5, 0.6, 0.7, 0.8, 0.9,0.1, 1.4 MPa.
+
+**Analysis**
+
+Calculate the COP of the ideal vapor-compression refrigeration cycle 
+
+* **Save** the results to the csv file
+
+* **Plot** the COPs against the condenser pressure
+
+### 3 Multistage Compression Refrigeration 
 
 EXAMPLE 11–5 A Two-Stage Refrigeration Cycle with a Flash Chamber
 
