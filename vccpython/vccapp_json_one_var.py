@@ -59,7 +59,7 @@ def plot_vars(refrigerants, x, y):
 if __name__ == "__main__":
     import sys
     #jsonname = sys.argv[1]
-    jsonname="ivcr_11_1.json"
+    jsonname="ivcr_var.json"
 
     curpath = os.path.abspath(os.path.dirname(__file__))
     json_filename = curpath+'/jsonmodel/'+jsonname
