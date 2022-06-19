@@ -92,17 +92,18 @@ if __name__ == "__main__":
             cycle = VCCycle(newdictcycle)
             cycle.simulator()
             cur_result.append(cycle.cop)
+           
             # output to console
-            OutFiles(cycle)
+            #OutFiles(cycle)
             # output to the file
-            ResultFileName = ResultFilePath + \
-                thedictcycle['name']+"_"+cant+"_"+str(i+1)+"_"
-            OutFiles(cycle, ResultFileName + '.txt')
+            #ResultFileName = ResultFilePath + \
+            #    thedictcycle['name']+"_"+cant+"_"+str(i+1)+"_"
+            #OutFiles(cycle, ResultFileName + '.txt')
         # after the analysis
         results.append(cur_result)
 
     # save to csv
-    CSVFileName = ResultFilePath + thedictcycle['name']+".csv"
+    CSVFileName = ResultFilePath + thedictcycle['name']+"_var.csv"
     csv_vars(refrigerants, cdpressures["oPort"]["p"], results, CSVFileName)
     # plot
     plot_vars(refrigerants, cdpressures["oPort"]["p"], results)
