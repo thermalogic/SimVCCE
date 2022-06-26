@@ -25,9 +25,6 @@ all: $(OUTFILE)
 $(OUTFILE): $(SRCS)  
 	g++ $(CFLAGES) -o $@ $^  $(LIBFLAGS) -I$(INC) -I$(SRC)
 
-run:
-	$(OUTFILE)
-
 ifneq ($(OS),Windows_NT)
     ifeq ($(UNAME_S),Linux)
         SONAME=libCoolProp.so.6
