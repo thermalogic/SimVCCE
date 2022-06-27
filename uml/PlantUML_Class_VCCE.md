@@ -17,10 +17,10 @@
 
 When you define methods or fields, you can use **characters** to define the **visibility** of the corresponding item:
 
-| Visibility | UML Character |Icon for field in PlantUML   |Icon for method in PlantUML|
-|:---------:|:--------: |:-------------------------------: |:------------------------: |
-| private   |  -       |     □       |  ■       |
-| public    |  +       |     ○       |   ●      |
+| Visibility | UML Character |Icon for field in PlantUML |Icon for method in PlantUML|
+|:----------:|:--------:|:-------------------------------:|:------------------------: |
+| private    |  -       |     □     |  ■    |
+| public     |  +       |     ○     |  ●    |
   
 
 ```puml
