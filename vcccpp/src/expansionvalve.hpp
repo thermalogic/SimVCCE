@@ -7,7 +7,7 @@
 
 #include "common.hpp"
 
-class ExpansionValve : public CompBase
+class ExpansionValve : public CompSISO
 {
 public:
    // methods

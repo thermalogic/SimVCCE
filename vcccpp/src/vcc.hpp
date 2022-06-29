@@ -2,7 +2,7 @@
   vccycleport.hpp
     
 - The Factory Method Pattern: 
-     typedef std::map<std::string, std::function<CompBase *(umComponent, mapPort)>> compfactory;
+     typedef std::map<std::string, std::function<CompSISO *(umComponent, mapPort)>> compfactory;
      class ClassReg
 */
 
@@ -19,7 +19,7 @@
 #include <typeinfo>
 #include <functional>
 
-typedef std::map<std::string, std::function<CompBase *(umComponent)>> compfactory;
+typedef std::map<std::string, std::function<CompSISO *(umComponent)>> compfactory;
 
 class ClassReg
 {

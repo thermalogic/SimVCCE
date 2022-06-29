@@ -7,7 +7,7 @@
 
 #include "common.hpp"
 
-class Compressor : public CompBase
+class Compressor : public CompSISO
 {
 public:
   

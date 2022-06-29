@@ -27,7 +27,7 @@ typedef tuple<string,string> tupPort;
 typedef tuple<tupPort,tupPort> tupConnector;
 typedef map<string, Port *> mapPortObj;
 
-class CompBase
+class CompSISO
 {
 public:
   string name;
@@ -43,7 +43,7 @@ public:
   
 };
 
-typedef unordered_map<string, CompBase *> mComponentObj;
+typedef unordered_map<string, CompSISO *> mComponentObj;
 
 template <typename T>
 string to_string_with_precision(const T a_value, const int n = 6)

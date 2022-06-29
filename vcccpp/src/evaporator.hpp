@@ -7,7 +7,7 @@
 
 #include "common.hpp"
 
-class Evaporator : public CompBase
+class Evaporator : public CompSISO
 {
 public:
     double Qin;

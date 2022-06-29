@@ -7,7 +7,7 @@
 
 #include "common.hpp"
 
-class Condenser : public CompBase
+class Condenser : public CompSISO
 {
 public:
   // methods
