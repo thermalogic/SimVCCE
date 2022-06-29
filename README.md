@@ -10,11 +10,10 @@ Branch 1: The Ideal Vapor-Compression Refrigeration Cycles
   
 The SimVCCE is the vapor-compression refrigeration and heat pump cycle steady-state simulator for education.
 
-The simulator is available in Python, C++ with sequential-modular approach
+The simulator is available in Python with sequential-modular approach
   
   *  [Python](./vccpython)
-  *  [C++](./vcccpp)
-
+ 
 We wish that SimVCCE may be a helpful vehicle for you to understand the object-oriented programming and improve programming skills
 
 ### Prerequisites：CoolProp, phyprops
