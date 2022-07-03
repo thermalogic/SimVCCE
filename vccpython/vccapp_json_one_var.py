@@ -9,7 +9,7 @@ Assume
 
 refrigerants: R12,R134a,R22
 
-Condenser pressures: 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,0.1, 1.4 MPa
+Condenser pressures: 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,1.0, 1.4 MPa
 
 Calculate the COP of the refrigeration cycle
 
