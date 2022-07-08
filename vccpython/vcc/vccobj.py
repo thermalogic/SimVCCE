@@ -38,7 +38,7 @@ class VCCycle:
 
         # 2 set the nodes value and alias between the item of nodes and the port of devices
         self.conns = Connector(dictcycle["connectors"], self.comps)
-    
+
     def __component_simulator(self):
         state_nodes = self.conns.nodes.copy()
 
@@ -94,7 +94,7 @@ class VCCycle:
         curtime = strftime("%Y/%m/%d %H:%M:%S", localtime(time()))
         result = f"\nThe Vapor-Compression Cycle: {self.name} ({curtime} by {getuser()})\n"
         result += f"\nRefrigerant: {self.cycle_refrigerant}\n"
-        
+
         rusult_items = {'Compression Work(kW): ': self.Wc,
                         'Refrigeration Capacity(kW): ': self.Qin,
                         '\tCapacity(ton): ': self.Qin*60*(1/211),
