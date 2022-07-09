@@ -4,7 +4,6 @@ from simvcce.vcc.vccobj import VCCycle
 app = Flask(__name__)
 
 cycles  = []
-thedictcycle={}
 
 @app.get("/simvcce")
 def get_simvcce():
@@ -26,3 +25,6 @@ def add_simvcce():
         result = jsonify(simvcce)
         return result, 201
     return {"error": "Request must be JSON"}, 415
+
+if __name__ == '__main__':
+    app.run(debug=True)
