@@ -1,6 +1,12 @@
 # The Simple RESTFul Web Server in Flask**
 
-Prerequisites：simvcce
+## Prerequisites
+
+* simvcce
+
+* flask,requests
+
+## Code
 
 * The Service: `app.py`
   
