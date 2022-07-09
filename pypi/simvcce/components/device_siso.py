@@ -39,3 +39,12 @@ class Device_SISO:
         result += '\n' + " iPort " + self.iPort.__str__()
         result += '\n' + " oPort " + self.oPort.__str__()
         return result
+    
+    def __iter__(self):
+        """ the dict of the object """
+        dictobj = {'name': self.name,
+                   'iPort': dict(self.iPort),
+                   'oPort': dict(self.oPort)
+                   }
+        for key, value in dictobj.items():
+            yield (key, value) 

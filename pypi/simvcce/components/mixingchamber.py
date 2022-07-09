@@ -62,3 +62,14 @@ class MixingChamber:
         result += '\n' + " iPort1 " + self.iPort1.__str__()
         result += '\n' + "  oPort " + self.oPort.__str__()
         return result
+   
+    def __iter__(self):
+        """ the dict of the object """
+        dictobj = {'name': self.name,
+                   'iPort0': dict(self.iPort0),
+                   'iPort1': dict(self.iPort1),
+                   'oPort': dict(self.oPort)
+                   }
+
+        for key, value in dictobj.items():
+            yield (key, value)

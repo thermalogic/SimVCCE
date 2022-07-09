@@ -104,3 +104,15 @@ class VCCycle:
         for name, value in rusult_items.items():
             result += f'{name:>35} {value:{">5.2f" if type(value) is float else ""}}\n'
         return result
+
+    def __iter__(self):
+        """ the dict of the object """
+        dictobj = {'CompressionWork(kW)': self.Wc,
+                   'RefrigerationCapacity(kW)': self.Qin,
+                   'The heat transfer rate(kW)': self.Qout,
+                   'The coefficient of performance': self.cop,
+                   'The coefficient of performance(heat pump)': self.cop_hp
+                   }
+
+        for key, value in dictobj.items():
+            yield (key, value)

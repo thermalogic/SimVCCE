@@ -66,3 +66,14 @@ class FlashChamber:
         result += '\n' + " oPortV " + self.oPortV.__str__()
         result += '\n' + " oPortL " + self.oPortL.__str__()
         return result
+
+    def __iter__(self):
+        """ the dict of the object """
+        dictobj = {'name': self.name,
+                   'iPort': dict(self.iPort),
+                   'oPortV': dict(self.oPortV),
+                   'oPortL': dict(self.oPortL)
+                   }
+
+        for key, value in dictobj.items():
+            yield (key, value)

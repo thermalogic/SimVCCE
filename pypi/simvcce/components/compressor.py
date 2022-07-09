@@ -57,3 +57,15 @@ class Compressor(Device_SISO):
         result += f'\nThe compressor efficiency(%): \t{self.ef:{">.2%" if self.ef is not None else ""}}'
         result += f'\nWc(kW): \t{self.Wc:{">.2f" if type(self.Wc) is float else ""}}'
         return result
+
+    def __iter__(self):
+        """ the dict of the object """
+        dictobj = {'name': self.name,
+                   'iPort': dict(self.iPort),
+                   'oPort': dict(self.oPort),
+                   'ef': self.ef,
+                   'wc': self.Wc
+                   }
+
+        for key, value in dictobj.items():
+            yield (key, value)    

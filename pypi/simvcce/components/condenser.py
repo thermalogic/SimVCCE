@@ -42,3 +42,14 @@ class Condenser(Device_SISO):
         result = super().__str__()
         result += f'\nQout(kW): \t{self.Qout:{">.2f" if type(self.Qout) is float else ""}}'
         return result
+    
+    def __iter__(self):
+        """ the dict of the object """
+        dictobj = {'name': self.name,
+                   'iPort': dict(self.iPort),
+                   'oPort': dict(self.oPort),
+                   'Qout': self.Qout
+                   }
+
+        for key, value in dictobj.items():
+            yield (key, value)

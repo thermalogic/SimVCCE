@@ -39,3 +39,14 @@ class Evaporator(Device_SISO):
         result = super().__str__()
         result += f'\nQin(kW): \t{self.Qin:{">.2f" if type(self.Qin) is float  else ""}}'
         return result
+    
+    def __iter__(self):
+        """ the dict of the object """
+        dictobj = {'name': self.name,
+                   'iPort': dict(self.iPort),
+                   'oPort': dict(self.oPort),
+                   'Qin': self.Qin
+                    }
+
+        for key, value in dictobj.items():
+            yield (key, value)    

@@ -67,3 +67,18 @@ class Port:
         for value, fstr in out_strs.items():
             result += f' {value:^{Port.w}{fstr}}' if type(value) is float else f'{5*"-":>10s}'
         return result
+
+
+    def __iter__(self):
+        """ the dict of the object """
+        objdict = {'refrigerant': self.refrigerant,
+               'id': self.index,
+               'p': self.p,
+               't': self.t,
+               'h': self.h,
+               's': self.s,
+               'x': self.x,
+               'mdot': self.mdot
+               }
+        for key, value in objdict.items():
+            yield (key, value)

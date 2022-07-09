@@ -24,8 +24,12 @@ def add_simvcce():
         thedictcycle = request.get_json()
         cycle = VCCycle(thedictcycle)
         cycle.simulator()
-        resultdict=OutDict(cycle)
-        simvcce = thedictcycle | resultdict
+        #  devices
+        dict_devs={}
+        for key in cycle.comps.keys():
+          dict_devs[key] =dict(cycle.comps[key])
+        # cycle
+        simvcce = dict_devs | dict(cycle)
         cycles.append(simvcce)
         result = jsonify(simvcce)
         return result, 201
