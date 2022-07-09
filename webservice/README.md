@@ -8,7 +8,7 @@
 
 ## Code
 
-* The Service: `app.py`
+* The Server: `app.py`
   
 * The Client: `client.py`
  
