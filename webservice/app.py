@@ -3,7 +3,7 @@ from simvcce.vcc.vccobj import VCCycle
 
 app = Flask(__name__)
 
-cycles  = []
+cycles  = [{}]
 
 @app.get("/simvcce")
 def get_simvcce():
@@ -21,7 +21,7 @@ def add_simvcce():
           dict_devs[key] =dict(cycle.comps[key])
         # cycle
         simvcce = dict_devs | dict(cycle)
-        cycles.append(simvcce)
+        cycles[0]=simvcce
         result = jsonify(simvcce)
         return result, 201
     return {"error": "Request must be JSON"}, 415
