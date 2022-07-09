@@ -24,8 +24,8 @@ import matplotlib.pyplot as plt
 import csv
 import json
 
-from vcc.utils import OutFiles
-from vcc.vccobj import VCCycle
+from simvcce.vcc.utils import OutFiles
+from simvcce.vcc.vccobj import VCCycle
 
 
 def csv_vars(refrigerants, x, y, FileName):

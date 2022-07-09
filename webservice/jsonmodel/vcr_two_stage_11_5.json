@@ -1,0 +1,108 @@
+{
+    "name": "The_TWO_STAGE_11_5",
+    "refrigerant": "R134a",
+    "components": [
+        {
+            "name": "Compressor_HP",
+            "devtype": "COMPRESSOR",
+            "iPort": {
+                "p": 0.32,
+                "mdot": 1.0
+            },
+            "oPort": {
+                "p": 0.8
+            },
+            "ef": 1.0
+        },
+        {
+            "name": "Compressor_LP",
+            "devtype": "COMPRESSOR",
+            "iPort": {
+                "p": 0.14
+            },
+            "oPort": {
+                "p": 0.32
+            },
+            "ef": 1.0
+        },
+        {
+            "name": "ExpansionValve1",
+            "devtype": "EXPANSIONVALVE",
+            "iPort": {
+                "p": 0.8,
+                "x": 0.0
+            },
+            "oPort": {
+                "p": 0.32
+            }
+        },
+        {
+            "name": "ExpansionValve2",
+            "devtype": "EXPANSIONVALVE",
+            "iPort": {
+                "p": 0.32
+            },
+            "oPort": {}
+        },
+        {
+            "name": "Condenser",
+            "devtype": "CONDENSER",
+            "iPort": {
+                "p": 0.8
+            },
+            "oPort": {
+                "p": 0.8,
+                "x": 0.0
+            }
+        },
+        {
+            "name": "Flash_Chamber",
+            "devtype": "FLASH_CHAMBER",
+            "iPort": {
+                "p": 0.32
+            },
+            "oPortL": {
+                "p": 0.32,
+                "x": 0.0
+            },
+            "oPortV": {
+                "p": 0.32,
+                "x": 1.0
+            }
+        },
+        {
+            "name": "Evaporator",
+            "devtype": "EVAPORATOR",
+            "iPort": {},
+            "oPort": {
+                "p": 0.14,
+                "x": 1.0
+            }
+        },
+        {
+            "name": "Mixing_Chamber",
+            "devtype": "MIXING_CHAMBER",
+            "iPort0": {
+                "p": 0.32,
+                "x": 1
+            },
+            "iPort1": {
+                "p": 0.32
+            },
+            "oPort": {
+                "p": 0.32
+            }
+        }
+    ],
+    "connectors": {
+        "Compressor_HP.oPort": "Condenser.iPort",
+        "Condenser.oPort": "ExpansionValve1.iPort",
+        "ExpansionValve1.oPort": "Flash_Chamber.iPort",
+        "Flash_Chamber.oPortV": "Mixing_Chamber.iPort0",
+        "Flash_Chamber.oPortL": "ExpansionValve2.iPort",
+        "ExpansionValve2.oPort": "Evaporator.iPort",
+        "Evaporator.oPort": "Compressor_LP.iPort",
+        "Compressor_LP.oPort": "Mixing_Chamber.iPort1",
+        "Mixing_Chamber.oPort": "Compressor_HP.iPort"
+    }
+}

@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
-from vcc.vccobj import VCCycle
-import json
+from vccpython.vcc.vccobj import VCCycle
 
 def OutDict(cycle):
     result_items = {'CompressionWork(kW)': cycle.Wc,
@@ -10,8 +9,6 @@ def OutDict(cycle):
                     'The coefficient of performance': cycle.cop,
                     'The coefficient of performance(heat pump)': cycle.cop_hp}
     return result_items
-
-
 app = Flask(__name__)
 
 cycles  = []

@@ -9,8 +9,8 @@ General Object-oriented Abstraction of VC Cycle
 from time import time, localtime, strftime
 from getpass import getuser
 
-from components import compdict
-from components.port import Port
+from simvcce.components import compdict
+from simvcce.components.port import Port
 from .connector import Connector
 
 
