@@ -2,16 +2,15 @@
 
 Branch 3 : The Ideal Vapor-Compression and Multistage Compression Refrigeration
 
-**The Simple RESTFul Web Server in Flask**
-
-./webservice/
-
-* The Service: `app.py`
-  
-* The Client: `client.py`
+* [The Package： simvcce](./pypi/)
+ 
+* [The RESTFul Web Server in Flask](./webservice/)
+ 
+---
  
 - [SimVCCE](#simvcce)
     - [Prerequisites：CoolProp, phyprops](#prerequisitescoolprop-phyprops)
+    - [Install simvcce](#install-simvcce)
   - [The Vapor-Compression Cycle Examples](#the-vapor-compression-cycle-examples)
     - [1 The Ideal Vapor-Compression Refrigeration Cycles](#1-the-ideal-vapor-compression-refrigeration-cycles)
     - [2 Performance Analysis of VCR cycle under Variable Conditions](#2-performance-analysis-of-vcr-cycle-under-variable-conditions)
@@ -21,7 +20,7 @@ The SimVCCE is the vapor-compression refrigeration and heat pump cycle steady-st
 
 The simulator is available in Python, C++ with sequential-modular approach
 
-  *  [Python](./vccpython)
+  *  [Python's Package:simvcce](./simvcce)
   *  [C++](./vcccpp)
 
 We wish that SimVCCE may be a helpful vehicle for you to understand the object-oriented programming and improve programming skills
@@ -35,6 +34,21 @@ python -m pip install coolprop
 ```bash
 python -m pip install phyprops
 ```
+
+### Install simvcce
+
+in the terminal of pypi
+
+```bash
+python setup install
+```
+or
+
+```
+python -m build
+python -m pip install ./dist/simvcce-1.0.0-py3-none-any.whl
+```
+
 ## The Vapor-Compression Cycle Examples
 
 Yunus A. Cengel, Michael A. Boles,Thermodynamics: An Engineering Approach, 8th Edition, McGraw-Hill.2015

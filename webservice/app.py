@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from vccpython.vcc.vccobj import VCCycle
+from simvcce.vcc.vccobj import VCCycle
 
 def OutDict(cycle):
     result_items = {'CompressionWork(kW)': cycle.Wc,

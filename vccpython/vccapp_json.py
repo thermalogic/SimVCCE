@@ -17,8 +17,8 @@ Run:
 import os
 import glob
 import json
-from vcc.vccobj import VCCycle
-from vcc.utils import OutFiles
+from simvcce.vcc.vccobj import VCCycle
+from simvcce.vcc.utils import OutFiles
 
 if __name__ == "__main__":
     curpath = os.path.abspath(os.path.dirname(__file__))

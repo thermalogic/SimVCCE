@@ -14,7 +14,8 @@ with open(json_filename, 'r') as f:
     result = response.json()
     pprint.pprint(result)
     print(response.status_code)
-#
+
+# get
 print("\nrequests.get\n")
 response = requests.get(api_url)
 pprint.pprint(response.json())

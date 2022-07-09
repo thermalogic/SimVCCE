@@ -6,8 +6,7 @@ General Object-oriented Abstraction of VC Cycle
  Author: Cheng Maohua cmh@seu.edu.cn
 """
 import sys
-import json
-from components.port import Port
+from simvcce.components.port import Port
 
 
 def OutFiles(cycle, outfilename=None):
