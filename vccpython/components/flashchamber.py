@@ -23,7 +23,7 @@ json example:
         },
      
 """
-from components.port import Port
+from .port import Port
 
 class FlashChamber:
     energy = "none"

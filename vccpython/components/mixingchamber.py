@@ -23,7 +23,7 @@ MixingChamber
         }
 """
 
-from components.port import Port
+from .port import Port
 
 
 class MixingChamber:

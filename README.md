@@ -1,12 +1,6 @@
 # SimVCCE
 
-Branch 3 : The Ideal Vapor-Compression and Multistage Compression Refrigeration
-
-**The Simple RESTFul Web Server in Flask**
-  
-* The Service: `app.py`
-  
-* The Client: `client.py`
+Branch 2 : The Ideal Vapor-Compression and Multistage Compression Refrigeration
  
 - [SimVCCE](#simvcce)
     - [Prerequisites：CoolProp, phyprops](#prerequisitescoolprop-phyprops)
