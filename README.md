@@ -4,7 +4,7 @@ Branch 3 : The Ideal Vapor-Compression and Multistage Compression Refrigeration
 
 * [The Package： simvcce](./pypi/)
  
-* [The RESTFul Web Server in Flask](./webservice/)
+* [The RESTful Web Server in Flask](./webservice/)
  
 ---
  

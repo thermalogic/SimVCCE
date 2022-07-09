@@ -1,4 +1,4 @@
-# The Simple RESTFul Web Server in Flask**
+# The Simple RESTful Web Server in Flask
 
 ## Prerequisites
 
