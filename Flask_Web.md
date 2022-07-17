@@ -40,7 +40,7 @@ python client.py
 or 
 
 ```bash
-$curl  https://simvcce.herokuapp.com/simvcce POST -d @./jsonmodel/ivcr_11_1.json --header "Content-Type: application/json"
+curl  https://simvcce.herokuapp.com/simvcce -d @./jsonmodel/ivcr_11_1.json --header "Content-Type: application/json"
 ```
 
 **Note:** The URL in the above is Remote Web Service.
