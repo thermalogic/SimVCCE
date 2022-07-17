@@ -21,7 +21,7 @@
 
 In the terminal of ./webservice/
 ```bash
-python appt.py
+python app.py
 ```
 * https://127.0.0.1:5000/simvcce
  
