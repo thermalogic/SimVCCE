@@ -5,9 +5,7 @@ Branch 3 : The Ideal Vapor-Compression and Multistage Compression Refrigeration
 * [The Package：simvcce](./pypi/)
 
 * [The Web Server with Flask](./webservice/)
-
-  * The URL of Web Service: https://simvcce.herokuapp.com/simvcce
-
+ 
 ---
  
 - [SimVCCE](#simvcce)
