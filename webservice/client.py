@@ -1,7 +1,8 @@
 import requests
 import pprint
 
-api_url = "http://127.0.0.1:5000/simvcce"
+api_url = "https://simvcce.herokuapp.com/simvcce"
+# api_url = "http://127.0.0.1:5000/simvcce"
 json_filename = './jsonmodel/ivcr_11_1.json'
 
 # post

@@ -2,13 +2,15 @@
 
 Branch 3 : The Ideal Vapor-Compression and Multistage Compression Refrigeration
 
-* [The Package： simvcce](./pypi/)
+* [The Package：simvcce](./pypi/)
  
-* [The RESTful Web Server in Flask](./webservice/)
- 
+* [The Web Server with Flask](./webservice/)
+  
+   * The URL of Online Web Service: https://simvcce.herokuapp.com/simvcce
 ---
  
 - [SimVCCE](#simvcce)
+  - [* The URL of Online Web Service: https://simvcce.herokuapp.com/simvcce](#-the-url-of-online-web-service-httpssimvcceherokuappcomsimvcce)
     - [Prerequisites：CoolProp, phyprops](#prerequisitescoolprop-phyprops)
     - [Install simvcce](#install-simvcce)
   - [The Vapor-Compression Cycle Examples](#the-vapor-compression-cycle-examples)
@@ -37,16 +39,8 @@ python -m pip install phyprops
 
 ### Install simvcce
 
-in the terminal of pypi
-
-```bash
-python setup install
 ```
-or
-
-```
-python -m build
-python -m pip install ./dist/simvcce-1.0.0-py3-none-any.whl
+python -m pip install simvcce
 ```
 
 ## The Vapor-Compression Cycle Examples
