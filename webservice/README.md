@@ -1,7 +1,5 @@
 # The Simple Web Server with Flask
 
-* ./webservice/
-
 ## Prerequisites
 
 * Server: simvcce, flask
@@ -9,7 +7,7 @@
 
 ## Codes
 
-* The Server: `app.py`
+* The Server: `./webservice/server`
   
 * The Client: `client.py`
 
@@ -19,11 +17,13 @@
 
 **Local Web Service**
 
-In the terminal of ./webservice/
+In the terminal of `./webservice/server`
+
 ```bash
 python app.py
 ```
-* https://127.0.0.1:5000/simvcce
+
+* URL: https://127.0.0.1:5000/simvcce
  
 **Remote Web Service** 
 
