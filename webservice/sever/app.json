@@ -1,0 +1,8 @@
+{
+  "name": "SimVCCE",
+  "description": "The vapor-compression refrigeration cycle steady-state simulator for education",
+  "image": "heroku/python",
+  "repository": "https://github.com/thermalogic/SimVCCE",
+  "keywords": ["python", "flask" ],
+  "stack": "heroku-22" 
+}

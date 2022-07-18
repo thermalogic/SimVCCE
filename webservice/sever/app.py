@@ -3,8 +3,13 @@ from simvcce.vcc.vccobj import VCCycle
 
 app = Flask(__name__)
 
-cycles  = [{}]
+cycles  = [{"Hi": "Please use the POST request with JSON"}]
 
+
+@app.route("/")
+def hello_world():
+    return "<p>Hello, Here is the SimVCCE service, the service route is /simvcce</p>"
+    
 @app.get("/simvcce")
 def get_simvcce():
     return jsonify(cycles)
@@ -27,4 +32,4 @@ def add_simvcce():
     return {"error": "Request must be JSON"}, 415
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

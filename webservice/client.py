@@ -1,9 +1,13 @@
 import requests
 import pprint
+import os
 
 api_url = "https://simvcce.herokuapp.com/simvcce"
-# api_url = "http://127.0.0.1:5000/simvcce"
-json_filename = './jsonmodel/ivcr_11_1.json'
+# api_url = "http://127.0.0.1:5000/simvcce"  #local web service
+
+jsonname = "ivcr_11_1.json"
+curpath = os.path.abspath(os.path.dirname(__file__))
+json_filename = curpath+'/jsonmodel/'+jsonname
 
 # post
 print("requests.post\n")
