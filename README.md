@@ -1,44 +1,46 @@
 # SimVCCE
 
-Branch 3 : The Ideal Vapor-Compression and Multistage Compression Refrigeration
-
-* [The Package：simvcce](./pypi/)
-
-* [The Web Server with Flask](./webservice/)
- 
----
- 
-- [SimVCCE](#simvcce)
-    - [Prerequisites：CoolProp, phyprops](#prerequisitescoolprop-phyprops)
-    - [Install simvcce](#install-simvcce)
-  - [The Vapor-Compression Cycle Examples](#the-vapor-compression-cycle-examples)
-    - [1 The Ideal Vapor-Compression Refrigeration Cycles](#1-the-ideal-vapor-compression-refrigeration-cycles)
-    - [2 Performance Analysis of VCR cycle under Variable Conditions](#2-performance-analysis-of-vcr-cycle-under-variable-conditions)
-    - [3 Multistage Compression Refrigeration](#3-multistage-compression-refrigeration)
+**Branch 3** 
 
 The SimVCCE is the vapor-compression refrigeration and heat pump cycle steady-state simulator for education.
 
 The simulator is available in Python, C++ with sequential-modular approach
 
-  *  [Python's Package:simvcce](./simvcce)
-  *  [C++](./vcccpp)
+*  [Python Package](./simvcce)
+*  [The Web Server with Flask](./webservice/)
+*  [C++](./vcccpp)
 
 We wish that SimVCCE may be a helpful vehicle for you to understand the object-oriented programming and improve programming skills
 
-### Prerequisites：CoolProp, phyprops
+---
+ 
+- [SimVCCE](#simvcce)
+  - [Install simvcce](#install-simvcce)
+  - [Examples of using SimVCCE package](#examples-of-using-simvcce-package)
+  - [Using Remote Web Service](#using-remote-web-service)
+  - [The Vapor-Compression Cycle Examples](#the-vapor-compression-cycle-examples)
+    - [1 The Ideal Vapor-Compression Refrigeration Cycles](#1-the-ideal-vapor-compression-refrigeration-cycles)
+    - [2 Performance Analysis of VCR cycle under Variable Conditions](#2-performance-analysis-of-vcr-cycle-under-variable-conditions)
+    - [3 Multistage Compression Refrigeration](#3-multistage-compression-refrigeration)
 
-```bash
-python -m pip install coolprop
-```
-
-```bash
-python -m pip install phyprops
-```
-
-### Install simvcce
+## Install simvcce
 
 ```
 python -m pip install simvcce
+```
+
+## Examples of using SimVCCE package 
+
+* [./vccpython/](./vccpython/) 
+
+## Using Remote Web Service 
+
+* https://simvcce.herokuapp.com/simvcce 
+
+In the terminal of ./webservice/
+
+```bash
+curl  https://simvcce.herokuapp.com/simvcce -d @./jsonmodel/ivcr_11_1.json --header "Content-Type: application/json"
 ```
 
 ## The Vapor-Compression Cycle Examples
@@ -46,14 +48,6 @@ python -m pip install simvcce
 Yunus A. Cengel, Michael A. Boles,Thermodynamics: An Engineering Approach, 8th Edition, McGraw-Hill.2015
 
 ### 1 The Ideal Vapor-Compression Refrigeration Cycles
-
-* using the Python Module for the Cycle Flowsheet and Data
-
-  * [./vccpython/vccapp.py](./vccpython/vccapp.py) 
-  
-* using JSON File of the Cycle Flowsheet and Data
-
-   * [./vccpython/vccapp_json.app](./vccpython/vccapp_json.app) 
 
 EXAMPLE 11–1 The Ideal Vapor-Compression Refrigeration  Cycle
 
