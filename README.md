@@ -1,6 +1,6 @@
 # SimVCCE
 
-Branch 2 : The Ideal Vapor-Compression and Multistage Compression Refrigeration
+Branch 2 : The Ideal Vapor-Compression and **Multistage** Compression Refrigeration
  
 - [SimVCCE](#simvcce)
     - [Prerequisites：CoolProp, phyprops](#prerequisitescoolprop-phyprops)
@@ -14,7 +14,6 @@ The SimVCCE is the vapor-compression refrigeration and heat pump cycle steady-st
 The simulator is available in Python, C++ with sequential-modular approach
 
   *  [Python](./vccpython)
-  *  [C++](./vcccpp)
 
 We wish that SimVCCE may be a helpful vehicle for you to understand the object-oriented programming and improve programming skills
 
