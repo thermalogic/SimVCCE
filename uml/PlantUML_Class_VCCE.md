@@ -82,7 +82,7 @@ note left of Device_SISO::Device_SISO(dictDev:dict)
     "oPort": {}}
 end note
 note right of Device_SISO::state
-  get port state by thremal process
+  get port state by thermal process
 end note
 note right of Device_SISO::mass_balance()
   mass balance

@@ -95,13 +95,13 @@ class VCCycle:
         result = f"\nThe Vapor-Compression Cycle: {self.name} ({curtime} by {getuser()})\n"
         result += f"\nRefrigerant: {self.cycle_refrigerant}\n"
 
-        rusult_items = {'Compression Work(kW): ': self.Wc,
+        result_items = {'Compression Work(kW): ': self.Wc,
                         'Refrigeration Capacity(kW): ': self.Qin,
                         '\tCapacity(ton): ': self.Qin*60*(1/211),
                         'The heat transfer rate(kW): ': self.Qout,
                         'The coefficient of performance: ': self.cop,
                         'The coefficient of performance(heat pump):': self.cop_hp}
-        for name, value in rusult_items.items():
+        for name, value in result_items.items():
             result += f'{name:>35} {value:{">5.2f" if type(value) is float else ""}}\n'
         return result
 

@@ -2,7 +2,7 @@
 """
 General Object-oriented Abstraction of VC Cycle 
 
-The ideal vaporcompression refrigeration cycle:
+The ideal vapor-compression refrigeration cycle:
 Assume
 * the evaporator pressure is maintained constant at 0.12MPa
 * the mass flow rate of refrigerant is 1 kg/s.

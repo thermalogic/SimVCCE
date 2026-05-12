@@ -31,7 +31,7 @@ class FlashChamber:
 
     def __init__(self, dictDev):
         """
-        Initializes lashChamber
+        Initializes FlashChamber
         """
         self.name = dictDev['name']
         self.iPort = Port(dictDev['iPort'])
