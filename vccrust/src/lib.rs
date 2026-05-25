@@ -11,7 +11,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! simvcc = "0.1.0"
+//! simvcc = "0.1.4"
 //! ```
 //!
 //! ## Quick Start
@@ -36,8 +36,9 @@
 //!
 //! # Key Design Principles
 //!
-//! 1. **Node Sharing** — Connected component ports share the same memory, ensuring state consistency across the cycle.
-//! 2. **Component Calculation Order Detection** — No fixed order required; the algorithm automatically discovers the correct processing sequence.
+//! 1. **Node Sharing** — Connected component ports share the same memory via `Rc<RefCell<Port>>`, ensuring state consistency across the cycle.
+//! 2. **Component Calculation Order Detection** — No fixed order required; the algorithm automatically discovers the correct processing sequence using iterative `Result`-based error handling.
+//! 3. **SISOComponent Abstraction** — Common SISO component fields and logic are encapsulated in a shared [`SISOComponent`] struct, reducing code duplication.
 //!
 //! # Component Implementations
 //!

@@ -2,7 +2,7 @@
 
 ## Vapor Compression Refrigeration Cycle Simulator in Rust
 
-**Version**: 0.1.0  
+**Version**: 0.1.4  
 **Author**: Cheng Maohua <cmh@seu.edu.cn>  
 **License**: MIT  
 **Repository**: https://github.com/thermalogic/SimVCCE
@@ -100,9 +100,10 @@ src/
 ├── lib.rs               # Crate root and public API
 ├── vcc.rs               # VCCycle simulator and algorithm
 ├── common/
-│   └── mod.rs           # Port, CompSISO trait, FFI bindings, utilities
+│   └── mod.rs           # CompSISO trait, type aliases, utilities, SimulationError
 ├── components/
 │   ├── mod.rs           # Component module re-exports
+│   ├── siso_component.rs # Shared SISOComponent struct and logic
 │   ├── compressor.rs    # Compressor model
 │   ├── condenser.rs     # Condenser model
 │   ├── evaporator.rs    # Evaporator model
@@ -110,10 +111,22 @@ src/
 ├── core/
 │   ├── mod.rs           # Core module re-exports
 │   ├── connector.rs     # Node sharing connector
-│   └── port.rs          # Port re-export
+│   └── port.rs          # Port thermodynamic state
 └── utils/
     ├── mod.rs           # Utils module re-exports
     └── json_loader.rs   # JSON configuration parser
+
+tests/
+├── common_tests.rs          # Common module tests
+├── port_tests.rs            # Port tests
+├── connector_tests.rs       # Connector tests
+├── siso_component_tests.rs  # SISOComponent tests
+├── compressor_tests.rs      # Compressor tests
+├── condenser_tests.rs       # Condenser tests
+├── evaporator_tests.rs      # Evaporator tests
+├── expansion_valve_tests.rs # Expansion valve tests
+├── vcc_tests.rs             # VCCycle integration tests
+└── json_loader_tests.rs     # JSON loader tests
 ```
 
 ### 3.2 Dependency Graph
@@ -123,22 +136,25 @@ main.rs
   └── JSONLoader (utils/json_loader.rs)
         └── VCCycle (vcc.rs)
               ├── Connector (core/connector.rs)
-              │     └── Port (common/mod.rs)
+              │     └── Port (core/port.rs)
               │           └── CoolProp FFI
               └── Components (components/*.rs)
-                    └── CompSISO trait (common/mod.rs)
-                          └── Port (common/mod.rs)
+                    └── SISOComponent (components/siso_component.rs)
+                          └── CompSISO trait (common/mod.rs)
+                                └── Port (core/port.rs)
 ```
 
 ### 3.3 Key Abstractions
 
 | Abstraction | Role |
 |---|---|
-| `Port` | Thermodynamic state at a connection point |
+| `Port` | Thermodynamic state at a connection point (defined in `core/port.rs`) |
 | `CompSISO` | Trait for Single-Input Single-Output components |
+| `SISOComponent` | Shared struct encapsulating common SISO component fields and logic |
 | `Connector` | Manages node sharing between component ports |
 | `VCCycle` | Orchestrates simulation and aggregates results |
 | `JSONLoader` | Parses JSON configuration into VCCycle instances |
+| `SimulationError` | Error type for simulation operations (not fatal — signals "not ready yet") |
 
 ---
 
@@ -146,7 +162,7 @@ main.rs
 
 ### 4.1 Port
 
-The `Port` struct is the fundamental data structure representing the thermodynamic state of the working fluid at a connection point:
+The `Port` struct is the fundamental data structure representing the thermodynamic state of the working fluid at a connection point. It is defined in `core/port.rs`:
 
 ```rust
 pub struct Port {
@@ -158,7 +174,7 @@ pub struct Port {
     pub s: f64,              // Entropy (kJ/kg·K)
     pub x: f64,              // Quality
     pub mdot: f64,           // Mass flow rate (kg/s)
-    pub stateok: bool,       // Whether state is fully determined
+    pub state_ok: bool,      // Whether state is fully determined
     pub index: usize,        // Node index in connector's list
 }
 ```
@@ -180,22 +196,46 @@ The `state()` method attempts to resolve an unresolved port by trying `ps()`, `p
 The `CompSISO` (Single-Input Single-Output) trait defines the interface for all cycle components:
 
 ```rust
-pub trait CompSISO: PortDict + PortDictMut + AsAny {
-    fn setportaddress(&mut self);
-    fn state(&mut self);
-    fn balance(&mut self);
-    fn resultstring(&self) -> String;
+pub trait CompSISO: PortDict + PortDictMut {
+    fn set_port_address(&mut self);
+    fn state(&mut self) -> Result<(), SimulationError>;
+    fn balance(&mut self) -> Result<(), SimulationError>;
+    fn result_string(&self) -> String;
     fn name(&self) -> &str;
     fn energy(&self) -> &str;
+    fn energy_value(&self) -> f64;
 }
 ```
 
-**Panic Convention**: The `state()` and `balance()` methods are expected to **panic** when required input data is not yet available (i.e., when critical port properties are NaN). This is not an error condition — it is a deliberate signaling mechanism that tells the `component_simulator` to defer processing of this component until upstream data becomes available.
+**Error Convention**: The `state()` and `balance()` methods return `Err(SimulationError)` when required input data is not yet available (i.e., when critical port properties are NaN). This is not a fatal error — it is a deliberate signaling mechanism that tells the `component_simulator` to defer processing of this component until upstream data becomes available. This replaces the previous panic-based control flow, eliminating the need for `catch_unwind` and panic hook suppression.
 
-### 4.3 Supporting Traits
+### 4.3 SISOComponent Struct
 
-- **`PortDict`** / **`PortDictMut`**: Provide read/write access to a component's port dictionary (`HashMap<String, *mut Port>`).
-- **`AsAny`**: Enables runtime type downcasting from `Box<dyn CompSISO>` to concrete component types, used during result aggregation.
+The `SISOComponent` struct encapsulates the shared fields and logic common to all SISO components. It is defined in `components/siso_component.rs`:
+
+```rust
+pub struct SISOComponent {
+    pub name: String,
+    pub energy: String,
+    pub i_port: PortRef,     // Rc<RefCell<Port>>
+    pub o_port: PortRef,     // Rc<RefCell<Port>>
+    pub portdict: HashMap<String, PortRef>,
+}
+```
+
+Each concrete component (Compressor, Condenser, Evaporator, ExpansionValve) embeds this struct and only implements the component-specific `state()` and `balance()` methods. `SISOComponent` provides shared methods:
+
+- `new()` — Creates a new SISOComponent from a JSON configuration
+- `set_port_address()` — Updates i_port/o_port from portdict (after node sharing)
+- `propagate_mdot()` — Propagates mass flow rate between ports
+- `get_enthalpies()` — Returns the enthalpy values of both ports
+- `mdot()` — Returns the mass flow rate from the input port
+- `port_result_string()` — Returns a formatted header string with port states
+
+### 4.4 Supporting Traits
+
+- **`PortDict`** / **`PortDictMut`**: Provide read/write access to a component's port dictionary (`HashMap<String, Rc<RefCell<Port>>>`).
+- **`SimulationError`**: Error type implementing `std::error::Error`, used to signal that a component is not yet ready for processing.
 
 ---
 
@@ -207,11 +247,11 @@ pub trait CompSISO: PortDict + PortDictMut + AsAny {
 
 The compressor model assumes an ideal isentropic compression process:
 
-1. **`state()`**: Sets `oPort.s = iPort.s`. Panics if `iPort.s` is NaN.
+1. **`state()`**: Sets `oPort.s = iPort.s`. Returns `Err` if `iPort.s` is NaN.
 2. **`balance()`**: 
    - Propagates mass flow rate: `mdot` is copied from whichever port has a valid value.
    - Calculates compression work: `Wc = mdot × (h_out - h_in)`.
-   - Panics if both ports' `mdot` are NaN, or if either port's `h` is NaN.
+   - Returns `Err` if both ports' `mdot` are NaN, or if either port's `h` is NaN.
 
 **Energy category**: `"CompressionWork"` — contributes to cycle-level Wc.
 
@@ -221,11 +261,11 @@ The compressor model assumes an ideal isentropic compression process:
 
 The condenser model assumes an ideal isobaric heat rejection process:
 
-1. **`state()`**: Propagates pressure between ports. If one port has a valid pressure and the other doesn't, copies it. Panics if both ports' `p` are NaN.
+1. **`state()`**: Propagates pressure between ports. If one port has a valid pressure and the other doesn't, copies it. Returns `Err` if both ports' `p` are NaN.
 2. **`balance()`**:
    - Propagates mass flow rate.
    - Calculates heat transfer rate: `Qout = mdot × (h_in - h_out)`.
-   - Panics if both ports' `mdot` are NaN, or if either port's `h` is NaN.
+   - Returns `Err` if both ports' `mdot` are NaN, or if either port's `h` is NaN.
 
 **Energy category**: `"QOUT"` — contributes to cycle-level Qout.
 
@@ -235,11 +275,11 @@ The condenser model assumes an ideal isobaric heat rejection process:
 
 The evaporator model assumes an ideal isobaric heat absorption process:
 
-1. **`state()`**: Propagates pressure between ports (same logic as condenser). Panics if both ports' `p` are NaN.
+1. **`state()`**: Propagates pressure between ports (same logic as condenser). Returns `Err` if both ports' `p` are NaN.
 2. **`balance()`**:
    - Propagates mass flow rate.
    - Calculates refrigeration capacity: `Qin = mdot × (h_out - h_in)`.
-   - Panics if both ports' `mdot` are NaN, or if either port's `h` is NaN.
+   - Returns `Err` if both ports' `mdot` are NaN, or if either port's `h` is NaN.
 
 **Energy category**: `"QIN"` — contributes to cycle-level Qin.
 
@@ -249,8 +289,8 @@ The evaporator model assumes an ideal isobaric heat absorption process:
 
 The expansion valve model assumes an ideal isenthalpic throttling process:
 
-1. **`state()`**: Propagates enthalpy between ports. If one port has a valid enthalpy and the other doesn't, copies it. Panics if both ports' `h` are NaN.
-2. **`balance()`**: Propagates mass flow rate only. No energy calculation. Panics if both ports' `mdot` are NaN.
+1. **`state()`**: Propagates enthalpy between ports. If one port has a valid enthalpy and the other doesn't, copies it. Returns `Err` if both ports' `h` are NaN.
+2. **`balance()`**: Propagates mass flow rate only. No energy calculation. Returns `Err` if both ports' `mdot` are NaN.
 
 **Energy category**: `""` (empty) — no contribution to cycle-level energy indicators.
 
@@ -278,36 +318,38 @@ The `Connector` struct manages the creation and lifecycle of shared nodes:
 ```rust
 pub struct Connector {
     pub index: usize,
-    pub nodes: Vec<*mut Port>,
+    pub nodes: Vec<Rc<RefCell<Port>>>,
 }
 ```
+
+Nodes are stored as `Rc<RefCell<Port>>`, enabling safe shared ownership and interior mutability. When two ports are connected, both port references in their respective component's `portdict` are replaced with the same `Rc<RefCell<Port>>`, ensuring they point to the same `Port` object.
 
 ### 6.3 Connection Process
 
 When `add_connector()` is called with a specification like `("Compressor", "oPort") → ("Condenser", "iPort")`:
 
-1. **Get port pointers**: Retrieve raw pointers to both ports from their respective components.
+1. **Get port references**: Retrieve `Rc<RefCell<Port>>` references from both components' `portdict`.
 2. **Set node index**: Assign the current node index to port0.
-3. **Add port0 as node**: Port0's pointer becomes the shared node in the `nodes` vector.
-4. **Merge port1 values**: Any known property values from port1 that are NaN in the node are copied over.
-5. **Replace port1 pointer**: Port1's entry in its component's `portdict` is replaced with the node pointer.
+3. **Add port0 as node**: Port0's `Rc` is cloned and stored in the `nodes` vector.
+4. **Merge port1 values**: Any known property values from port1 that are NaN in the node are copied over (via `RefCell::borrow_mut`).
+5. **Replace port1 reference**: Port1's entry in its component's `portdict` is replaced with a clone of port0's `Rc`.
 6. **Update port addresses**: The component's `i_port`/`o_port` fields are updated to point to the shared node.
 
-After this process, both the compressor's `oPort` and the condenser's `iPort` point to the **same `Port` object in memory**. Any modification by one component is instantly visible to the other.
+After this process, both the compressor's `oPort` and the condenser's `iPort` hold `Rc` references to the **same `Port` object**. Any modification by one component (via `borrow_mut()`) is instantly visible to the other (via `borrow()`).
 
 ### 6.4 Memory Ownership
 
-The `Connector` owns all shared node memory. Ports are initially created via `Box::into_raw(Box::new(Port::new(...)))` in component constructors, transferring ownership to raw pointers. When a connector replaces a port pointer with a shared node, the original port's memory is effectively abandoned (the pointer is overwritten). The `Drop` implementation for `Connector` reclaims all node memory via `Box::from_raw`.
+The `Connector` owns all shared node memory via `Rc<RefCell<Port>>`. Ports are initially created as `Rc::new(RefCell::new(Port::new(...)))` in component constructors. When a connector links two ports, both components' `portdict` entries are updated to hold clones of the same `Rc`. Memory is automatically freed when all `Rc` references are dropped — no manual memory management is required.
 
 ### 6.5 Node Sharing Diagram
 
 ```
 Before connection:
-  Compressor.oPort ──→ [Port A]    Condenser.iPort ──→ [Port B]
+  Compressor.oPort ──→ Rc<RefCell<Port A>>    Condenser.iPort ──→ Rc<RefCell<Port B>>
 
 After connection:
-  Compressor.oPort ──→ [Port A*] ←── Condenser.iPort
-                         (shared node)
+  Compressor.oPort ──→ Rc<RefCell<Port A*>> ←── Condenser.iPort
+                         (shared node, both Rc point to same Port)
   * Port A now contains merged values from both Port A and Port B
 ```
 
@@ -319,7 +361,7 @@ After connection:
 
 In a cycle, components depend on each other's outputs. For example, the compressor needs the evaporator's output state, which in turn depends on the expansion valve's output, which depends on the condenser's output, which depends on the compressor's output. This circular dependency means there is no obvious "first" component to process.
 
-Rather than requiring the user to specify a processing order or implementing a topological sort, SimVCC uses an **iterative panic-driven algorithm** that automatically discovers the correct calculation order.
+Rather than requiring the user to specify a processing order or implementing a topological sort, SimVCC uses an **iterative error-driven algorithm** that automatically discovers the correct calculation order.
 
 ### 7.2 Algorithm Description
 
@@ -332,8 +374,8 @@ The `component_simulator` method implements the following algorithm:
       i.   Call state()    — thermal process calculation
       ii.  Update unresolved nodes — propagate state through shared nodes
       iii. Call balance()   — energy and mass balance
-      iv.  If all steps succeed (no panic): remove component from keys
-      v.   If any step panics: skip component (remains in keys)
+      iv.  If all steps succeed (Ok(())): remove component from keys
+      v.   If any step returns Err: skip component (remains in keys)
    b. Increment iteration counter
 3. If keys is not empty after max iterations: report unresolved components
 ```
@@ -342,9 +384,9 @@ The `component_simulator` method implements the following algorithm:
 
 The algorithm relies on two key mechanisms:
 
-1. **Panic as signal**: When a component's `state()` or `balance()` method encounters NaN input data, it panics. This panic is caught by `catch_unwind` and is treated as "not ready yet" rather than an error.
+1. **Result as signal**: When a component's `state()` or `balance()` method encounters NaN input data, it returns `Err(SimulationError)`. This is treated as "not ready yet" rather than a fatal error.
 
-2. **Node sharing propagation**: When a component successfully processes, it writes results to its output port. Because of node sharing, these results are immediately visible to the connected downstream component's input port. On the next iteration, the downstream component may now have sufficient data to process successfully.
+2. **Node sharing propagation**: When a component successfully processes, it writes results to its output port. Because of node sharing (via `Rc<RefCell<Port>>`), these results are immediately visible to the connected downstream component's input port. On the next iteration, the downstream component may now have sufficient data to process successfully.
 
 ### 7.4 Convergence
 
@@ -352,17 +394,16 @@ For a well-defined cycle with sufficient initial conditions, the algorithm typic
 
 ### 7.5 Unresolved Node Resolution
 
-After each component's `state()` call, the algorithm iterates through all unresolved nodes (those with `stateok = false`) and attempts to calculate their complete state using `Port::state()`. Successfully resolved nodes are removed from the unresolved list. This ensures that partial information (e.g., a pressure value set by one component) is fully resolved before the next component attempts to use it.
+After each component's `state()` call, the algorithm iterates through all unresolved nodes (those with `state_ok = false`) and attempts to calculate their complete state using `Port::state()`. Successfully resolved nodes are removed from the unresolved list. This ensures that partial information (e.g., a pressure value set by one component) is fully resolved before the next component attempts to use it.
 
-### 7.6 Panic Hook Suppression
+### 7.6 Error Handling Benefits
 
-In `main.rs`, the panic hook is set to suppress output:
+The `Result`-based approach provides several advantages over the previous panic-based control flow:
 
-```rust
-std::panic::set_hook(Box::new(|_| {}));
-```
-
-This prevents the intentional panics from `state()` and `balance()` from producing error output during `catch_unwind` calls. Without this, each iteration would produce spurious panic messages for components that are simply "not ready yet."
+- **No `catch_unwind` overhead**: Avoiding panic unwinding is more efficient and idiomatic.
+- **No panic hook suppression**: The `main.rs` panic hook no longer needs to be suppressed, making debugging real panics easier.
+- **Explicit error types**: `SimulationError` carries a descriptive message identifying which component and property caused the failure.
+- **Composable error handling**: `Result` types can be chained with `?` operator for cleaner code.
 
 ---
 
@@ -506,9 +547,9 @@ The complete simulation workflow proceeds as follows:
 3. Run simulation
    └── VCCycle::simulator()
        ├── component_simulator()
-       │   └── Iterative panic-driven algorithm
+       │   └── Iterative error-driven algorithm
        │       ├── For each component: state() → update nodes → balance()
-       │       └── Repeat until all components processed
+       │       └── Repeat until all components processed (Err = not ready yet)
        └── Aggregate cycle performance indicators
            ├── Wc ← sum of Compressor.wc
            ├── Qin ← sum of Evaporator.qe
@@ -591,23 +632,31 @@ Condenser
 
 ## 14. Design Decisions and Trade-offs
 
-### 14.1 Panic-Driven Control Flow
+### 14.1 Result-Based Error Handling
 
-**Decision**: Use panics as a control flow mechanism for component readiness detection.
+**Decision**: Use `Result<(), SimulationError>` as a control flow mechanism for component readiness detection.
 
-**Rationale**: This approach eliminates the need for explicit dependency tracking or topological sorting. Components simply panic when they lack input data, and the algorithm retries them later. This makes the system simple to extend — adding a new component type requires no changes to the simulation algorithm.
+**Rationale**: This approach eliminates the need for explicit dependency tracking or topological sorting. Components return `Err` when they lack input data, and the algorithm retries them later. This makes the system simple to extend — adding a new component type requires no changes to the simulation algorithm. The `Result`-based approach replaced the previous panic-based control flow, providing better ergonomics, explicit error types, and eliminating the need for `catch_unwind` and panic hook suppression.
 
-**Trade-off**: Panics are expensive in Rust (they unwind the stack). However, for a small number of components (typically 4–8), the performance impact is negligible. The simplicity and extensibility benefits outweigh the cost.
+**Trade-off**: Components must propagate errors using `?` or explicit `match`, which adds minor boilerplate. However, this is idiomatic Rust and the clarity benefits outweigh the cost.
 
-### 14.2 Raw Pointers for Node Sharing
+### 14.2 Rc<RefCell<Port>> for Node Sharing
 
-**Decision**: Use `*mut Port` raw pointers for node sharing between components.
+**Decision**: Use `Rc<RefCell<Port>>` for node sharing between components.
 
-**Rationale**: Rust's ownership model does not naturally support shared mutable references. Raw pointers allow multiple components to reference and modify the same `Port` object without borrow checker conflicts, while the `Connector` maintains clear ownership of the memory.
+**Rationale**: Rust's ownership model does not naturally support shared mutable references. `Rc<RefCell<Port>>` allows multiple components to share ownership of the same `Port` object while providing runtime-checked mutable access. This replaces the previous raw pointer (`*mut Port`) approach, eliminating all `unsafe` code from the component implementations.
 
-**Trade-off**: This introduces `unsafe` code throughout the component implementations. The safety guarantee relies on the invariant that the `Connector` outlives all components and that no two components simultaneously modify the same port property. For a single-threaded simulation, this is safe.
+**Trade-off**: `RefCell` enforces borrow rules at runtime — attempting to borrow mutably while already borrowed will panic. For a single-threaded simulation where the algorithm processes components sequentially, this is safe. The runtime check adds negligible overhead compared to CoolProp property calculations.
 
-### 14.3 HashMap-Based Component Storage
+### 14.3 SISOComponent Shared Struct
+
+**Decision**: Extract common SISO component fields and logic into a `SISOComponent` struct embedded by each component.
+
+**Rationale**: All four components share the same fields (name, energy category, i_port, o_port, portdict) and common logic (port address update, mdot propagation, enthalpy retrieval). Extracting this into a shared struct reduces code duplication and ensures consistency across components.
+
+**Trade-off**: Components must delegate `PortDict`/`PortDictMut` implementations to `inner`, adding minor boilerplate. The `inner` field is public to allow component-specific access to shared fields.
+
+### 14.4 HashMap-Based Component Storage
 
 **Decision**: Store components in a `HashMap<String, Box<dyn CompSISO>>`.
 
@@ -615,13 +664,21 @@ Condenser
 
 **Trade-off**: Downcasting is required to access component-specific fields during result aggregation (e.g., `Compressor.wc`). This adds runtime overhead but is acceptable since it only occurs once after simulation.
 
-### 14.4 JSON Configuration
+### 14.5 JSON Configuration
 
 **Decision**: Use JSON files for cycle configuration rather than programmatic API.
 
 **Rationale**: JSON is human-readable, widely supported, and allows non-programmers to define and modify cycle configurations. It also facilitates integration with other tools and workflows.
 
 **Trade-off**: JSON parsing adds a dependency on `serde` and `serde_json`, and the schema is not formally validated. Invalid configurations may produce runtime errors rather than compile-time errors.
+
+### 14.6 Test Organization
+
+**Decision**: Separate integration tests into the `tests/` directory as independent modules, with one test file per source module.
+
+**Rationale**: Separating tests from source code keeps the production codebase clean and follows Rust's conventional test organization. Integration tests can only access the public API, which serves as an additional verification that the public interface is sufficient.
+
+**Trade-off**: Some internal functions that would benefit from unit testing are only testable through the public API. However, the current public API provides sufficient coverage for all critical functionality.
 
 ---
 
@@ -635,10 +692,16 @@ Condenser
 - **Sensitivity analysis**: Automated parameter sweeps and optimization.
 - **Formal JSON schema**: Validation of configuration files before simulation.
 - **Error recovery**: More graceful handling of unconverged simulations with diagnostic output.
-- **Safe abstractions**: Replace raw pointers with `Rc<RefCell<Port>>` or similar safe Rust patterns.
 - **Async/parallel simulation**: For larger systems with independent sub-cycles.
 
-### 15.2 Integration Possibilities
+### 15.2 Completed Improvements
+
+- ~~**Safe abstractions**: Replace raw pointers with `Rc<RefCell<Port>>` or similar safe Rust patterns.~~ — Completed. All `*mut Port` raw pointers replaced with `Rc<RefCell<Port>>`.
+- ~~**Result-based error handling**: Replace panic-driven control flow with `Result<(), SimulationError>`.~~ — Completed. `state()` and `balance()` now return `Result`, eliminating `catch_unwind` and panic hook suppression.
+- ~~**SISOComponent extraction**: Move shared SISO component logic into an independent module.~~ — Completed. `SISOComponent` is now in `components/siso_component.rs`.
+- ~~**Test coverage**: Add comprehensive unit and integration tests.~~ — Completed. 75 tests + 1 doctest in `tests/` directory.
+
+### 15.3 Integration Possibilities
 
 - **WebAssembly**: Compile to Wasm for browser-based simulation tools.
 - **Python bindings**: Via PyO3 for integration with scientific Python ecosystems.

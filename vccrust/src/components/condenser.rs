@@ -10,9 +10,8 @@
 //! - `state()`: returns `Err` if both ports' p are NaN
 //! - `balance()`: returns `Err` if both ports' mdot are NaN, or if either port's h is NaN
 
-use crate::common::{CompSISO, Port, PortRef, SimulationError, UMComponent, to_string_with_precision, PortDictMut, PortDict};
-use std::collections::HashMap;
-use std::rc::Rc;
+use crate::common::{CompSISO, PortDict, PortDictMut, SimulationError, UMComponent, to_string_with_precision};
+use crate::components::siso_component::SISOComponent;
 
 /// Condenser component for the vapor compression cycle.
 ///
@@ -20,16 +19,8 @@ use std::rc::Rc;
 /// input port's pressure. Heat transfer rate is calculated from the enthalpy
 /// drop and mass flow rate.
 pub struct Condenser {
-    /// Component name
-    pub name: String,
-    /// Energy category: "QOUT"
-    pub energy: String,
-    /// Input port reference
-    pub i_port: PortRef,
-    /// Output port reference
-    pub o_port: PortRef,
-    /// Port dictionary: {"iPort" → ref, "oPort" → ref}
-    pub portdict: HashMap<String, PortRef>,
+    /// Shared SISO component fields and logic
+    pub inner: SISOComponent,
     /// Heat transfer rate (kW)
     pub qc: f64,
 }
@@ -37,46 +28,8 @@ pub struct Condenser {
 impl Condenser {
     /// Creates a new Condenser from a JSON component configuration.
     pub fn new(dict_comp: &UMComponent, fluid_name: &str) -> Self {
-        let name = dict_comp.get("name")
-            .and_then(|v| v.as_str())
-            .unwrap_or("Condenser")
-            .to_string();
-        
-        // Parse iPort
-        let i_port_data: HashMap<String, f64> = dict_comp
-            .get("iPort")
-            .and_then(|v| v.as_object())
-            .map(|obj| {
-                obj.iter()
-                    .filter_map(|(k, v)| v.as_f64().map(|f| (k.clone(), f)))
-                    .collect()
-            })
-            .unwrap_or_default();
-        
-        // Parse oPort
-        let o_port_data: HashMap<String, f64> = dict_comp
-            .get("oPort")
-            .and_then(|v| v.as_object())
-            .map(|obj| {
-                obj.iter()
-                    .filter_map(|(k, v)| v.as_f64().map(|f| (k.clone(), f)))
-                    .collect()
-            })
-            .unwrap_or_default();
-
-        let i_port = Rc::new(std::cell::RefCell::new(Port::new(&i_port_data, fluid_name)));
-        let o_port = Rc::new(std::cell::RefCell::new(Port::new(&o_port_data, fluid_name)));
-
-        let mut portdict = HashMap::new();
-        portdict.insert("iPort".to_string(), i_port.clone());
-        portdict.insert("oPort".to_string(), o_port.clone());
-
         Condenser {
-            name,
-            energy: "QOUT".to_string(),
-            i_port,
-            o_port,
-            portdict,
+            inner: SISOComponent::new(dict_comp, fluid_name, "Condenser", "QOUT"),
             qc: 0.0,
         }
     }
@@ -84,11 +37,11 @@ impl Condenser {
 
 impl CompSISO for Condenser {
     fn name(&self) -> &str {
-        &self.name
+        &self.inner.name
     }
 
     fn energy(&self) -> &str {
-        &self.energy
+        &self.inner.energy
     }
 
     fn energy_value(&self) -> f64 {
@@ -96,16 +49,7 @@ impl CompSISO for Condenser {
     }
 
     fn set_port_address(&mut self) {
-        if let Some(i_port) = self.portdict.get("iPort") {
-            if !Rc::ptr_eq(&self.i_port, i_port) {
-                self.i_port = i_port.clone();
-            }
-        }
-        if let Some(o_port) = self.portdict.get("oPort") {
-            if !Rc::ptr_eq(&self.o_port, o_port) {
-                self.o_port = o_port.clone();
-            }
-        }
+        self.inner.set_port_address();
     }
 
     /// Isobaric condensation: propagates pressure between ports.
@@ -115,12 +59,12 @@ impl CompSISO for Condenser {
     /// # Errors
     /// Returns `Err` if both ports' p are NaN (no pressure information available).
     fn state(&mut self) -> Result<(), SimulationError> {
-        let i_p = self.i_port.borrow().p;
-        let o_p = self.o_port.borrow().p;
+        let i_p = self.inner.i_port.borrow().p;
+        let o_p = self.inner.o_port.borrow().p;
         if !o_p.is_nan() && i_p.is_nan() {
-            self.i_port.borrow_mut().p = o_p;
+            self.inner.i_port.borrow_mut().p = o_p;
         } else if !i_p.is_nan() && o_p.is_nan() {
-            self.o_port.borrow_mut().p = i_p;
+            self.inner.o_port.borrow_mut().p = i_p;
         } else if i_p.is_nan() && o_p.is_nan() {
             return Err(SimulationError::new("Condenser: both ports p are NaN"));
         }
@@ -136,46 +80,30 @@ impl CompSISO for Condenser {
     /// - Returns `Err` if both ports' mdot are NaN
     /// - Returns `Err` if either port's h is NaN
     fn balance(&mut self) -> Result<(), SimulationError> {
-        let i_mdot = self.i_port.borrow().mdot;
-        let o_mdot = self.o_port.borrow().mdot;
-        if i_mdot.is_nan() && o_mdot.is_nan() {
-            return Err(SimulationError::new("Condenser: mdot is NaN"));
-        }
-        if !i_mdot.is_nan() {
-            self.o_port.borrow_mut().mdot = i_mdot;
-        } else if !o_mdot.is_nan() {
-            self.i_port.borrow_mut().mdot = o_mdot;
-        }
-        let i_h = self.i_port.borrow().h;
-        let o_h = self.o_port.borrow().h;
-        if i_h.is_nan() || o_h.is_nan() {
-            return Err(SimulationError::new("Condenser: h is NaN"));
-        }
-        let mdot = self.i_port.borrow().mdot;
-        self.qc = mdot * (i_h - o_h);
+        self.inner.propagate_mdot("Condenser")?;
+        let (i_h, o_h) = self.inner.get_enthalpies("Condenser")?;
+        self.qc = self.inner.mdot() * (i_h - o_h);
         Ok(())
     }
 
     fn result_string(&self) -> String {
         format!(
-            "\n{}\n{}\n{}\n{}\nThe condenser Capacity(kW): {}\n",
-            self.name,
-            Port::TITLE,
-            self.i_port.borrow().result_string(),
-            self.o_port.borrow().result_string(),
+            "\n{}\n{}\nThe condenser Capacity(kW): {}\n",
+            self.inner.name,
+            self.inner.port_result_string(),
             to_string_with_precision(self.qc, 3)
         )
     }
 }
 
 impl PortDict for Condenser {
-    fn portdict(&self) -> &HashMap<String, PortRef> {
-        &self.portdict
+    fn portdict(&self) -> &std::collections::HashMap<String, crate::common::PortRef> {
+        self.inner.portdict()
     }
 }
 
 impl PortDictMut for Condenser {
-    fn portdict_mut(&mut self) -> &mut HashMap<String, PortRef> {
-        &mut self.portdict
+    fn portdict_mut(&mut self) -> &mut std::collections::HashMap<String, crate::common::PortRef> {
+        self.inner.portdict_mut()
     }
 }

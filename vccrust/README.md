@@ -13,7 +13,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-simvcc = "0.1.0"
+simvcc = "0.1.4"
 ```
 
 ### Quick Start
@@ -28,7 +28,7 @@ let loader = JSONLoader::new();
 let json = loader.load_file("jsonmodel/demovcc.json").unwrap();
 let mut cycle = loader.create_cycle(&json).unwrap();
 cycle.simulator();
-cycle.outresults();
+cycle.out_results();
 ```
 
 ### CLI
@@ -39,8 +39,9 @@ cargo run -- jsonmodel/demovcc.json
 
 ## Key Design Principles
 
-1. **Node Sharing** — Connected component ports share the same memory, ensuring state consistency across the cycle.
-2. **Component Calculation Order Detection** — No fixed order required; the algorithm automatically discovers the correct processing sequence.
+1. **Node Sharing** — Connected component ports share the same memory via `Rc<RefCell<Port>>`, ensuring state consistency across the cycle.
+2. **Component Calculation Order Detection** — No fixed order required; the algorithm automatically discovers the correct processing sequence using iterative `Result`-based error handling.
+3. **SISOComponent Abstraction** — Common SISO component fields and logic are encapsulated in a shared `SISOComponent` struct, reducing code duplication.
 
 ## Supported Components
 
@@ -56,6 +57,16 @@ cargo run -- jsonmodel/demovcc.json
 - COP = Qin / Wc
 - COP_hp = Qout / Wc
 - Capacity(ton) = Qin × 60 × (1/211)
+
+## Testing
+
+The project includes 75 integration tests covering all modules:
+
+```bash
+cargo test
+```
+
+Test files are organized in the `tests/` directory, with one file per source module.
 
 ## Example VCC JSON
 

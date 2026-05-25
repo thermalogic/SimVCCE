@@ -10,9 +10,8 @@
 //! - `state()`: returns `Err` if both ports' p are NaN
 //! - `balance()`: returns `Err` if both ports' mdot are NaN, or if either port's h is NaN
 
-use crate::common::{CompSISO, Port, PortRef, SimulationError, UMComponent, to_string_with_precision, PortDictMut, PortDict};
-use std::collections::HashMap;
-use std::rc::Rc;
+use crate::common::{CompSISO, PortDict, PortDictMut, SimulationError, UMComponent, to_string_with_precision};
+use crate::components::siso_component::SISOComponent;
 
 /// Evaporator component for the vapor compression cycle.
 ///
@@ -20,16 +19,8 @@ use std::rc::Rc;
 /// input port's pressure. Refrigeration capacity is calculated from the
 /// enthalpy increase and mass flow rate.
 pub struct Evaporator {
-    /// Component name
-    pub name: String,
-    /// Energy category: "QIN"
-    pub energy: String,
-    /// Input port reference
-    pub i_port: PortRef,
-    /// Output port reference
-    pub o_port: PortRef,
-    /// Port dictionary: {"iPort" → ref, "oPort" → ref}
-    pub portdict: HashMap<String, PortRef>,
+    /// Shared SISO component fields and logic
+    pub inner: SISOComponent,
     /// Refrigeration capacity (kW)
     pub qe: f64,
 }
@@ -37,46 +28,8 @@ pub struct Evaporator {
 impl Evaporator {
     /// Creates a new Evaporator from a JSON component configuration.
     pub fn new(dict_comp: &UMComponent, fluid_name: &str) -> Self {
-        let name = dict_comp.get("name")
-            .and_then(|v| v.as_str())
-            .unwrap_or("Evaporator")
-            .to_string();
-        
-        // Parse iPort
-        let i_port_data: HashMap<String, f64> = dict_comp
-            .get("iPort")
-            .and_then(|v| v.as_object())
-            .map(|obj| {
-                obj.iter()
-                    .filter_map(|(k, v)| v.as_f64().map(|f| (k.clone(), f)))
-                    .collect()
-            })
-            .unwrap_or_default();
-        
-        // Parse oPort
-        let o_port_data: HashMap<String, f64> = dict_comp
-            .get("oPort")
-            .and_then(|v| v.as_object())
-            .map(|obj| {
-                obj.iter()
-                    .filter_map(|(k, v)| v.as_f64().map(|f| (k.clone(), f)))
-                    .collect()
-            })
-            .unwrap_or_default();
-
-        let i_port = Rc::new(std::cell::RefCell::new(Port::new(&i_port_data, fluid_name)));
-        let o_port = Rc::new(std::cell::RefCell::new(Port::new(&o_port_data, fluid_name)));
-
-        let mut portdict = HashMap::new();
-        portdict.insert("iPort".to_string(), i_port.clone());
-        portdict.insert("oPort".to_string(), o_port.clone());
-
         Evaporator {
-            name,
-            energy: "QIN".to_string(),
-            i_port,
-            o_port,
-            portdict,
+            inner: SISOComponent::new(dict_comp, fluid_name, "Evaporator", "QIN"),
             qe: 0.0,
         }
     }
@@ -84,11 +37,11 @@ impl Evaporator {
 
 impl CompSISO for Evaporator {
     fn name(&self) -> &str {
-        &self.name
+        &self.inner.name
     }
 
     fn energy(&self) -> &str {
-        &self.energy
+        &self.inner.energy
     }
 
     fn energy_value(&self) -> f64 {
@@ -96,16 +49,7 @@ impl CompSISO for Evaporator {
     }
 
     fn set_port_address(&mut self) {
-        if let Some(i_port) = self.portdict.get("iPort") {
-            if !Rc::ptr_eq(&self.i_port, i_port) {
-                self.i_port = i_port.clone();
-            }
-        }
-        if let Some(o_port) = self.portdict.get("oPort") {
-            if !Rc::ptr_eq(&self.o_port, o_port) {
-                self.o_port = o_port.clone();
-            }
-        }
+        self.inner.set_port_address();
     }
 
     /// Isobaric evaporation: propagates pressure between ports.
@@ -115,12 +59,12 @@ impl CompSISO for Evaporator {
     /// # Errors
     /// Returns `Err` if both ports' p are NaN (no pressure information available).
     fn state(&mut self) -> Result<(), SimulationError> {
-        let i_p = self.i_port.borrow().p;
-        let o_p = self.o_port.borrow().p;
+        let i_p = self.inner.i_port.borrow().p;
+        let o_p = self.inner.o_port.borrow().p;
         if !o_p.is_nan() && i_p.is_nan() {
-            self.i_port.borrow_mut().p = o_p;
+            self.inner.i_port.borrow_mut().p = o_p;
         } else if !i_p.is_nan() && o_p.is_nan() {
-            self.o_port.borrow_mut().p = i_p;
+            self.inner.o_port.borrow_mut().p = i_p;
         } else if i_p.is_nan() && o_p.is_nan() {
             return Err(SimulationError::new("Evaporator: both ports p are NaN"));
         }
@@ -136,46 +80,30 @@ impl CompSISO for Evaporator {
     /// - Returns `Err` if both ports' mdot are NaN
     /// - Returns `Err` if either port's h is NaN
     fn balance(&mut self) -> Result<(), SimulationError> {
-        let i_mdot = self.i_port.borrow().mdot;
-        let o_mdot = self.o_port.borrow().mdot;
-        if i_mdot.is_nan() && o_mdot.is_nan() {
-            return Err(SimulationError::new("Evaporator: mdot is NaN"));
-        }
-        if !i_mdot.is_nan() {
-            self.o_port.borrow_mut().mdot = i_mdot;
-        } else if !o_mdot.is_nan() {
-            self.i_port.borrow_mut().mdot = o_mdot;
-        }
-        let i_h = self.i_port.borrow().h;
-        let o_h = self.o_port.borrow().h;
-        if i_h.is_nan() || o_h.is_nan() {
-            return Err(SimulationError::new("Evaporator: h is NaN"));
-        }
-        let mdot = self.i_port.borrow().mdot;
-        self.qe = mdot * (o_h - i_h);
+        self.inner.propagate_mdot("Evaporator")?;
+        let (i_h, o_h) = self.inner.get_enthalpies("Evaporator")?;
+        self.qe = self.inner.mdot() * (o_h - i_h);
         Ok(())
     }
 
     fn result_string(&self) -> String {
         format!(
-            "\n{}\n{}\n{}\n{}\nThe Refrigeration Capacity(kW): {}\n",
-            self.name,
-            Port::TITLE,
-            self.i_port.borrow().result_string(),
-            self.o_port.borrow().result_string(),
+            "\n{}\n{}\nThe Refrigeration Capacity(kW): {}\n",
+            self.inner.name,
+            self.inner.port_result_string(),
             to_string_with_precision(self.qe, 3)
         )
     }
 }
 
 impl PortDict for Evaporator {
-    fn portdict(&self) -> &HashMap<String, PortRef> {
-        &self.portdict
+    fn portdict(&self) -> &std::collections::HashMap<String, crate::common::PortRef> {
+        self.inner.portdict()
     }
 }
 
 impl PortDictMut for Evaporator {
-    fn portdict_mut(&mut self) -> &mut HashMap<String, PortRef> {
-        &mut self.portdict
+    fn portdict_mut(&mut self) -> &mut std::collections::HashMap<String, crate::common::PortRef> {
+        self.inner.portdict_mut()
     }
 }
