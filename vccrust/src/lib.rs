@@ -1,32 +1,23 @@
-//! simvcc — Rust implementation of the vapor compression refrigeration cycle simulator.
+//! SimVCC — Vapor compression refrigeration cycle simulator in Rust.
 //!
-//! This crate simulates a vapor compression refrigeration cycle (VCC) using
-//! CoolProp for thermodynamic property calculations via FFI.
+//! # Dependencies
 //!
-//! # Prerequisite: CoolProp
+//! - **Thermodynamic Properties**: CoolProp via [`coolprop-sys`](https://crates.io/crates/coolprop-sys) crate
+//! - **Serialization**: serde + serde_json
 //!
-//! This crate requires the **CoolProp** shared library to be present at build
-//! and runtime. You must obtain it yourself:
+//! # Usage
 //!
-//! 1. Download the CoolProp shared library for your platform from
-//!    <http://www.coolprop.org/> (see the "Binaries" section).
-//! 2. Place `CoolProp.dll` (Windows), `libCoolProp.so` (Linux), or
-//!    `libCoolProp.dylib` (macOS) — along with the corresponding import
-//!    library if applicable — into a `sharedlib/` directory next to this
-//!    crate's `Cargo.toml`.
-//! 3. The build script (`build.rs`) will automatically add `sharedlib/` to
-//!    the linker search path and copy the DLL to the output directory on
-//!    Windows.
+//! Add this to your `Cargo.toml`:
 //!
-//! Without the CoolProp library in place, linking will fail at build time.
+//! ```toml
+//! [dependencies]
+//! simvcc = "0.1.0"
+//! ```
 //!
-//! # Key Design Principles
-//! 1. **Node Sharing** — Connected component ports share the same memory,
-//!    ensuring state consistency across the cycle
-//! 2. **Component Calculation Order Detection** — No fixed order required;
-//!    the algorithm automatically discovers the correct processing sequence
+//! ## Quick Start
 //!
-//! # Quick Start
+//! Example VCC: [demovcc.json](./jsonmodel/demovcc.json)
+//!
 //! ```no_run
 //! use simvcc::JSONLoader;
 //!
@@ -36,6 +27,32 @@
 //! cycle.simulator();
 //! cycle.outresults();
 //! ```
+//!
+//! ## CLI
+//!
+//! ```bash
+//! cargo run -- jsonmodel/demovcc.json
+//! ```
+//!
+//! # Key Design Principles
+//!
+//! 1. **Node Sharing** — Connected component ports share the same memory, ensuring state consistency across the cycle.
+//! 2. **Component Calculation Order Detection** — No fixed order required; the algorithm automatically discovers the correct processing sequence.
+//!
+//! # Component Implementations
+//!
+//! | Component | Process | Energy |
+//! |---|---|---|
+//! | Compressor | Isentropic compression (constant s) | CompressionWork |
+//! | Condenser | Isobaric condensation (constant p) | QOUT |
+//! | Evaporator | Isobaric evaporation (constant p) | QIN |
+//! | Expansion Valve | Isenthalpic throttling (constant h) | — |
+//!
+//! # Cycle Performance Indicators
+//!
+//! - COP = Qin / Wc
+//! - COP_hp = Qout / Wc
+//! - Capacity(ton) = Qin × 60 × (1/211)
 
 pub mod common;
 pub mod core;

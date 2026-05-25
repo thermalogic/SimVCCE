@@ -5,28 +5,11 @@
 //! - [`CompSISO`] — trait interface for Single-Input Single-Output components
 //! - [`PortDict`] / [`PortDictMut`] — traits for accessing component port dictionaries
 //! - [`AsAny`] — trait for runtime type downcasting
-//! - CoolProp FFI bindings for thermodynamic property calculations
+//! - CoolProp integration via the `coolprop-sys` crate for thermodynamic property calculations
 //! - Utility type aliases and helper functions
 
 use std::collections::HashMap;
 use std::ffi::CString;
-use std::os::raw::c_char;
-
-// FFI binding to CoolProp's `PropsSI` function.
-//
-// Calculates thermodynamic properties given two independent state pairs.
-// See http://www.coolprop.org/ for details.
-#[link(name = "CoolProp", kind = "dylib")]
-extern "system" {
-    fn PropsSI(
-        output: *const c_char,
-        name1: *const c_char,
-        prop1: f64,
-        name2: *const c_char,
-        prop2: f64,
-        fluid: *const c_char,
-    ) -> f64;
-}
 
 /// Sentinel value indicating a port has not been assigned to any node.
 pub const NONE_INDEX: usize = usize::MAX;
@@ -122,15 +105,16 @@ impl Port {
         port
     }
 
-    /// Calls CoolProp's `PropsSI` function to compute a thermodynamic property.
+    /// Calls CoolProp's `PropsSI` function via the `coolprop-sys` crate.
     fn propssi(&self, output: &str, name1: &str, prop1: f64, name2: &str, prop2: f64) -> f64 {
         let c_output = CString::new(output).unwrap();
         let c_name1 = CString::new(name1).unwrap();
         let c_name2 = CString::new(name2).unwrap();
         let c_fluid = CString::new(self.fluid_name.as_str()).unwrap();
 
+        let coolprop = coolprop_sys::COOLPROP.lock().unwrap();
         unsafe {
-            PropsSI(
+            (coolprop.PropsSI)(
                 c_output.as_ptr(),
                 c_name1.as_ptr(),
                 prop1,

@@ -368,21 +368,23 @@ This prevents the intentional panics from `state()` and `balance()` from produci
 
 ## 8. CoolProp Integration
 
-### 8.1 FFI Binding
+### 8.1 The `coolprop-sys` Crate
 
-SimVCC interfaces with CoolProp through a direct FFI binding to the `PropsSI` function:
+SimVCC interfaces with CoolProp through the `coolprop-sys` crate, which provides raw FFI bindings to the CoolProp C library. The crate bundles the native CoolProp dynamic libraries for all supported platforms (Windows x86-64, Windows AArch64, Linux x86-64, macOS x86-64, macOS AArch64) and handles linking and DLL deployment automatically — no manual setup is required.
+
+The `PropsSI` function is accessed through the global `COOLPROP` static provided by the crate. Since `COOLPROP` is wrapped in a `LazyLock<Mutex<CoolProp>>`, it must be locked before use:
 
 ```rust
-#[link(name = "CoolProp", kind = "dylib")]
-extern "system" {
-    fn PropsSI(
-        output: *const c_char,
-        name1: *const c_char,
-        prop1: f64,
-        name2: *const c_char,
-        prop2: f64,
-        fluid: *const c_char,
-    ) -> f64;
+let coolprop = coolprop_sys::COOLPROP.lock().unwrap();
+unsafe {
+    (coolprop.PropsSI)(
+        c_output.as_ptr(),
+        c_name1.as_ptr(),
+        prop1,
+        c_name2.as_ptr(),
+        prop2,
+        c_fluid.as_ptr(),
+    )
 }
 ```
 
@@ -403,7 +405,7 @@ CoolProp returns a quality value of -1.0 when the state is outside the two-phase
 
 ### 8.4 CoolProp Dependency
 
-The `coolprop-sys` crate is listed as a dependency in `Cargo.toml`, but the actual FFI binding in `common/mod.rs` uses a manual `#[link]` attribute pointing to the local `sharedlib/` directory. The CoolProp shared library must be manually downloaded and placed in `sharedlib/` before building.
+The `coolprop-sys` crate (version 7.2.2) is listed as a dependency in `Cargo.toml`. It bundles the native CoolProp dynamic libraries for all supported platforms and handles linking and DLL deployment automatically during the build process. No manual download or setup of the CoolProp shared library is required.
 
 ---
 
@@ -462,23 +464,12 @@ The order of components in the JSON array does not affect simulation results. Th
 
 ### 10.1 Build Script
 
-The `build.rs` script handles two tasks:
-
-1. **Linker search path**: Adds `sharedlib/` to the linker search path so `CoolProp.lib` can be found during linking.
-2. **DLL deployment**: Copies `CoolProp.dll` from `sharedlib/` to the target output directory (e.g., `target/debug/` or `target/release/`) on Windows.
+The `build.rs` script is a no-op — all CoolProp linking and DLL deployment is handled automatically by the `coolprop-sys` crate, which bundles the native CoolProp dynamic libraries for all supported platforms and copies the appropriate library to the target directory during build.
 
 ### 10.2 Prerequisites
 
 - **Rust toolchain**: 2021 Edition (Rust 1.56+)
-- **CoolProp shared library**: Must be manually downloaded from http://www.coolprop.org/ and placed in `sharedlib/`
-
-Platform-specific files:
-
-| Platform | Required Files |
-|---|---|
-| Windows | `CoolProp.dll` + `CoolProp.lib` |
-| Linux | `libCoolProp.so` |
-| macOS | `libCoolProp.dylib` |
+- **CoolProp**: No manual setup required. The `coolprop-sys` crate bundles the native libraries for all supported platforms (Windows x86-64, Windows AArch64, Linux x86-64, macOS x86-64, macOS AArch64).
 
 ### 10.3 Building and Running
 

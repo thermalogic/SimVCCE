@@ -2,30 +2,10 @@
 
 Vapor compression refrigeration cycle simulator in Rust.
 
-## Prerequisite: CoolProp
+## Dependencies
 
-This crate calls CoolProp via FFI for thermodynamic property calculations. You must obtain the CoolProp shared library yourself:
-
-1. Go to <http://www.coolprop.org/> and navigate to the **Binaries** section.
-2. Download the shared library for your platform:
-   - **Windows**: `CoolProp.dll` + `CoolProp.lib`
-   - **Linux**: `libCoolProp.so`
-   - **macOS**: `libCoolProp.dylib`
-3. Create a `sharedlib/` directory next to this crate's `Cargo.toml` and place the files there:
-   ```
-   your-project/
-   ├── sharedlib/
-   │   ├── CoolProp.dll    # Windows
-   │   └── CoolProp.lib    # Windows
-   ├── src/
-   ├── Cargo.toml
-   └── build.rs
-   ```
-4. The build script (`build.rs`) will automatically:
-   - Add `sharedlib/` to the linker search path
-   - Copy the DLL to the output directory (Windows)
-
-> **Note**: Without the CoolProp library in place, linking will fail at build time.
+- **Thermodynamic Properties**: CoolProp via  [`coolprop-sys`](https://crates.io/crates/coolprop-sys)  crate
+- **Serialization**: serde + serde_json
 
 ## Usage
 
@@ -37,8 +17,11 @@ simvcc = "0.1.0"
 ```
 
 ### Quick Start
+ 
+ 
+- Example VCC：[demovcc.json](./jsonmodel/demovcc.json)  
 
-```rust,no_run
+```rust
 use simvcc::JSONLoader;
 
 let loader = JSONLoader::new();
@@ -59,7 +42,7 @@ cargo run -- jsonmodel/demovcc.json
 1. **Node Sharing** — Connected component ports share the same memory, ensuring state consistency across the cycle.
 2. **Component Calculation Order Detection** — No fixed order required; the algorithm automatically discovers the correct processing sequence.
 
-## Components
+## Component Implementations
 
 | Component | Process | Energy |
 |---|---|---|
@@ -74,12 +57,6 @@ cargo run -- jsonmodel/demovcc.json
 - COP_hp = Qout / Wc
 - Capacity(ton) = Qin × 60 × (1/211)
 
-## Tech Stack
 
-- **Language**: Rust (2021 Edition)
-- **Thermodynamic Properties**: CoolProp via FFI
-- **Serialization**: serde + serde_json
 
-## License
 
-Licensed under either of Apache License, Version 2.0 or MIT license at your option.
