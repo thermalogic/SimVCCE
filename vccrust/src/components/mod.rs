@@ -1,9 +1,10 @@
 //! Components module: refrigeration cycle component implementations.
 //!
 //! Each component implements the [`CompSISO`](crate::common::CompSISO) trait
-//! and follows the panic convention: `state()` and `balance()` panic when
-//! required input data is not yet available, signaling to the
-//! `component_simulator` that the component should be retried later.
+//! and follows the error convention: `state()` and `balance()` return
+//! `Err(SimulationError)` when required input data is not yet available,
+//! signaling to the `component_simulator` that the component should be
+//! retried later.
 
 pub mod compressor;
 pub mod condenser;

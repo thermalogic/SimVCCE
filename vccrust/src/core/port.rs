@@ -102,12 +102,12 @@ impl Port {
 
     /// Calls CoolProp's `PropsSI` function via the `coolprop-sys` crate.
     fn prop_si(&self, output: &str, name1: &str, prop1: f64, name2: &str, prop2: f64) -> f64 {
-        let c_output = CString::new(output).unwrap();
-        let c_name1 = CString::new(name1).unwrap();
-        let c_name2 = CString::new(name2).unwrap();
-        let c_fluid = CString::new(self.fluid_name.as_str()).unwrap();
+        let c_output = CString::new(output).expect("CoolProp output key contains null byte");
+        let c_name1 = CString::new(name1).expect("CoolProp name1 contains null byte");
+        let c_name2 = CString::new(name2).expect("CoolProp name2 contains null byte");
+        let c_fluid = CString::new(self.fluid_name.as_str()).expect("Fluid name contains null byte");
 
-        let coolprop = coolprop_sys::COOLPROP.lock().unwrap();
+        let coolprop = coolprop_sys::COOLPROP.lock().expect("CoolProp mutex poisoned");
         unsafe {
             (coolprop.PropsSI)(
                 c_output.as_ptr(),
@@ -220,12 +220,16 @@ impl Port {
 
     /// Attempts to calculate the port state from available property pairs.
     ///
-    /// Tries in order: ps → ph → pt. Only called when `state_ok` is false.
+    /// Tries in order: tx → px → ps → ph → pt. Only called when `state_ok` is false.
     /// This is used by `component_simulator` to resolve node states after
     /// a component's `state()` call provides new property values.
     pub fn state(&mut self) {
         if !self.state_ok {
-            if !self.p.is_nan() && !self.s.is_nan() {
+            if !self.t.is_nan() && !self.x.is_nan() {
+                self.tx();
+            } else if !self.p.is_nan() && !self.x.is_nan() {
+                self.px();
+            } else if !self.p.is_nan() && !self.s.is_nan() {
                 self.ps();
             } else if !self.p.is_nan() && !self.h.is_nan() {
                 self.ph();

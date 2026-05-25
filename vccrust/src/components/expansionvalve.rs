@@ -6,11 +6,11 @@
 //! # Energy Category
 //! `""` (empty) — no energy contribution to cycle-level indicators.
 //!
-//! # Panic Conditions
-//! - `state()`: panics if both ports' h are NaN
-//! - `balance()`: panics if both ports' mdot are NaN
+//! # Error Conditions
+//! - `state()`: returns `Err` if both ports' h are NaN
+//! - `balance()`: returns `Err` if both ports' mdot are NaN
 
-use crate::common::{CompSISO, Port, PortRef, UMComponent, any_to_string, PortDictMut, PortDict};
+use crate::common::{CompSISO, Port, PortRef, SimulationError, UMComponent, any_to_string, PortDictMut, PortDict};
 use std::collections::HashMap;
 use std::rc::Rc;
 
@@ -34,7 +34,10 @@ pub struct ExpansionValve {
 impl ExpansionValve {
     /// Creates a new ExpansionValve from a JSON component configuration.
     pub fn new(dict_comp: &UMComponent, fluid_name: &str) -> Self {
-        let name = any_to_string(dict_comp.get("name").unwrap());
+        let name = dict_comp.get("name")
+            .and_then(|v| v.as_str())
+            .unwrap_or("ExpansionValve")
+            .to_string();
         
         // Parse iPort
         let i_port_data: HashMap<String, f64> = dict_comp
@@ -85,13 +88,15 @@ impl CompSISO for ExpansionValve {
     }
 
     fn set_port_address(&mut self) {
-        let i_port = self.portdict.get("iPort").unwrap();
-        if !Rc::ptr_eq(&self.i_port, i_port) {
-            self.i_port = i_port.clone();
+        if let Some(i_port) = self.portdict.get("iPort") {
+            if !Rc::ptr_eq(&self.i_port, i_port) {
+                self.i_port = i_port.clone();
+            }
         }
-        let o_port = self.portdict.get("oPort").unwrap();
-        if !Rc::ptr_eq(&self.o_port, o_port) {
-            self.o_port = o_port.clone();
+        if let Some(o_port) = self.portdict.get("oPort") {
+            if !Rc::ptr_eq(&self.o_port, o_port) {
+                self.o_port = o_port.clone();
+            }
         }
     }
 
@@ -99,9 +104,9 @@ impl CompSISO for ExpansionValve {
     ///
     /// If one port has a valid enthalpy and the other doesn't, copies it.
     ///
-    /// # Panics
-    /// Panics if both ports' h are NaN (no enthalpy information available).
-    fn state(&mut self) {
+    /// # Errors
+    /// Returns `Err` if both ports' h are NaN (no enthalpy information available).
+    fn state(&mut self) -> Result<(), SimulationError> {
         let i_h = self.i_port.borrow().h;
         let o_h = self.o_port.borrow().h;
         if !i_h.is_nan() && o_h.is_nan() {
@@ -109,27 +114,29 @@ impl CompSISO for ExpansionValve {
         } else if !o_h.is_nan() && i_h.is_nan() {
             self.i_port.borrow_mut().h = o_h;
         } else if i_h.is_nan() && o_h.is_nan() {
-            panic!("ExpansionValve: both ports h are NaN");
+            return Err(SimulationError::new("ExpansionValve: both ports h are NaN"));
         }
+        Ok(())
     }
 
     /// Mass balance for expansion valve.
     ///
     /// Propagates mdot between ports. No energy calculation.
     ///
-    /// # Panics
-    /// Panics if both ports' mdot are NaN.
-    fn balance(&mut self) {
+    /// # Errors
+    /// Returns `Err` if both ports' mdot are NaN.
+    fn balance(&mut self) -> Result<(), SimulationError> {
         let i_mdot = self.i_port.borrow().mdot;
         let o_mdot = self.o_port.borrow().mdot;
         if i_mdot.is_nan() && o_mdot.is_nan() {
-            panic!("ExpansionValve: mdot is NaN");
+            return Err(SimulationError::new("ExpansionValve: mdot is NaN"));
         }
         if !i_mdot.is_nan() {
             self.o_port.borrow_mut().mdot = i_mdot;
         } else if !o_mdot.is_nan() {
             self.i_port.borrow_mut().mdot = o_mdot;
         }
+        Ok(())
     }
 
     fn result_string(&self) -> String {

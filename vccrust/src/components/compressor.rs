@@ -6,11 +6,11 @@
 //! # Energy Category
 //! `"CompressionWork"` — aggregated into cycle-level Wc.
 //!
-//! # Panic Conditions
-//! - `state()`: panics if iPort.s is NaN (input entropy not yet available)
-//! - `balance()`: panics if both ports' mdot are NaN, or if either port's h is NaN
+//! # Error Conditions
+//! - `state()`: returns `Err` if iPort.s is NaN (input entropy not yet available)
+//! - `balance()`: returns `Err` if both ports' mdot are NaN, or if either port's h is NaN
 
-use crate::common::{CompSISO, Port, PortRef, UMComponent, to_string_with_precision, any_to_string, PortDictMut, PortDict};
+use crate::common::{CompSISO, Port, PortRef, SimulationError, UMComponent, to_string_with_precision, any_to_string, PortDictMut, PortDict};
 use std::collections::HashMap;
 use std::rc::Rc;
 
@@ -37,7 +37,10 @@ pub struct Compressor {
 impl Compressor {
     /// Creates a new Compressor from a JSON component configuration.
     pub fn new(dict_comp: &UMComponent, fluid_name: &str) -> Self {
-        let name = any_to_string(dict_comp.get("name").unwrap());
+        let name = dict_comp.get("name")
+            .and_then(|v| v.as_str())
+            .unwrap_or("Compressor")
+            .to_string();
         
         // Parse iPort
         let i_port_data: HashMap<String, f64> = dict_comp
@@ -89,26 +92,29 @@ impl CompSISO for Compressor {
     }
 
     fn set_port_address(&mut self) {
-        let i_port = self.portdict.get("iPort").unwrap();
-        if !Rc::ptr_eq(&self.i_port, i_port) {
-            self.i_port = i_port.clone();
+        if let Some(i_port) = self.portdict.get("iPort") {
+            if !Rc::ptr_eq(&self.i_port, i_port) {
+                self.i_port = i_port.clone();
+            }
         }
-        let o_port = self.portdict.get("oPort").unwrap();
-        if !Rc::ptr_eq(&self.o_port, o_port) {
-            self.o_port = o_port.clone();
+        if let Some(o_port) = self.portdict.get("oPort") {
+            if !Rc::ptr_eq(&self.o_port, o_port) {
+                self.o_port = o_port.clone();
+            }
         }
     }
 
     /// Isentropic compression: sets oPort.s = iPort.s.
     ///
-    /// # Panics
-    /// Panics if iPort.s is NaN (input entropy not yet determined).
-    fn state(&mut self) {
+    /// # Errors
+    /// Returns `Err` if iPort.s is NaN (input entropy not yet determined).
+    fn state(&mut self) -> Result<(), SimulationError> {
         let i_s = self.i_port.borrow().s;
         if i_s.is_nan() {
-            panic!("Compressor: iPort.s is NaN");
+            return Err(SimulationError::new("Compressor: iPort.s is NaN"));
         }
         self.o_port.borrow_mut().s = i_s;
+        Ok(())
     }
 
     /// Mass and energy balance for compression.
@@ -116,14 +122,14 @@ impl CompSISO for Compressor {
     /// - Mass: propagates mdot between ports
     /// - Energy: Wc = mdot * (h_out - h_in)
     ///
-    /// # Panics
-    /// - Panics if both ports' mdot are NaN
-    /// - Panics if either port's h is NaN
-    fn balance(&mut self) {
+    /// # Errors
+    /// - Returns `Err` if both ports' mdot are NaN
+    /// - Returns `Err` if either port's h is NaN
+    fn balance(&mut self) -> Result<(), SimulationError> {
         let i_mdot = self.i_port.borrow().mdot;
         let o_mdot = self.o_port.borrow().mdot;
         if i_mdot.is_nan() && o_mdot.is_nan() {
-            panic!("Compressor: mdot is NaN");
+            return Err(SimulationError::new("Compressor: mdot is NaN"));
         }
         if !i_mdot.is_nan() {
             self.o_port.borrow_mut().mdot = i_mdot;
@@ -133,10 +139,11 @@ impl CompSISO for Compressor {
         let i_h = self.i_port.borrow().h;
         let o_h = self.o_port.borrow().h;
         if i_h.is_nan() || o_h.is_nan() {
-            panic!("Compressor: h is NaN");
+            return Err(SimulationError::new("Compressor: h is NaN"));
         }
         let mdot = self.i_port.borrow().mdot;
         self.wc = mdot * (o_h - i_h);
+        Ok(())
     }
 
     fn result_string(&self) -> String {

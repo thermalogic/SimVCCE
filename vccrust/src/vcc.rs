@@ -16,18 +16,18 @@
 //!    - `state()` — thermal process calculation
 //!    - Update unresolved nodes — propagate state through shared nodes
 //!    - `balance()` — energy and mass balance calculation
-//! 3. If a component is successfully processed (no panic), it is removed from the queue.
-//! 4. If a component panics (input data not yet available), it is skipped and
-//!    retried in the next iteration when upstream components may have provided
+//! 3. If a component is successfully processed (Ok), it is removed from the queue.
+//! 4. If a component returns `Err` (input data not yet available), it is skipped
+//!    and retried in the next iteration when upstream components may have provided
 //!    the required data.
 //! 5. The loop terminates when all components are processed or the maximum
 //!    iteration count is reached.
 //!
-//! The key insight: **panics are not errors, but signals that the component
-//! is "not ready yet"**. Through node sharing, upstream results propagate
+//! The key insight: **`Err` results are not fatal errors, but signals that the
+//! component is "not ready yet"**. Through node sharing, upstream results propagate
 //! to downstream components automatically.
 
-use crate::common::{CompSISO, TupConnector, UMComponent, to_string_with_precision, Port};
+use crate::common::{CompSISO, SimulationError, TupConnector, UMComponent, to_string_with_precision, Port};
 use crate::core::Connector;
 use crate::components::{Compressor, Condenser, Evaporator, ExpansionValve};
 use std::collections::HashMap;
@@ -64,7 +64,7 @@ impl VCCycle {
     /// 1. Instantiate components based on `classstr` field
     /// 2. Build connectors to create shared nodes between ports
     /// 3. Set port addresses for all components (point ports to shared nodes)
-    pub fn new(dict_comps: Vec<UMComponent>, vec_connectors: Vec<TupConnector>, fluid_name: &str) -> Self {
+    pub fn new(dict_comps: Vec<UMComponent>, vec_connectors: Vec<TupConnector>, fluid_name: &str) -> Result<Self, SimulationError> {
         let mut comps = HashMap::new();
 
         for item in dict_comps {
@@ -94,7 +94,7 @@ impl VCCycle {
 
         let mut curcon = Connector::new();
         for tconn in vec_connectors {
-            curcon.add_connector(tconn, &mut comps);
+            curcon.add_connector(tconn, &mut comps)?;
         }
 
         // Set port addresses for all components
@@ -102,7 +102,7 @@ impl VCCycle {
             comp.set_port_address();
         }
 
-        VCCycle {
+        Ok(VCCycle {
             curcon,
             comps,
             wc: 0.0,
@@ -110,13 +110,13 @@ impl VCCycle {
             qout: 0.0,
             cop: 0.0,
             cop_hp: 0.0,
-        }
+        })
     }
 
     /// Component calculation order detection algorithm.
     ///
     /// Iteratively processes components until all are successfully calculated
-    /// or the maximum iteration count is reached. Components that panic
+    /// or the maximum iteration count is reached. Components that return `Err`
     /// (due to missing input data) are skipped and retried in subsequent iterations.
     ///
     /// # Algorithm Steps (per iteration)
@@ -125,8 +125,8 @@ impl VCCycle {
     ///    - Call `state()` for thermal process calculation
     ///    - Update all unresolved nodes by calling their `state()` method
     ///    - Call `balance()` for energy and mass balance
-    ///    - If all steps succeed, remove the component from keys
-    ///    - If any step panics, skip this component (it stays in keys)
+    ///    - If all steps succeed (Ok), remove the component from keys
+    ///    - If any step returns Err, skip this component (it stays in keys)
     /// 3. Repeat until keys is empty or max iterations reached
     fn component_simulator(&mut self) {
         let mut state_nodes = self.curcon.nodes.clone();
@@ -139,11 +139,12 @@ impl VCCycle {
         while !deviceok && i <= counts_dev {
             let keys_to_process = keys.clone();
             for curdev in keys_to_process {
-                // Try to process this device; catch panics to allow retry
-                let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+                // Try to process this device; Err means "not ready yet", skip and retry later
+                let result: Result<(), SimulationError> = (|| {
                     // Step 1: thermal process calculation
-                    let comp = self.comps.get_mut(&curdev).unwrap();
-                    comp.state();
+                    let comp = self.comps.get_mut(&curdev)
+                        .ok_or_else(|| SimulationError::new(format!("Component '{}' not found", curdev)))?;
+                    comp.state()?;
 
                     // Step 2: update unresolved nodes
                     let mut j = 0;
@@ -161,9 +162,10 @@ impl VCCycle {
                     }
 
                     // Step 3: energy and mass balance
-                    let comp = self.comps.get_mut(&curdev).unwrap();
-                    comp.balance();
-                }));
+                    let comp = self.comps.get_mut(&curdev)
+                        .ok_or_else(|| SimulationError::new(format!("Component '{}' not found", curdev)))?;
+                    comp.balance()
+                })();
 
                 if result.is_ok() {
                     // Successfully processed, remove from keys
@@ -179,7 +181,7 @@ impl VCCycle {
         }
 
         if !keys.is_empty() {
-            println!("{:?}", keys);
+            eprintln!("Warning: components not converged: {:?}", keys);
         }
     }
 

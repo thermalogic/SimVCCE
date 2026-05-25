@@ -13,7 +13,34 @@ pub use crate::core::{Port, NONE_INDEX};
 
 use std::cell::RefCell;
 use std::collections::HashMap;
+use std::fmt;
 use std::rc::Rc;
+
+/// Error type for simulation operations.
+///
+/// Used by `state()` and `balance()` to signal that a component
+/// cannot be processed yet because required input data is not available.
+/// This replaces the previous panic-based control flow.
+#[derive(Debug)]
+pub struct SimulationError {
+    /// Description of what data is missing or what went wrong
+    pub message: String,
+}
+
+impl SimulationError {
+    /// Creates a new SimulationError with the given message.
+    pub fn new(msg: impl Into<String>) -> Self {
+        SimulationError { message: msg.into() }
+    }
+}
+
+impl fmt::Display for SimulationError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "SimulationError: {}", self.message)
+    }
+}
+
+impl std::error::Error for SimulationError {}
 
 /// Shared mutable reference to a Port, used for node sharing between components.
 pub type PortRef = Rc<RefCell<Port>>;
@@ -22,24 +49,32 @@ pub type PortRef = Rc<RefCell<Port>>;
 ///
 /// Each component must implement:
 /// - `set_port_address()` — update port pointers after connector node sharing
-/// - `state()` — thermal process calculation (panics if input data is insufficient)
-/// - `balance()` — energy and mass balance (panics if input data is insufficient)
+/// - `state()` — thermal process calculation (returns `Err` if input data is insufficient)
+/// - `balance()` — energy and mass balance (returns `Err` if input data is insufficient)
 /// - `result_string()` — formatted output of component results
 /// - `name()` — component name
 /// - `energy()` — energy category string ("CompressionWork", "QIN", "QOUT", or "")
 ///
-/// # Panic Convention
-/// `state()` and `balance()` **must panic** when required input data is not yet
-/// available (e.g., NaN values). This is not an error — it signals to the
-/// `component_simulator` that this component cannot be processed yet and should
-/// be retried in a later iteration.
+/// # Error Convention
+/// `state()` and `balance()` return `Err(SimulationError)` when required input
+/// data is not yet available (e.g., NaN values). This is not a fatal error — it
+/// signals to the `component_simulator` that this component cannot be processed
+/// yet and should be retried in a later iteration.
 pub trait CompSISO: PortDict + PortDictMut + AsAny {
     /// Update port pointers to match the current portdict (after node sharing).
     fn set_port_address(&mut self);
-    /// Perform thermal process calculation. Panics if input data is insufficient.
-    fn state(&mut self);
-    /// Perform energy and mass balance. Panics if input data is insufficient.
-    fn balance(&mut self);
+    /// Perform thermal process calculation.
+    ///
+    /// Returns `Err(SimulationError)` if required input data is not yet available
+    /// (e.g., NaN values). This signals to `component_simulator` that this
+    /// component should be retried in a later iteration.
+    fn state(&mut self) -> Result<(), SimulationError>;
+    /// Perform energy and mass balance.
+    ///
+    /// Returns `Err(SimulationError)` if required input data is not yet available
+    /// (e.g., NaN values). This signals to `component_simulator` that this
+    /// component should be retried in a later iteration.
+    fn balance(&mut self) -> Result<(), SimulationError>;
     /// Returns a formatted string of this component's results.
     fn result_string(&self) -> String;
     /// Returns the component name.

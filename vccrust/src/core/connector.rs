@@ -13,7 +13,7 @@
 //! 4. Now both components reference the same `Port` object — any modification
 //!    by one component is instantly visible to the other
 
-use crate::common::{PortRef, TupConnector, NONE_INDEX};
+use crate::common::{PortRef, SimulationError, TupConnector, NONE_INDEX};
 use std::collections::HashMap;
 
 /// Manages shared nodes between connected component ports.
@@ -74,6 +74,9 @@ impl Connector {
     /// * `tconn` - Tuple specifying ((comp0, port0), (comp1, port1))
     /// * `comps` - Mutable reference to the component HashMap
     ///
+    /// # Errors
+    /// Returns `Err(SimulationError)` if a component or port name is not found.
+    ///
     /// # Process
     /// 1. Get references to both ports from their respective components
     /// 2. Set port0's index to the new node index
@@ -85,14 +88,27 @@ impl Connector {
         &mut self,
         tconn: TupConnector,
         comps: &mut HashMap<String, Box<dyn crate::common::CompSISO>>,
-    ) {
+    ) -> Result<(), SimulationError> {
         let ((comp0, port0), (comp1, port1)) = tconn;
 
         // 1 get the index of port in Nodes
         self.index = self.nodes.len();
 
-        let port0_ref = comps.get_mut(&comp0).unwrap().portdict().get(&port0).unwrap().clone();
-        let port1_ref = comps.get_mut(&comp1).unwrap().portdict().get(&port1).unwrap().clone();
+        let port0_ref = comps
+            .get_mut(&comp0)
+            .ok_or_else(|| SimulationError::new(format!("Connector: component '{}' not found", comp0)))?
+            .portdict()
+            .get(&port0)
+            .ok_or_else(|| SimulationError::new(format!("Connector: port '{}' not found in '{}'", port0, comp0)))?
+            .clone();
+
+        let port1_ref = comps
+            .get_mut(&comp1)
+            .ok_or_else(|| SimulationError::new(format!("Connector: component '{}' not found", comp1)))?
+            .portdict()
+            .get(&port1)
+            .ok_or_else(|| SimulationError::new(format!("Connector: port '{}' not found in '{}'", port1, comp1)))?
+            .clone();
 
         port0_ref.borrow_mut().index = self.index;
         // 2 init the Node[index] using the port0
@@ -100,8 +116,13 @@ impl Connector {
         // 3 join the port1 info to the Node[index]
         self.get_node_value(&port1_ref);
         // 4 change the address of port1 to the Node[index]
-        comps.get_mut(&comp1).unwrap().portdict_mut().insert(port1, self.nodes[self.index].clone());
-        comps.get_mut(&comp1).unwrap().set_port_address();
+        let comp1_obj = comps
+            .get_mut(&comp1)
+            .ok_or_else(|| SimulationError::new(format!("Connector: component '{}' not found", comp1)))?;
+        comp1_obj.portdict_mut().insert(port1, self.nodes[self.index].clone());
+        comp1_obj.set_port_address();
+
+        Ok(())
     }
 }
 

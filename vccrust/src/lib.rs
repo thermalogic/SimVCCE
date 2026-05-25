@@ -25,7 +25,7 @@
 //! let json = loader.load_file("jsonmodel/demovcc.json").unwrap();
 //! let mut cycle = loader.create_cycle(&json).unwrap();
 //! cycle.simulator();
-//! cycle.outresults();
+//! cycle.out_results();
 //! ```
 //!
 //! ## CLI

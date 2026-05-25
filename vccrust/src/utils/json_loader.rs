@@ -95,7 +95,7 @@ impl JSONLoader {
             }
         }
 
-        Ok(VCCycle::new(components, connectors, fluid_name))
+        VCCycle::new(components, connectors, fluid_name).map_err(|e| e.to_string())
     }
 }
 
