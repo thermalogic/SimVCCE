@@ -1,6 +1,6 @@
 [package]
 name = "simvcc"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["Cheng Maohua <cmh@seu.edu.cn>"]
 description = "Vapor compression refrigeration cycle simulator in Rust"
@@ -10,10 +10,6 @@ repository = "https://github.com/thermalogic/SimVCCE"
 keywords = ["refrigeration", "simulation", "hvac"]
 categories = ["science", "simulation"]
 readme = "README.md"
-exclude = [
-    "sharedlib/*",
-    "jsonmodel/*",
-]
 
 [dependencies]
 coolprop-sys = "7.2.2"
