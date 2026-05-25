@@ -24,13 +24,27 @@ ExpansionValve::~ExpansionValve()
 
 void ExpansionValve::state()
 {
-    oPort->h = iPort->h;
+    // ideal Isenthalpic expansion
+    if (!isnan(iPort->h) && isnan(oPort->h))
+    {
+        oPort->h = iPort->h;
+    }
+    else if (!isnan(oPort->h) && isnan(iPort->h))
+    {
+        iPort->h = oPort->h;
+    }
+    else if (isnan(iPort->h) && isnan(oPort->h))
+    {
+        throw runtime_error("ExpansionValve: both ports h are NaN");
+    }
 }
 
 void ExpansionValve::balance()
 {
     // mass and energy balance
     // mass balance
+    if (isnan(iPort->mdot) && isnan(oPort->mdot))
+        throw runtime_error("ExpansionValve: mdot is NaN");
     if (!isnan(iPort->mdot))
     {
         oPort->mdot = iPort->mdot;

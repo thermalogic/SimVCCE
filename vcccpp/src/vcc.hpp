@@ -53,12 +53,16 @@ public:
 
     double Wc;
     double Qin;
+    double Qout;
     double cop;
+    double cop_hp;
 
     // methods
     VCCycle(vector<umComponent> dictcomps, vector<tupConnector> vecConnectors);
     ~VCCycle();
 
+    void component_simulator();
+    void simulator();
     void state();
     void balance();
     string resultstr();

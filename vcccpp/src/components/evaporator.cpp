@@ -13,7 +13,7 @@ Evaporator::Evaporator(umComponent dictComp)
     oPort = new Port(any_cast<mPort>(dictComp["oPort"]));
     portdict = {{"iPort", iPort},
                 {"oPort", oPort}};
-    energy = "RefrigerationCapacity";
+    energy = "QIN";
 }
 
 Evaporator::~Evaporator()
@@ -24,13 +24,27 @@ Evaporator::~Evaporator()
 
 void Evaporator::state()
 {
-    iPort->p = oPort->p;
+    // ideal Isobaric
+    if (!isnan(oPort->p) && isnan(iPort->p))
+    {
+        iPort->p = oPort->p;
+    }
+    else if (!isnan(iPort->p) && isnan(oPort->p))
+    {
+        oPort->p = iPort->p;
+    }
+    else if (isnan(iPort->p) && isnan(oPort->p))
+    {
+        throw runtime_error("Evaporator: both ports p are NaN");
+    }
 }
 
 void Evaporator::balance()
 {
     // mass and energy balance
     // mass balance
+    if (isnan(iPort->mdot) && isnan(oPort->mdot))
+        throw runtime_error("Evaporator: mdot is NaN");
     if (!isnan(iPort->mdot))
     {
         oPort->mdot = iPort->mdot;
@@ -40,6 +54,9 @@ void Evaporator::balance()
         if (!isnan(oPort->mdot))
             iPort->mdot = oPort->mdot;
     }
+    // energy balance
+    if (isnan(iPort->h) || isnan(oPort->h))
+        throw runtime_error("Evaporator: h is NaN");
     Qin = iPort->mdot * (oPort->h - iPort->h);
 }
 

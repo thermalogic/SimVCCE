@@ -1,17 +1,37 @@
-//! Expansion valve component
+//! Expansion valve component: isenthalpic throttling process.
+//!
+//! Models an ideal expansion valve where enthalpy is conserved (h_in = h_out).
+//! No energy calculation — the expansion valve only performs mass balance.
+//!
+//! # Energy Category
+//! `""` (empty) — no energy contribution to cycle-level indicators.
+//!
+//! # Panic Conditions
+//! - `state()`: panics if both ports' h are NaN
+//! - `balance()`: panics if both ports' mdot are NaN
 
 use crate::common::{CompSISO, Port, UMComponent, any_to_string, PortDictMut, PortDict};
 use std::collections::HashMap;
 
+/// Expansion valve component for the vapor compression cycle.
+///
+/// Implements isenthalpic throttling: the output port's enthalpy equals the
+/// input port's enthalpy. Only mass balance is performed (no energy calculation).
 pub struct ExpansionValve {
+    /// Component name
     pub name: String,
+    /// Energy category: "" (no energy)
     pub energy: String,
+    /// Input port pointer
     pub i_port: *mut Port,
+    /// Output port pointer
     pub o_port: *mut Port,
+    /// Port dictionary: {"iPort" → ptr, "oPort" → ptr}
     pub portdict: HashMap<String, *mut Port>,
 }
 
 impl ExpansionValve {
+    /// Creates a new ExpansionValve from a JSON component configuration.
     pub fn new(dict_comp: &UMComponent) -> Self {
         let name = any_to_string(dict_comp.get("name").unwrap());
         
@@ -72,14 +92,35 @@ impl CompSISO for ExpansionValve {
         }
     }
 
+    /// Isenthalpic throttling: propagates enthalpy between ports.
+    ///
+    /// If one port has a valid enthalpy and the other doesn't, copies it.
+    ///
+    /// # Panics
+    /// Panics if both ports' h are NaN (no enthalpy information available).
     fn state(&mut self) {
         unsafe {
-            (*self.o_port).h = (*self.i_port).h;
+            if !(*self.i_port).h.is_nan() && (*self.o_port).h.is_nan() {
+                (*self.o_port).h = (*self.i_port).h;
+            } else if !(*self.o_port).h.is_nan() && (*self.i_port).h.is_nan() {
+                (*self.i_port).h = (*self.o_port).h;
+            } else if (*self.i_port).h.is_nan() && (*self.o_port).h.is_nan() {
+                panic!("ExpansionValve: both ports h are NaN");
+            }
         }
     }
 
+    /// Mass balance for expansion valve.
+    ///
+    /// Propagates mdot between ports. No energy calculation.
+    ///
+    /// # Panics
+    /// Panics if both ports' mdot are NaN.
     fn balance(&mut self) {
         unsafe {
+            if (*self.i_port).mdot.is_nan() && (*self.o_port).mdot.is_nan() {
+                panic!("ExpansionValve: mdot is NaN");
+            }
             if !(*self.i_port).mdot.is_nan() {
                 (*self.o_port).mdot = (*self.i_port).mdot;
             } else if !(*self.o_port).mdot.is_nan() {
@@ -112,5 +153,3 @@ impl PortDictMut for ExpansionValve {
         &mut self.portdict
     }
 }
-
-

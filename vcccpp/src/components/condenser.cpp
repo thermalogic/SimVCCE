@@ -13,6 +13,8 @@ Condenser::Condenser(umComponent dictComp)
     oPort = new Port(any_cast<mPort>(dictComp["oPort"]));
     portdict = {{"iPort", iPort},
                 {"oPort", oPort}};
+    energy = "QOUT";
+    Qout = NAN;
 }
 
 Condenser::~Condenser()
@@ -23,13 +25,27 @@ Condenser::~Condenser()
 
 void Condenser::state()
 {
-    iPort->p = oPort->p;
+    // ideal Isobaric
+    if (!isnan(oPort->p) && isnan(iPort->p))
+    {
+        iPort->p = oPort->p;
+    }
+    else if (!isnan(iPort->p) && isnan(oPort->p))
+    {
+        oPort->p = iPort->p;
+    }
+    else if (isnan(iPort->p) && isnan(oPort->p))
+    {
+        throw runtime_error("Condenser: both ports p are NaN");
+    }
 }
 
 void Condenser::balance()
 {
     // mass and energy balance
     // mass balance
+    if (isnan(iPort->mdot) && isnan(oPort->mdot))
+        throw runtime_error("Condenser: mdot is NaN");
     if (!isnan(iPort->mdot))
     {
         oPort->mdot = iPort->mdot;
@@ -39,6 +55,10 @@ void Condenser::balance()
         if (!isnan(oPort->mdot))
             iPort->mdot = oPort->mdot;
     }
+    // energy balance
+    if (isnan(iPort->h) || isnan(oPort->h))
+        throw runtime_error("Condenser: h is NaN");
+    Qout = iPort->mdot * (iPort->h - oPort->h);
 }
 
 void Condenser:: setportaddress()
@@ -56,5 +76,6 @@ string Condenser::resultstring()
     result += "\n" + Port::title;
     result += "\n" + iPort->resultstring();
     result += "\n" + oPort->resultstring();
+    result += "\nThe heat transfer rate(kW): " + to_string_with_precision<double>(Qout, 3) + "\n";
     return result;
 }

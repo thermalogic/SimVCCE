@@ -1,9 +1,27 @@
-//! Main program for vccrust
+//! Main program entry point for simvcc.
+//!
+//! Loads a JSON configuration file, creates a VCCycle, runs the simulation,
+//! and outputs the results.
+//!
+//! # Usage
+//! ```bash
+//! simvcc [json_file]
+//! ```
+//!
+//! If no JSON file is specified, defaults to `jsonmodel/demovcc.json`.
+//!
+//! # Panic Suppression
+//! The panic hook is set to suppress output during `component_simulator`'s
+//! `catch_unwind` calls. Component panics are intentional signals that
+//! input data is not yet available — they should not produce error output.
 
-use vccrust::JSONLoader;
+use simvcc::JSONLoader;
 use std::env;
 
 fn main() {
+    // Suppress panic output during component_simulator's catch_unwind
+    std::panic::set_hook(Box::new(|_| {}));
+
     let json_file = env::args().nth(1).unwrap_or_else(|| "jsonmodel/demovcc.json".to_string());
 
     println!("Loading cycle from: {}", json_file);
@@ -14,8 +32,7 @@ fn main() {
             match loader.create_cycle(&json_value) {
                 Ok(mut curcycle) => {
                     println!("Successfully loaded cycle");
-                    curcycle.state();
-                    curcycle.balance();
+                    curcycle.simulator();
                     curcycle.outresults();
                 }
                 Err(e) => {

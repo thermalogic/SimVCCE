@@ -1,18 +1,40 @@
-//! Evaporator component
+//! Evaporator component: isobaric evaporation process.
+//!
+//! Models an ideal evaporator where pressure is conserved (p_in = p_out).
+//! Calculates refrigeration capacity: `Qin = mdot * (h_out - h_in)`.
+//!
+//! # Energy Category
+//! `"QIN"` — aggregated into cycle-level Qin.
+//!
+//! # Panic Conditions
+//! - `state()`: panics if both ports' p are NaN
+//! - `balance()`: panics if both ports' mdot are NaN, or if either port's h is NaN
 
 use crate::common::{CompSISO, Port, UMComponent, to_string_with_precision, any_to_string, PortDictMut, PortDict};
 use std::collections::HashMap;
 
+/// Evaporator component for the vapor compression cycle.
+///
+/// Implements isobaric evaporation: the output port's pressure equals the
+/// input port's pressure. Refrigeration capacity is calculated from the
+/// enthalpy increase and mass flow rate.
 pub struct Evaporator {
+    /// Component name
     pub name: String,
+    /// Energy category: "QIN"
     pub energy: String,
+    /// Input port pointer
     pub i_port: *mut Port,
+    /// Output port pointer
     pub o_port: *mut Port,
+    /// Port dictionary: {"iPort" → ptr, "oPort" → ptr}
     pub portdict: HashMap<String, *mut Port>,
+    /// Refrigeration capacity (kW)
     pub qe: f64,
 }
 
 impl Evaporator {
+    /// Creates a new Evaporator from a JSON component configuration.
     pub fn new(dict_comp: &UMComponent) -> Self {
         let name = any_to_string(dict_comp.get("name").unwrap());
         
@@ -47,7 +69,7 @@ impl Evaporator {
 
         Evaporator {
             name,
-            energy: "RefrigerationCapacity".to_string(),
+            energy: "QIN".to_string(),
             i_port,
             o_port,
             portdict,
@@ -74,18 +96,44 @@ impl CompSISO for Evaporator {
         }
     }
 
+    /// Isobaric evaporation: propagates pressure between ports.
+    ///
+    /// If one port has a valid pressure and the other doesn't, copies it.
+    ///
+    /// # Panics
+    /// Panics if both ports' p are NaN (no pressure information available).
     fn state(&mut self) {
         unsafe {
-            (*self.i_port).p = (*self.o_port).p;
+            if !(*self.o_port).p.is_nan() && (*self.i_port).p.is_nan() {
+                (*self.i_port).p = (*self.o_port).p;
+            } else if !(*self.i_port).p.is_nan() && (*self.o_port).p.is_nan() {
+                (*self.o_port).p = (*self.i_port).p;
+            } else if (*self.i_port).p.is_nan() && (*self.o_port).p.is_nan() {
+                panic!("Evaporator: both ports p are NaN");
+            }
         }
     }
 
+    /// Mass and energy balance for evaporation.
+    ///
+    /// - Mass: propagates mdot between ports
+    /// - Energy: Qin = mdot * (h_out - h_in)
+    ///
+    /// # Panics
+    /// - Panics if both ports' mdot are NaN
+    /// - Panics if either port's h is NaN
     fn balance(&mut self) {
         unsafe {
+            if (*self.i_port).mdot.is_nan() && (*self.o_port).mdot.is_nan() {
+                panic!("Evaporator: mdot is NaN");
+            }
             if !(*self.i_port).mdot.is_nan() {
                 (*self.o_port).mdot = (*self.i_port).mdot;
             } else if !(*self.o_port).mdot.is_nan() {
                 (*self.i_port).mdot = (*self.o_port).mdot;
+            }
+            if (*self.i_port).h.is_nan() || (*self.o_port).h.is_nan() {
+                panic!("Evaporator: h is NaN");
             }
             self.qe = (*self.i_port).mdot * ((*self.o_port).h - (*self.i_port).h);
         }

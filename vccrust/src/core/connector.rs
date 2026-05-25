@@ -1,14 +1,35 @@
-//! Connector module
+//! Connector module: manages node sharing between component ports.
+//!
+//! The Connector is the key mechanism for **node sharing** — when two components
+//! are connected, their ports share the same `Port` memory (raw pointer). This
+//! ensures that state changes in one component's port are immediately visible
+//! to the connected component's port, maintaining consistent thermodynamic state
+//! across the entire cycle.
+//!
+//! # Node Sharing Process
+//! 1. Port0 is added as a new node in the node list
+//! 2. Port1's known property values are merged into the node
+//! 3. Port1's pointer in the component's portdict is replaced with the node pointer
+//! 4. Now both components reference the same `Port` object — any modification
+//!    by one component is instantly visible to the other
 
 use crate::common::{Port, TupConnector, NONE_INDEX};
 use std::collections::HashMap;
 
+/// Manages shared nodes between connected component ports.
+///
+/// Each node in the `nodes` vector is a `*mut Port` that is shared by exactly
+/// two component ports. Memory ownership is managed here — the `Drop` impl
+/// deallocates all node memory via `Box::from_raw`.
 pub struct Connector {
+    /// Current node index (used during connector construction)
     pub index: usize,
+    /// Vector of shared node pointers. Each node is shared by two connected ports.
     pub nodes: Vec<*mut Port>,
 }
 
 impl Connector {
+    /// Creates a new empty Connector.
     pub fn new() -> Self {
         Connector {
             index: 0,
@@ -16,6 +37,10 @@ impl Connector {
         }
     }
 
+    /// Merges property values from a port into the current node.
+    ///
+    /// For each property (p, t, h, s, x, mdot), if the node's value is NaN
+    /// and the port's value is not, the port's value is copied to the node.
     fn getnodevalue(&mut self, port: *mut Port) {
         unsafe {
             if (*self.nodes[self.index]).index == NONE_INDEX && (*port).index != NONE_INDEX {
@@ -42,6 +67,19 @@ impl Connector {
         }
     }
 
+    /// Connects two component ports by creating a shared node.
+    ///
+    /// # Arguments
+    /// * `tconn` - Tuple specifying ((comp0, port0), (comp1, port1))
+    /// * `comps` - Mutable reference to the component HashMap
+    ///
+    /// # Process
+    /// 1. Get pointers to both ports from their respective components
+    /// 2. Set port0's index to the new node index
+    /// 3. Add port0's pointer as a new node
+    /// 4. Merge port1's known values into the node
+    /// 5. Replace port1's pointer in its component with the node pointer
+    /// 6. Re-set port addresses in the component (update i_port/o_port fields)
     pub fn add_connector(
         &mut self,
         tconn: TupConnector,
@@ -73,6 +111,11 @@ impl Default for Connector {
     }
 }
 
+/// Deallocates all node memory.
+///
+/// Since the Connector owns all shared node memory (created via `Box::into_raw`),
+/// it is responsible for freeing it. This is done safely by converting each
+/// raw pointer back to a `Box` and letting it drop.
 impl Drop for Connector {
     fn drop(&mut self) {
         unsafe {

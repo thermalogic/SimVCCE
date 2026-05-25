@@ -13,7 +13,7 @@ Compressor::Compressor(umComponent dictComp)
     oPort = new Port(any_cast<mPort>(dictComp["oPort"]));
     portdict = {{"iPort", iPort},
                 {"oPort", oPort}};
-    energy = "CompressorWork";
+    energy = "CompressionWork";
 }
 
 Compressor::~Compressor()
@@ -25,6 +25,8 @@ Compressor::~Compressor()
 void Compressor::state()
 {
     //    Isentropic compression (ideal VCR cycle)
+    if (isnan(iPort->s))
+        throw runtime_error("Compressor: iPort.s is NaN");
     oPort->s = iPort->s;
 }
 
@@ -32,6 +34,8 @@ void Compressor::balance()
 {
     // mass and energy balance
     // mass balance
+    if (isnan(iPort->mdot) && isnan(oPort->mdot))
+        throw runtime_error("Compressor: mdot is NaN");
     if (!isnan(iPort->mdot))
     {
         oPort->mdot = iPort->mdot;
@@ -42,6 +46,8 @@ void Compressor::balance()
             iPort->mdot = oPort->mdot;
     }
     //energy
+    if (isnan(iPort->h) || isnan(oPort->h))
+        throw runtime_error("Compressor: h is NaN");
     Wc = iPort->mdot * (oPort->h - iPort->h);
 }
 

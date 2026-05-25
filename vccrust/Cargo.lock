@@ -3,6 +3,56 @@
 version = 4
 
 [[package]]
+name = "cfg-if"
+version = "1.0.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9330f8b2ff13f34540b44e946ef35111825727b38d33286ef986142615121801"
+
+[[package]]
+name = "coolprop-sys"
+version = "7.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e7f0c15b5e5d9eb8dc36a3c77b36bbc1c1cdacb50a51a1294d3b5ba76ef4f728"
+dependencies = [
+ "coolprop-sys-linux-x86-64",
+ "coolprop-sys-macos-aarch64",
+ "coolprop-sys-macos-x86-64",
+ "coolprop-sys-windows-aarch64",
+ "coolprop-sys-windows-x86-64",
+ "libloading",
+]
+
+[[package]]
+name = "coolprop-sys-linux-x86-64"
+version = "7.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "48b3078d2b583a23a059085a842b0572ab6e5b596dc7729c65a764e11ca93092"
+
+[[package]]
+name = "coolprop-sys-macos-aarch64"
+version = "7.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0112473c28613d106cbe2b25d351d4057d36160f9e65edab08490a1017d2e3ce"
+
+[[package]]
+name = "coolprop-sys-macos-x86-64"
+version = "7.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "995d5bcd0a44ac3867a9b10008d9d2e8f0db3c1a272f12da4ce4b96dfe56399c"
+
+[[package]]
+name = "coolprop-sys-windows-aarch64"
+version = "7.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2fb6915565a8ed65ce12dca49b687313d10dab741a13b464870b065b4fb40ccb"
+
+[[package]]
+name = "coolprop-sys-windows-x86-64"
+version = "7.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4c394982be374a429da0e30e82c5524ab1fa73a14f87debe007abb5b7ccfcff3"
+
+[[package]]
 name = "equivalent"
 version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -29,6 +79,16 @@ name = "itoa"
 version = "1.0.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8f42a60cbdf9a97f5d2305f08a87dc4e09308d1276d28c869c684d7777685682"
+
+[[package]]
+name = "libloading"
+version = "0.8.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d7c4b02199fee7c5d21a5ae7d8cfa79a6ef5bb2fc834d6e9058e89c825efdc55"
+dependencies = [
+ "cfg-if",
+ "windows-link",
+]
 
 [[package]]
 name = "memchr"
@@ -99,6 +159,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "simvcc"
+version = "0.1.0"
+dependencies = [
+ "coolprop-sys",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "syn"
 version = "2.0.117"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -116,12 +185,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e6e4313cd5fcd3dad5cafa179702e2b244f760991f45397d14d4ebf38247da75"
 
 [[package]]
-name = "vccrust"
-version = "0.1.0"
-dependencies = [
- "serde",
- "serde_json",
-]
+name = "windows-link"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f0805222e57f7521d6a62e36fa9163bc891acd422f971defe97d64e70d0a4fe5"
 
 [[package]]
 name = "zmij"

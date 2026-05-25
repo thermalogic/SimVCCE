@@ -1,7 +1,21 @@
-use std::ffi::{CString};
-use std::os::raw::c_char;
-use std::collections::{HashMap};
+//! Common module: core data structures, traits, and utility functions.
+//!
+//! This module defines:
+//! - [`Port`] — thermodynamic state of the working fluid at a connection point
+//! - [`CompSISO`] — trait interface for Single-Input Single-Output components
+//! - [`PortDict`] / [`PortDictMut`] — traits for accessing component port dictionaries
+//! - [`AsAny`] — trait for runtime type downcasting
+//! - CoolProp FFI bindings for thermodynamic property calculations
+//! - Utility type aliases and helper functions
 
+use std::collections::HashMap;
+use std::ffi::CString;
+use std::os::raw::c_char;
+
+// FFI binding to CoolProp's `PropsSI` function.
+//
+// Calculates thermodynamic properties given two independent state pairs.
+// See http://www.coolprop.org/ for details.
 #[link(name = "CoolProp", kind = "dylib")]
 extern "system" {
     fn PropsSI(
@@ -14,23 +28,56 @@ extern "system" {
     ) -> f64;
 }
 
+/// Sentinel value indicating a port has not been assigned to any node.
 pub const NONE_INDEX: usize = usize::MAX;
 
+/// Thermodynamic state of the working fluid at a connection point (port).
+///
+/// A port stores pressure, temperature, enthalpy, entropy, quality, and mass
+/// flow rate. It can calculate missing properties from known pairs using CoolProp.
+///
+/// # Node Sharing
+/// When two components are connected, their ports share the same `Port` memory
+/// (via raw pointer). This ensures state changes propagate automatically between
+/// connected components — a key mechanism for the component calculation order
+/// detection algorithm.
+///
+/// # State Calculation Methods
+/// - `tx()` — from temperature and quality
+/// - `px()` — from pressure and quality (or pressure and enthalpy)
+/// - `ps()` — from pressure and entropy
+/// - `ph()` — from pressure and enthalpy
+/// - `pt()` — from pressure and temperature
 #[derive(Debug, Clone)]
 pub struct Port {
+    /// Port name (optional identifier)
     pub name: String,
+    /// Refrigerant fluid name (e.g., "R134a")
     pub fluid_name: String,
+    /// Pressure (MPa)
     pub p: f64,
+    /// Temperature (°C)
     pub t: f64,
+    /// Enthalpy (kJ/kg)
     pub h: f64,
+    /// Entropy (kJ/kg·K)
     pub s: f64,
+    /// Quality (vapor mass fraction)
     pub x: f64,
+    /// Mass flow rate (kg/s)
     pub mdot: f64,
+    /// Whether the port state has been fully determined
     pub stateok: bool,
+    /// Node index in the connector's node list
     pub index: usize,
 }
 
 impl Port {
+    /// Creates a new Port from a dictionary of property key-value pairs.
+    ///
+    /// Initializes all properties to NaN, then sets provided values.
+    /// If enough property pairs are given (e.g., t+x, p+x, p+t),
+    /// automatically calculates the remaining properties.
     pub fn new(curm_port: &HashMap<String, f64>) -> Self {
         let mut port = Port {
             name: "".to_string(),
@@ -75,6 +122,7 @@ impl Port {
         port
     }
 
+    /// Calls CoolProp's `PropsSI` function to compute a thermodynamic property.
     fn propssi(&self, output: &str, name1: &str, prop1: f64, name2: &str, prop2: f64) -> f64 {
         let c_output = CString::new(output).unwrap();
         let c_name1 = CString::new(name1).unwrap();
@@ -93,6 +141,9 @@ impl Port {
         }
     }
 
+    /// Calculates properties from temperature and quality.
+    ///
+    /// Sets p, h, s from T (°C) and x. Temperature is converted to K internally.
     pub fn tx(&mut self) {
         if !self.t.is_nan() && !self.x.is_nan() {
             let t_k = self.t + 273.15;
@@ -103,6 +154,10 @@ impl Port {
         }
     }
 
+    /// Calculates properties from pressure and quality (or pressure and enthalpy).
+    ///
+    /// If x is known: sets t, h, s from P and x.
+    /// If h is known (but x is not): sets t, s, x from P and H.
     pub fn px(&mut self) {
         if !self.p.is_nan() {
             let p_pa = self.p * 1.0e6;
@@ -121,6 +176,9 @@ impl Port {
         }
     }
 
+    /// Calculates properties from pressure and entropy.
+    ///
+    /// Sets h, t, x from P and S.
     pub fn ps(&mut self) {
         if !self.p.is_nan() && !self.s.is_nan() {
             let p_pa = self.p * 1.0e6;
@@ -139,6 +197,9 @@ impl Port {
         }
     }
 
+    /// Calculates properties from pressure and enthalpy.
+    ///
+    /// Sets s, t, x from P and H.
     pub fn ph(&mut self) {
         if !self.p.is_nan() && !self.h.is_nan() {
             let p_pa = self.p * 1.0e6;
@@ -157,6 +218,9 @@ impl Port {
         }
     }
 
+    /// Calculates properties from pressure and temperature.
+    ///
+    /// Sets s, h, x from P and T.
     pub fn pt(&mut self) {
         if !self.p.is_nan() && !self.t.is_nan() {
             let p_pa = self.p * 1.0e6;
@@ -175,6 +239,11 @@ impl Port {
         }
     }
 
+    /// Attempts to calculate the port state from available property pairs.
+    ///
+    /// Tries in order: ps → ph → pt. Only called when `stateok` is false.
+    /// This is used by `component_simulator` to resolve node states after
+    /// a component's `state()` call provides new property values.
     pub fn state(&mut self) {
         if !self.stateok {
             if !self.p.is_nan() && !self.s.is_nan() {
@@ -187,6 +256,7 @@ impl Port {
         }
     }
 
+    /// Returns a formatted string of this port's thermodynamic state.
     pub fn resultstring(&self) -> String {
         let x_str = if self.x.is_nan() {
             "   --".to_string()
@@ -199,28 +269,60 @@ impl Port {
         )
     }
 
+    /// Column header for port result output.
     pub const TITLE: &'static str = "Port   	P(MPa)   T(C)  H(kJ/kg)	  S(kJ/kg.K)  Quality MDOT(kg/s)";
 }
 
+/// Trait interface for Single-Input Single-Output (SISO) refrigeration cycle components.
+///
+/// Each component must implement:
+/// - `setportaddress()` — update port pointers after connector node sharing
+/// - `state()` — thermal process calculation (panics if input data is insufficient)
+/// - `balance()` — energy and mass balance (panics if input data is insufficient)
+/// - `resultstring()` — formatted output of component results
+/// - `name()` — component name
+/// - `energy()` — energy category string ("CompressionWork", "QIN", "QOUT", or "")
+///
+/// # Panic Convention
+/// `state()` and `balance()` **must panic** when required input data is not yet
+/// available (e.g., NaN values). This is not an error — it signals to the
+/// `component_simulator` that this component cannot be processed yet and should
+/// be retried in a later iteration.
 pub trait CompSISO: PortDict + PortDictMut + AsAny {
+    /// Update port pointers to match the current portdict (after node sharing).
     fn setportaddress(&mut self);
+    /// Perform thermal process calculation. Panics if input data is insufficient.
     fn state(&mut self);
+    /// Perform energy and mass balance. Panics if input data is insufficient.
     fn balance(&mut self);
+    /// Returns a formatted string of this component's results.
     fn resultstring(&self) -> String;
+    /// Returns the component name.
     fn name(&self) -> &str;
+    /// Returns the energy category: "CompressionWork", "QIN", "QOUT", or "".
     fn energy(&self) -> &str;
 }
 
+/// Trait for read access to a component's port dictionary.
 pub trait PortDict {
+    /// Returns the map of port name → port pointer.
     fn portdict(&self) -> &HashMap<String, *mut Port>;
 }
 
+/// Trait for mutable access to a component's port dictionary.
 pub trait PortDictMut {
+    /// Returns the mutable map of port name → port pointer.
     fn portdict_mut(&mut self) -> &mut HashMap<String, *mut Port>;
 }
 
+/// Trait for runtime type downcasting.
+///
+/// Enables `component_simulator` to aggregate cycle results by downcasting
+/// trait objects to concrete types (e.g., `Box<dyn CompSISO>` → `Compressor`).
 pub trait AsAny {
+    /// Returns a reference to `dyn Any` for downcasting.
     fn as_any(&self) -> &dyn std::any::Any;
+    /// Returns a mutable reference to `dyn Any` for downcasting.
     fn as_any_mut(&mut self) -> &mut dyn std::any::Any;
 }
 
@@ -234,11 +336,16 @@ impl<T: 'static> AsAny for T {
     }
 }
 
+/// Component configuration dictionary type (from JSON parsing).
 pub type UMComponent = HashMap<String, serde_json::Value>;
+/// Port configuration dictionary type (from JSON parsing).
 pub type MPort = HashMap<String, serde_json::Value>;
+/// Port identifier tuple: (component_name, port_name).
 pub type TupPort = (String, String);
+/// Connector specification tuple: ((comp0, port0), (comp1, port1)).
 pub type TupConnector = (TupPort, TupPort);
 
+/// Formats a floating-point value with specified precision, or "--" if NaN.
 pub fn to_string_with_precision(value: f64, precision: usize) -> String {
     if !value.is_nan() {
         format!("{:.1$}", value, precision)
@@ -247,10 +354,12 @@ pub fn to_string_with_precision(value: f64, precision: usize) -> String {
     }
 }
 
+/// Converts a string slice to an owned String.
 pub fn copy_string(s: &str) -> String {
     s.to_string()
 }
 
+/// Extracts a string value from a JSON Value, returning empty string if not a string.
 pub fn any_to_string(val: &serde_json::Value) -> String {
     if let Some(s) = val.as_str() {
         s.to_string()

@@ -35,8 +35,7 @@ int main(int argc, char* argv[])
         cout << "Successfully loaded cycle" << endl;
 
         // --- start the cycle analysis -------
-        curcycle->state();
-        curcycle->balance();
+        curcycle->simulator();
         curcycle->outresults();
     } catch (const exception& e) {
         cerr << "Error: " << e.what() << endl;

@@ -11,6 +11,7 @@
 class Condenser : public CompSISO
 {
 public:
+  double Qout;
   // methods
   Condenser(umComponent dictComp);
   ~Condenser();

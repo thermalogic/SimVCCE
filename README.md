@@ -1,10 +1,8 @@
 # SimVCCE
 
-**Branch 3** 
-
 The SimVCCE is the vapor-compression refrigeration and heat pump cycle steady-state simulator for education.
 
-The simulator is available in Python, C++ and Rust, with sequential-modular approach
+The simulator is available in Python, C++ and Rust with sequential-modular approach
 
 *  [Python Package](./simvcce)
 *  [The Web Server with Flask](./webservice/)

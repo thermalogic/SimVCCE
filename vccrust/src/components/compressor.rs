@@ -1,18 +1,40 @@
-//! Compressor component
+//! Compressor component: isentropic compression process.
+//!
+//! Models an ideal compressor where entropy is conserved (s_in = s_out).
+//! Calculates compression work: `Wc = mdot * (h_out - h_in)`.
+//!
+//! # Energy Category
+//! `"CompressionWork"` — aggregated into cycle-level Wc.
+//!
+//! # Panic Conditions
+//! - `state()`: panics if iPort.s is NaN (input entropy not yet available)
+//! - `balance()`: panics if both ports' mdot are NaN, or if either port's h is NaN
 
 use crate::common::{CompSISO, Port, UMComponent, to_string_with_precision, any_to_string, PortDictMut, PortDict};
 use std::collections::HashMap;
 
+/// Compressor component for the vapor compression cycle.
+///
+/// Implements isentropic compression: the output port's entropy equals the
+/// input port's entropy. Compression work is calculated from the enthalpy
+/// difference and mass flow rate.
 pub struct Compressor {
+    /// Component name
     pub name: String,
+    /// Energy category: "CompressionWork"
     pub energy: String,
+    /// Input port pointer
     pub i_port: *mut Port,
+    /// Output port pointer
     pub o_port: *mut Port,
+    /// Port dictionary: {"iPort" → ptr, "oPort" → ptr}
     pub portdict: HashMap<String, *mut Port>,
+    /// Compression work (kW)
     pub wc: f64,
 }
 
 impl Compressor {
+    /// Creates a new Compressor from a JSON component configuration.
     pub fn new(dict_comp: &UMComponent) -> Self {
         let name = any_to_string(dict_comp.get("name").unwrap());
         
@@ -47,7 +69,7 @@ impl Compressor {
 
         Compressor {
             name,
-            energy: "CompressorWork".to_string(),
+            energy: "CompressionWork".to_string(),
             i_port,
             o_port,
             portdict,
@@ -74,18 +96,39 @@ impl CompSISO for Compressor {
         }
     }
 
+    /// Isentropic compression: sets oPort.s = iPort.s.
+    ///
+    /// # Panics
+    /// Panics if iPort.s is NaN (input entropy not yet determined).
     fn state(&mut self) {
         unsafe {
+            if (*self.i_port).s.is_nan() {
+                panic!("Compressor: iPort.s is NaN");
+            }
             (*self.o_port).s = (*self.i_port).s;
         }
     }
 
+    /// Mass and energy balance for compression.
+    ///
+    /// - Mass: propagates mdot between ports
+    /// - Energy: Wc = mdot * (h_out - h_in)
+    ///
+    /// # Panics
+    /// - Panics if both ports' mdot are NaN
+    /// - Panics if either port's h is NaN
     fn balance(&mut self) {
         unsafe {
+            if (*self.i_port).mdot.is_nan() && (*self.o_port).mdot.is_nan() {
+                panic!("Compressor: mdot is NaN");
+            }
             if !(*self.i_port).mdot.is_nan() {
                 (*self.o_port).mdot = (*self.i_port).mdot;
             } else if !(*self.o_port).mdot.is_nan() {
                 (*self.i_port).mdot = (*self.o_port).mdot;
+            }
+            if (*self.i_port).h.is_nan() || (*self.o_port).h.is_nan() {
+                panic!("Compressor: h is NaN");
             }
             self.wc = (*self.i_port).mdot * ((*self.o_port).h - (*self.i_port).h);
         }
@@ -116,5 +159,3 @@ impl PortDictMut for Compressor {
         &mut self.portdict
     }
 }
-
-
