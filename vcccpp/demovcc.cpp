@@ -1,49 +1,47 @@
 /*
- The vapor-compression refrigeration cycle simulator 
+ The vapor-compression refrigeration cycle simulator - JSON Version
 
 */
 #include "vcc.hpp"
+#include "json_loader.hpp"
 
-vector<umComponent> Components = {
-    {{"name", "Compressor"},
-     {"classstr", "Compressor"},
-     {"iPort", (mPort){{"t", 0.0}, {"x", 1.0}, {"mdot", 0.08}}},
-     {"oPort", (mPort){{"p", 0.6854}}}
-    },
-    {{"name", "Condenser"},
-     {"classstr", "Condenser"},
-     {"iPort", (mPort){}},
-     {"oPort", (mPort){{"t", 26.0}, {"x", 0.0}}}
-    },
-    {{"name", "ExpansionValve"},
-     {"classstr", "ExpansionValve"},
-     {"iPort", (mPort){}},
-     {"oPort", (mPort){}}
-    },
-    {{"name", "Evaporator"},
-     {"classstr", "Evaporator"},
-     {"iPort", (mPort){}},
-     {"oPort", (mPort){}}
-     }
-};
+// Global loader to keep string pool alive
+unique_ptr<JSONLoader> g_loader;
 
-vector<tupConnector> Connectors = {
-    {{"Compressor", "oPort"}, {"Condenser", "iPort"}},
-    {{"Condenser", "oPort"}, {"ExpansionValve", "iPort"}},
-    {{"ExpansionValve", "oPort"}, {"Evaporator", "iPort"}},
-    {{"Evaporator", "oPort"}, {"Compressor", "iPort"}}};
-
-int main()
+int main(int argc, char* argv[])
 {
-  // --- init the cycle analysis ----
-  ClassReg curclassreg;
-  curclassreg.register_type_all();
-  VCCycle::compinstance = curclassreg.compinstance; // the instance of compfactory
+    string jsonFile = "jsonmodel/demovcc.json";
+    if (argc > 1) {
+        jsonFile = argv[1];
+    }
 
-  // --- start the cycle analysis -------
-  unique_ptr<VCCycle> curcycle(new VCCycle(Components, Connectors));
-  curcycle->state();
-  curcycle->balance();
-  curcycle->outresults();
-  return 0;
+    cout << "Loading cycle from: " << jsonFile << endl;
+
+    // --- init the cycle analysis ----
+    ClassReg curclassreg;
+    curclassreg.register_type_all();
+    VCCycle::compinstance = curclassreg.compinstance; // the instance of compfactory
+
+    // --- load from JSON -------
+    try {
+        g_loader = make_unique<JSONLoader>();
+        if (!g_loader->loadFile(jsonFile)) {
+            cerr << "Failed to load JSON file" << endl;
+            return 1;
+        }
+        
+        unique_ptr<VCCycle> curcycle = g_loader->createCycle();
+        
+        cout << "Successfully loaded cycle" << endl;
+
+        // --- start the cycle analysis -------
+        curcycle->state();
+        curcycle->balance();
+        curcycle->outresults();
+    } catch (const exception& e) {
+        cerr << "Error: " << e.what() << endl;
+        return 1;
+    }
+
+    return 0;
 }

@@ -22,8 +22,8 @@ VCCycle::VCCycle(vector<umComponent> dictComps, vector<tupConnector> vecConnecto
     // 1 components
     for (auto &item : dictComps)
     {
-        string classstr = any_cast<const char *>(item["classstr"]);
-        string name = any_cast<const char *>(item["name"]);
+        string classstr = any_to_string(item["classstr"]);
+        string name = any_to_string(item["name"]);
         try
         { // register_type
             Comps.insert(mComponentObj::value_type(name, compinstance[classstr](item)));

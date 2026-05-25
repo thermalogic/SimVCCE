@@ -18,6 +18,9 @@
 #include "expansionvalve.hpp"
 #include <typeinfo>
 #include <functional>
+#include <fstream>
+#include <sstream>
+#include <regex>
 
 typedef std::map<std::string, std::function<CompSISO *(umComponent)>> compfactory;
 

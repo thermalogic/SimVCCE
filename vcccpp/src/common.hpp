@@ -59,4 +59,14 @@ string to_string_with_precision(const T a_value, const int n = 6)
   return out.str();
 }
 
+// Helper function to safely get string from any (handles both const char* and string)
+inline string any_to_string(const any& val) {
+    if (val.type() == typeid(const char*)) {
+        return string(any_cast<const char*>(val));
+    } else if (val.type() == typeid(string)) {
+        return any_cast<string>(val);
+    }
+    throw runtime_error("Cannot convert any to string: unsupported type");
+}
+
 #endif /* COMMON_HPP */

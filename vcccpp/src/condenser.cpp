@@ -8,7 +8,7 @@
 
 Condenser::Condenser(umComponent dictComp)
 {
-    name = any_cast<const char *>(dictComp["name"]);
+    name = any_to_string(dictComp["name"]);
     iPort = new Port(any_cast<mPort>(dictComp["iPort"]));
     oPort = new Port(any_cast<mPort>(dictComp["oPort"]));
     portdict = {{"iPort", iPort},
