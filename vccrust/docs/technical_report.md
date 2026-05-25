@@ -26,6 +26,7 @@
 13. [Demo Example](#13-demo-example)
 14. [Design Decisions and Trade-offs](#14-design-decisions-and-trade-offs)
 15. [Future Directions](#15-future-directions)
+16. [Extending the Simulator: Adding New Component Types](#16-extending-the-simulator-adding-new-component-types)
 
 ---
 
@@ -706,6 +707,330 @@ Condenser
 - **WebAssembly**: Compile to Wasm for browser-based simulation tools.
 - **Python bindings**: Via PyO3 for integration with scientific Python ecosystems.
 - **Model exchange**: Support for Modelica, EnergyPlus, or other simulation frameworks.
+
+---
+
+## 16. Extending the Simulator: Adding New Component Types
+
+SimVCC is designed as a demonstration of the iterative component calculation order detection algorithm. It ships with four SISO components (Compressor, Condenser, Evaporator, ExpansionValve). Users can extend the simulator by adding new component types following the patterns established in the codebase.
+
+This section describes the steps required to add both SISO and MIMO (Multi-Input Multi-Output) components.
+
+### 16.1 Adding a New SISO Component
+
+A SISO component has exactly one input port and one output port. This is the simplest case and follows the same pattern as the existing components.
+
+**Example: Adding an `Intercooler` (isobaric cooling between compression stages)**
+
+**Step 1: Create the component file**
+
+Create `src/components/intercooler.rs`:
+
+```rust
+//! Intercooler component: isobaric cooling process.
+
+use crate::common::{CompSISO, PortDict, PortDictMut, SimulationError, UMComponent, to_string_with_precision};
+use crate::components::siso_component::SISOComponent;
+
+pub struct Intercooler {
+    pub inner: SISOComponent,
+    pub qc: f64,  // Heat transfer rate (kW)
+}
+
+impl Intercooler {
+    pub fn new(dict_comp: &UMComponent, fluid_name: &str) -> Self {
+        Intercooler {
+            inner: SISOComponent::new(dict_comp, fluid_name, "Intercooler", "QOUT"),
+            qc: 0.0,
+        }
+    }
+}
+
+impl CompSISO for Intercooler {
+    fn name(&self) -> &str { &self.inner.name }
+    fn energy(&self) -> &str { &self.inner.energy }
+    fn energy_value(&self) -> f64 { self.qc }
+    fn set_port_address(&mut self) { self.inner.set_port_address(); }
+
+    fn state(&mut self) -> Result<(), SimulationError> {
+        // Isobaric: propagate pressure between ports
+        let i_p = self.inner.i_port.borrow().p;
+        let o_p = self.inner.o_port.borrow().p;
+        if !o_p.is_nan() && i_p.is_nan() {
+            self.inner.i_port.borrow_mut().p = o_p;
+        } else if !i_p.is_nan() && o_p.is_nan() {
+            self.inner.o_port.borrow_mut().p = i_p;
+        } else if i_p.is_nan() && o_p.is_nan() {
+            return Err(SimulationError::new("Intercooler: both ports p are NaN"));
+        }
+        Ok(())
+    }
+
+    fn balance(&mut self) -> Result<(), SimulationError> {
+        self.inner.propagate_mdot("Intercooler")?;
+        let (i_h, o_h) = self.inner.get_enthalpies("Intercooler")?;
+        self.qc = self.inner.mdot() * (i_h - o_h);
+        Ok(())
+    }
+
+    fn result_string(&self) -> String {
+        format!(
+            "\n{}\n{}\nThe Intercooler Capacity(kW): {}\n",
+            self.inner.name,
+            self.inner.port_result_string(),
+            to_string_with_precision(self.qc, 3)
+        )
+    }
+}
+
+impl PortDict for Intercooler {
+    fn portdict(&self) -> &std::collections::HashMap<String, crate::common::PortRef> {
+        self.inner.portdict()
+    }
+}
+
+impl PortDictMut for Intercooler {
+    fn portdict_mut(&mut self) -> &mut std::collections::HashMap<String, crate::common::PortRef> {
+        self.inner.portdict_mut()
+    }
+}
+```
+
+**Step 2: Register the module in `src/components/mod.rs`**
+
+```rust
+pub mod intercooler;  // Add this line
+pub use intercooler::Intercooler;  // Add this line
+```
+
+**Step 3: Register the classstr in `src/vcc.rs`**
+
+In `VCCycle::new()`, add a match arm:
+
+```rust
+"Intercooler" => {
+    comps.insert(name, Box::new(Intercooler::new(&item, fluid_name)) as Box<dyn CompSISO>);
+}
+```
+
+**Step 4: Add tests**
+
+Create `tests/intercooler_tests.rs` following the pattern of existing component tests.
+
+**Step 5: Use in JSON**
+
+```json
+{
+    "name": "Intercooler",
+    "classstr": "Intercooler",
+    "iPort": {},
+    "oPort": { "t": 30.0, "x": 1.0 }
+}
+```
+
+### 16.2 Adding a MIMO Component (Multi-Input Multi-Output)
+
+MIMO components have more than two ports (e.g., FlashChamber with 1 input + 2 outputs, MixingChamber with 2 inputs + 1 output). This requires more extensive changes because the current `CompSISO` trait and `SISOComponent` assume exactly one input and one output port.
+
+**Example: Adding a `FlashChamber` (isobaric flash separation)**
+
+```
+                    ↓ iPort
+              ┌─────┴─────┐
+              │           │
+              │           │→ oPortV (vapor)
+              │────────── │
+              └─────┬─────┘
+                    ↓ oPortL (liquid)
+```
+
+**Step 1: Define a `CompMIMO` trait**
+
+Add to `src/common/mod.rs`:
+
+```rust
+/// Trait interface for Multi-Input Multi-Output components.
+pub trait CompMIMO: PortDict + PortDictMut {
+    fn set_port_address(&mut self);
+    fn state(&mut self) -> Result<(), SimulationError>;
+    fn balance(&mut self) -> Result<(), SimulationError>;
+    fn result_string(&self) -> String;
+    fn name(&self) -> &str;
+    fn energy(&self) -> &str;
+    fn energy_value(&self) -> f64;
+}
+```
+
+**Step 2: Create the component file**
+
+Create `src/components/flash_chamber.rs`:
+
+```rust
+//! Flash chamber component: isobaric flash separation.
+
+use crate::common::{CompMIMO, Port, PortDict, PortDictMut, PortRef, SimulationError, UMComponent};
+use std::collections::HashMap;
+use std::rc::Rc;
+
+pub struct FlashChamber {
+    pub name: String,
+    pub i_port: PortRef,
+    pub o_port_v: PortRef,   // Vapor outlet
+    pub o_port_l: PortRef,   // Liquid outlet
+    pub portdict: HashMap<String, PortRef>,
+}
+
+impl FlashChamber {
+    pub fn new(dict_comp: &UMComponent, fluid_name: &str) -> Self {
+        let name = dict_comp.get("name")
+            .and_then(|v| v.as_str())
+            .unwrap_or("FlashChamber")
+            .to_string();
+
+        let i_port_data = /* parse "iPort" from dict_comp */;
+        let o_port_v_data = /* parse "oPortV" from dict_comp */;
+        let o_port_l_data = /* parse "oPortL" from dict_comp */;
+
+        let i_port = Rc::new(std::cell::RefCell::new(Port::new(&i_port_data, fluid_name)));
+        let o_port_v = Rc::new(std::cell::RefCell::new(Port::new(&o_port_v_data, fluid_name)));
+        let o_port_l = Rc::new(std::cell::RefCell::new(Port::new(&o_port_l_data, fluid_name)));
+
+        let mut portdict = HashMap::new();
+        portdict.insert("iPort".to_string(), i_port.clone());
+        portdict.insert("oPortV".to_string(), o_port_v.clone());
+        portdict.insert("oPortL".to_string(), o_port_l.clone());
+
+        FlashChamber { name, i_port, o_port_v, o_port_l, portdict }
+    }
+}
+
+impl CompMIMO for FlashChamber {
+    fn name(&self) -> &str { &self.name }
+    fn energy(&self) -> &str { "" }
+    fn energy_value(&self) -> f64 { 0.0 }
+    fn set_port_address(&mut self) { /* update from portdict */ }
+
+    fn state(&mut self) -> Result<(), SimulationError> {
+        // Isobaric: all ports share the same pressure
+        let i_p = self.i_port.borrow().p;
+        let ov_p = self.o_port_v.borrow().p;
+        let ol_p = self.o_port_l.borrow().p;
+        // Propagate known pressure to unknown ports...
+        if i_p.is_nan() && ov_p.is_nan() && ol_p.is_nan() {
+            return Err(SimulationError::new("FlashChamber: all ports p are NaN"));
+        }
+        Ok(())
+    }
+
+    fn balance(&mut self) -> Result<(), SimulationError> {
+        // Mass balance: mdot_v = mdot * x, mdot_l = mdot * (1 - x)
+        let i_mdot = self.i_port.borrow().mdot;
+        let i_x = self.i_port.borrow().x;
+        if i_mdot.is_nan() { return Err(SimulationError::new("FlashChamber: mdot is NaN")); }
+        if i_x.is_nan() { return Err(SimulationError::new("FlashChamber: x is NaN")); }
+        self.o_port_v.borrow_mut().mdot = i_mdot * i_x;
+        self.o_port_l.borrow_mut().mdot = i_mdot * (1.0 - i_x);
+        Ok(())
+    }
+
+    fn result_string(&self) -> String { /* format output */ }
+}
+
+impl PortDict for FlashChamber {
+    fn portdict(&self) -> &HashMap<String, PortRef> { &self.portdict }
+}
+impl PortDictMut for FlashChamber {
+    fn portdict_mut(&mut self) -> &mut HashMap<String, PortRef> { &mut self.portdict }
+}
+```
+
+**Step 3: Unify component storage**
+
+The current `VCCycle.comps` uses `HashMap<String, Box<dyn CompSISO>>`. To support both SISO and MIMO components, introduce a unified trait or enum:
+
+**Option A: Unified trait**
+
+```rust
+pub trait Comp: PortDict + PortDictMut {
+    fn set_port_address(&mut self);
+    fn state(&mut self) -> Result<(), SimulationError>;
+    fn balance(&mut self) -> Result<(), SimulationError>;
+    fn result_string(&self) -> String;
+    fn name(&self) -> &str;
+    fn energy(&self) -> &str;
+    fn energy_value(&self) -> f64;
+}
+// CompSISO and CompMIMO both implement Comp
+```
+
+Then `VCCycle.comps` becomes `HashMap<String, Box<dyn Comp>>`.
+
+**Option B: Enum dispatch**
+
+```rust
+pub enum Component {
+    SISO(Box<dyn CompSISO>),
+    MIMO(Box<dyn CompMIMO>),
+}
+```
+
+**Step 4: Update `Connector` for multi-port nodes**
+
+The current `add_connector` connects exactly two ports. For MIMO components, a node may need to be shared by 3+ ports. Extend `Connector`:
+
+```rust
+/// Connects multiple ports to the same shared node.
+pub fn add_multi_connector(
+    &mut self,
+    port_specs: Vec<(String, String)>,  // [(comp_name, port_name), ...]
+    comps: &mut HashMap<String, Box<dyn Comp>>,
+) -> Result<(), SimulationError> {
+    // 1. Get first port as the node
+    // 2. Merge values from all other ports
+    // 3. Replace all other ports' references with the node
+    // 4. Update port addresses for all affected components
+}
+```
+
+**Step 5: Update `component_simulator`**
+
+The algorithm itself requires minimal changes — it already iterates over all components and calls `state()`/`balance()`. The only change is using the unified `Comp` trait instead of `CompSISO`.
+
+**Step 6: Update JSON loader**
+
+In `create_cycle()`, add match arms for new classstr values:
+
+```rust
+"FlashChamber" => {
+    comps.insert(name, Box::new(FlashChamber::new(&item, fluid_name)) as Box<dyn Comp>);
+}
+```
+
+### 16.3 Summary: Effort Comparison
+
+| Task | SISO Component | MIMO Component |
+|---|---|---|
+| Create component file | New file, ~80 lines | New file, ~120 lines |
+| Implement `state()`/`balance()` | Use `SISOComponent` helpers | Manual, custom logic |
+| Register in `mod.rs` | 2 lines | 2 lines |
+| Register in `vcc.rs` | 1 match arm | 1 match arm + trait unification |
+| Update `Connector` | No change | Add `add_multi_connector` |
+| Update `component_simulator` | No change | Use unified `Comp` trait |
+| Update JSON loader | 1 match arm | 1 match arm |
+| Add tests | New test file | New test file |
+| **Total effort** | **~30 minutes** | **~2-4 hours** (first MIMO component) |
+
+### 16.4 Design Principles for Extensions
+
+1. **Follow the `Err` convention**: `state()` and `balance()` must return `Err(SimulationError)` when input data is not yet available. This is the signal that drives the iterative algorithm.
+
+2. **Use `Rc<RefCell<Port>>` for all ports**: This ensures node sharing works correctly. Never store `Port` directly in a component — always use `PortRef`.
+
+3. **Keep `portdict` complete**: All ports must be registered in `portdict` so that `Connector::add_connector` can find and replace them during node sharing.
+
+4. **`state()` writes, `balance()` reads**: The two-phase design (state → node resolution → balance) is essential. `state()` should only propagate thermodynamic constraints (pressure, entropy, enthalpy). `balance()` should only compute energy and mass balances.
+
+5. **Test with the iterative algorithm**: New components must work correctly when processed in any order. Test that your component returns `Err` when inputs are missing and `Ok` when they are available.
 
 ---
 
