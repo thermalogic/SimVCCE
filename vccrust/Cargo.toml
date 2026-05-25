@@ -1,6 +1,6 @@
 [package]
 name = "simvcc"
-version = "0.1.3"
+version = "0.1.4"
 edition = "2021"
 authors = ["Cheng Maohua <cmh@seu.edu.cn>"]
 description = "Vapor compression refrigeration cycle simulator in Rust"
