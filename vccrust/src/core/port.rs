@@ -70,23 +70,16 @@ impl Port {
             index: NONE_INDEX,
         };
 
-        if let Some(&p_val) = curm_port.get("p") {
-            port.p = p_val;
-        }
-        if let Some(&t_val) = curm_port.get("t") {
-            port.t = t_val;
-        }
-        if let Some(&x_val) = curm_port.get("x") {
-            port.x = x_val;
-        }
-        if let Some(&mdot_val) = curm_port.get("mdot") {
-            port.mdot = mdot_val;
-        }
-        if let Some(&h_val) = curm_port.get("h") {
-            port.h = h_val;
-        }
-        if let Some(&s_val) = curm_port.get("s") {
-            port.s = s_val;
+        for (key, &val) in curm_port {
+            match key.as_str() {
+                "p" => port.p = val,
+                "t" => port.t = val,
+                "h" => port.h = val,
+                "s" => port.s = val,
+                "x" => port.x = val,
+                "mdot" => port.mdot = val,
+                _ => {}
+            }
         }
 
         if !port.t.is_nan() && !port.x.is_nan() {

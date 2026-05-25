@@ -10,7 +10,7 @@
 //! - `state()`: returns `Err` if both ports' h are NaN
 //! - `balance()`: returns `Err` if both ports' mdot are NaN
 
-use crate::common::{CompSISO, Port, PortRef, SimulationError, UMComponent, any_to_string, PortDictMut, PortDict};
+use crate::common::{CompSISO, Port, PortRef, SimulationError, UMComponent, PortDictMut, PortDict};
 use std::collections::HashMap;
 use std::rc::Rc;
 
@@ -85,6 +85,10 @@ impl CompSISO for ExpansionValve {
 
     fn energy(&self) -> &str {
         &self.energy
+    }
+
+    fn energy_value(&self) -> f64 {
+        0.0
     }
 
     fn set_port_address(&mut self) {

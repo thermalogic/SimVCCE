@@ -3,7 +3,6 @@
 //! This module defines:
 //! - [`CompSISO`] — trait interface for Single-Input Single-Output components
 //! - [`PortDict`] / [`PortDictMut`] — traits for accessing component port dictionaries
-//! - [`AsAny`] — trait for runtime type downcasting
 //! - Utility type aliases and helper functions
 //!
 //! [`Port`] and [`NONE_INDEX`] are re-exported from [`crate::core::port`].
@@ -60,7 +59,7 @@ pub type PortRef = Rc<RefCell<Port>>;
 /// data is not yet available (e.g., NaN values). This is not a fatal error — it
 /// signals to the `component_simulator` that this component cannot be processed
 /// yet and should be retried in a later iteration.
-pub trait CompSISO: PortDict + PortDictMut + AsAny {
+pub trait CompSISO: PortDict + PortDictMut {
     /// Update port pointers to match the current portdict (after node sharing).
     fn set_port_address(&mut self);
     /// Perform thermal process calculation.
@@ -81,6 +80,13 @@ pub trait CompSISO: PortDict + PortDictMut + AsAny {
     fn name(&self) -> &str;
     /// Returns the energy category: "CompressionWork", "QIN", "QOUT", or "".
     fn energy(&self) -> &str;
+    /// Returns the computed energy value (kW) for cycle-level aggregation.
+    ///
+    /// - Compressor: compression work (Wc)
+    /// - Condenser: heat transfer rate (Qout)
+    /// - Evaporator: refrigeration capacity (Qin)
+    /// - ExpansionValve: 0.0
+    fn energy_value(&self) -> f64;
 }
 
 /// Trait for read access to a component's port dictionary.
@@ -93,27 +99,6 @@ pub trait PortDict {
 pub trait PortDictMut {
     /// Returns the mutable map of port name → shared port reference.
     fn portdict_mut(&mut self) -> &mut HashMap<String, PortRef>;
-}
-
-/// Trait for runtime type downcasting.
-///
-/// Enables `component_simulator` to aggregate cycle results by downcasting
-/// trait objects to concrete types (e.g., `Box<dyn CompSISO>` → `Compressor`).
-pub trait AsAny {
-    /// Returns a reference to `dyn Any` for downcasting.
-    fn as_any(&self) -> &dyn std::any::Any;
-    /// Returns a mutable reference to `dyn Any` for downcasting.
-    fn as_any_mut(&mut self) -> &mut dyn std::any::Any;
-}
-
-impl<T: 'static> AsAny for T {
-    fn as_any(&self) -> &dyn std::any::Any {
-        self
-    }
-
-    fn as_any_mut(&mut self) -> &mut dyn std::any::Any {
-        self
-    }
 }
 
 /// Component configuration dictionary type (from JSON parsing).

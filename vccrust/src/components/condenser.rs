@@ -10,7 +10,7 @@
 //! - `state()`: returns `Err` if both ports' p are NaN
 //! - `balance()`: returns `Err` if both ports' mdot are NaN, or if either port's h is NaN
 
-use crate::common::{CompSISO, Port, PortRef, SimulationError, UMComponent, to_string_with_precision, any_to_string, PortDictMut, PortDict};
+use crate::common::{CompSISO, Port, PortRef, SimulationError, UMComponent, to_string_with_precision, PortDictMut, PortDict};
 use std::collections::HashMap;
 use std::rc::Rc;
 
@@ -89,6 +89,10 @@ impl CompSISO for Condenser {
 
     fn energy(&self) -> &str {
         &self.energy
+    }
+
+    fn energy_value(&self) -> f64 {
+        self.qc
     }
 
     fn set_port_address(&mut self) {

@@ -202,18 +202,11 @@ impl VCCycle {
         self.qout = 0.0;
 
         for comp in self.comps.values() {
-            if comp.energy() == "CompressionWork" {
-                if let Some(compressor) = comp.as_any().downcast_ref::<Compressor>() {
-                    self.wc += compressor.wc;
-                }
-            } else if comp.energy() == "QIN" {
-                if let Some(evaporator) = comp.as_any().downcast_ref::<Evaporator>() {
-                    self.qin += evaporator.qe;
-                }
-            } else if comp.energy() == "QOUT" {
-                if let Some(condenser) = comp.as_any().downcast_ref::<Condenser>() {
-                    self.qout += condenser.qc;
-                }
+            match comp.energy() {
+                "CompressionWork" => self.wc += comp.energy_value(),
+                "QIN" => self.qin += comp.energy_value(),
+                "QOUT" => self.qout += comp.energy_value(),
+                _ => {}
             }
         }
 
