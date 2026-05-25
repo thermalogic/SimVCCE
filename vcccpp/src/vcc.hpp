@@ -9,13 +9,13 @@
 #ifndef VCC_HPP
 #define VCC_HPP
 
-#include "common.hpp"
-#include "port.hpp"
-#include "connector.hpp"
-#include "compressor.hpp"
-#include "condenser.hpp"
-#include "evaporator.hpp"
-#include "expansionvalve.hpp"
+#include "./common/common.hpp"
+#include "./core/port.hpp"
+#include "./core/connector.hpp"
+#include "./components/compressor.hpp"
+#include "./components/condenser.hpp"
+#include "./components/evaporator.hpp"
+#include "./components/expansionvalve.hpp"
 #include <typeinfo>
 #include <functional>
 #include <fstream>

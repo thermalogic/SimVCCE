@@ -5,7 +5,7 @@
 #ifndef COMPRESSOR_HPP
 #define COMPRESSOR_HPP
 
-#include "common.hpp"
+#include "../common/common.hpp"
 
 class Compressor : public CompSISO
 {

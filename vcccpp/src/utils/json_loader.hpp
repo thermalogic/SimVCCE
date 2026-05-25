@@ -5,8 +5,8 @@
 #ifndef JSON_LOADER_HPP
 #define JSON_LOADER_HPP
 
-#include "common.hpp"
-#include "vcc.hpp"
+#include "./common/common.hpp"
+#include "./vcc.hpp"
 #include <fstream>
 #include <sstream>
 #include <regex>

@@ -5,7 +5,8 @@
 #ifndef EXPANSIONVALVE_HPP
 #define EXPANSIONVALVE_HPP
 
-#include "common.hpp"
+#include "../common/common.hpp"
+#include "../core/port.hpp"
 
 class ExpansionValve : public CompSISO
 {

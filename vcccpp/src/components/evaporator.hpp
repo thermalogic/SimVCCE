@@ -5,7 +5,8 @@
 #ifndef EVAPORATOR_HPP
 #define EVAPORATOR_HPP
 
-#include "common.hpp"
+#include "../common/common.hpp"
+#include "../core/port.hpp"
 
 class Evaporator : public CompSISO
 {

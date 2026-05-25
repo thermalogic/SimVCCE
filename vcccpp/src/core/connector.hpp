@@ -5,7 +5,7 @@
 #ifndef CONNECTOR_HPP
 #define CONNECTOR_HPP
 
-#include "common.hpp"
+#include "../common/common.hpp"
 
 class Connector
 {

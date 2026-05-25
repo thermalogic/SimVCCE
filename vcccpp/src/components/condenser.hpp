@@ -5,7 +5,8 @@
 #ifndef CONDENSER_HPP
 #define CONDENSER_HPP
 
-#include "common.hpp"
+#include "../common/common.hpp"
+#include "../core/port.hpp"
 
 class Condenser : public CompSISO
 {

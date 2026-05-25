@@ -9,12 +9,12 @@ LIBFLAGS=-L./bin -lCoolProp
 CFLAGS=-std=c++17 -O3 -DCOOLPROP_LIB 
 
 SRCS=$(SRC)/vcc.cpp \
-	$(SRC)/port.cpp \
-	$(SRC)/connector.cpp \
-	$(SRC)/compressor.cpp \
-	$(SRC)/condenser.cpp \
-	$(SRC)/evaporator.cpp \
-	$(SRC)/expansionvalve.cpp 
+	$(SRC)/core/port.cpp \
+	$(SRC)/core/connector.cpp \
+	$(SRC)/components/compressor.cpp \
+	$(SRC)/components/condenser.cpp \
+	$(SRC)/components/evaporator.cpp \
+	$(SRC)/components/expansionvalve.cpp 
 
 OUTFILE=$(BIN)/demovcc
 

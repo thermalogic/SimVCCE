@@ -2,8 +2,8 @@
  The vapor-compression refrigeration cycle simulator - JSON Version
 
 */
-#include "vcc.hpp"
-#include "json_loader.hpp"
+#include "./src/vcc.hpp"
+#include "./src/utils/json_loader.hpp"
 
 // Global loader to keep string pool alive
 unique_ptr<JSONLoader> g_loader;

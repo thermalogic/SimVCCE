@@ -3,8 +3,8 @@
   port.cpp
 ----------------------------------------------------------*/
 
-#include "common.hpp"
-#include "port.hpp"
+#include "./common/common.hpp"
+#include "./port.hpp"
 
 Port::Port(mPort curmPort)
 {
