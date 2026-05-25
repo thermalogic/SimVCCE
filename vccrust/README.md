@@ -42,7 +42,7 @@ cargo run -- jsonmodel/demovcc.json
 1. **Node Sharing** — Connected component ports share the same memory, ensuring state consistency across the cycle.
 2. **Component Calculation Order Detection** — No fixed order required; the algorithm automatically discovers the correct processing sequence.
 
-## Component Implementations
+## Supported Components
 
 | Component | Process | Energy |
 |---|---|---|
