@@ -10,8 +10,9 @@
 //! - `state()`: panics if both ports' h are NaN
 //! - `balance()`: panics if both ports' mdot are NaN
 
-use crate::common::{CompSISO, Port, UMComponent, any_to_string, PortDictMut, PortDict};
+use crate::common::{CompSISO, Port, PortRef, UMComponent, any_to_string, PortDictMut, PortDict};
 use std::collections::HashMap;
+use std::rc::Rc;
 
 /// Expansion valve component for the vapor compression cycle.
 ///
@@ -22,12 +23,12 @@ pub struct ExpansionValve {
     pub name: String,
     /// Energy category: "" (no energy)
     pub energy: String,
-    /// Input port pointer
-    pub i_port: *mut Port,
-    /// Output port pointer
-    pub o_port: *mut Port,
-    /// Port dictionary: {"iPort" → ptr, "oPort" → ptr}
-    pub portdict: HashMap<String, *mut Port>,
+    /// Input port reference
+    pub i_port: PortRef,
+    /// Output port reference
+    pub o_port: PortRef,
+    /// Port dictionary: {"iPort" → ref, "oPort" → ref}
+    pub portdict: HashMap<String, PortRef>,
 }
 
 impl ExpansionValve {
@@ -57,12 +58,12 @@ impl ExpansionValve {
             })
             .unwrap_or_default();
 
-        let i_port = Box::into_raw(Box::new(Port::new(&i_port_data, fluid_name)));
-        let o_port = Box::into_raw(Box::new(Port::new(&o_port_data, fluid_name)));
+        let i_port = Rc::new(std::cell::RefCell::new(Port::new(&i_port_data, fluid_name)));
+        let o_port = Rc::new(std::cell::RefCell::new(Port::new(&o_port_data, fluid_name)));
 
         let mut portdict = HashMap::new();
-        portdict.insert("iPort".to_string(), i_port);
-        portdict.insert("oPort".to_string(), o_port);
+        portdict.insert("iPort".to_string(), i_port.clone());
+        portdict.insert("oPort".to_string(), o_port.clone());
 
         ExpansionValve {
             name,
@@ -83,12 +84,14 @@ impl CompSISO for ExpansionValve {
         &self.energy
     }
 
-    fn setportaddress(&mut self) {
-        if self.i_port != *self.portdict.get("iPort").unwrap() {
-            self.i_port = *self.portdict.get("iPort").unwrap();
+    fn set_port_address(&mut self) {
+        let i_port = self.portdict.get("iPort").unwrap();
+        if !Rc::ptr_eq(&self.i_port, i_port) {
+            self.i_port = i_port.clone();
         }
-        if self.o_port != *self.portdict.get("oPort").unwrap() {
-            self.o_port = *self.portdict.get("oPort").unwrap();
+        let o_port = self.portdict.get("oPort").unwrap();
+        if !Rc::ptr_eq(&self.o_port, o_port) {
+            self.o_port = o_port.clone();
         }
     }
 
@@ -99,14 +102,14 @@ impl CompSISO for ExpansionValve {
     /// # Panics
     /// Panics if both ports' h are NaN (no enthalpy information available).
     fn state(&mut self) {
-        unsafe {
-            if !(*self.i_port).h.is_nan() && (*self.o_port).h.is_nan() {
-                (*self.o_port).h = (*self.i_port).h;
-            } else if !(*self.o_port).h.is_nan() && (*self.i_port).h.is_nan() {
-                (*self.i_port).h = (*self.o_port).h;
-            } else if (*self.i_port).h.is_nan() && (*self.o_port).h.is_nan() {
-                panic!("ExpansionValve: both ports h are NaN");
-            }
+        let i_h = self.i_port.borrow().h;
+        let o_h = self.o_port.borrow().h;
+        if !i_h.is_nan() && o_h.is_nan() {
+            self.o_port.borrow_mut().h = i_h;
+        } else if !o_h.is_nan() && i_h.is_nan() {
+            self.i_port.borrow_mut().h = o_h;
+        } else if i_h.is_nan() && o_h.is_nan() {
+            panic!("ExpansionValve: both ports h are NaN");
         }
     }
 
@@ -117,39 +120,37 @@ impl CompSISO for ExpansionValve {
     /// # Panics
     /// Panics if both ports' mdot are NaN.
     fn balance(&mut self) {
-        unsafe {
-            if (*self.i_port).mdot.is_nan() && (*self.o_port).mdot.is_nan() {
-                panic!("ExpansionValve: mdot is NaN");
-            }
-            if !(*self.i_port).mdot.is_nan() {
-                (*self.o_port).mdot = (*self.i_port).mdot;
-            } else if !(*self.o_port).mdot.is_nan() {
-                (*self.i_port).mdot = (*self.o_port).mdot;
-            }
+        let i_mdot = self.i_port.borrow().mdot;
+        let o_mdot = self.o_port.borrow().mdot;
+        if i_mdot.is_nan() && o_mdot.is_nan() {
+            panic!("ExpansionValve: mdot is NaN");
+        }
+        if !i_mdot.is_nan() {
+            self.o_port.borrow_mut().mdot = i_mdot;
+        } else if !o_mdot.is_nan() {
+            self.i_port.borrow_mut().mdot = o_mdot;
         }
     }
 
-    fn resultstring(&self) -> String {
-        unsafe {
-            format!(
-                "\n{}\n{}\n{}\n{}\n",
-                self.name,
-                Port::TITLE,
-                (*self.i_port).resultstring(),
-                (*self.o_port).resultstring()
-            )
-        }
+    fn result_string(&self) -> String {
+        format!(
+            "\n{}\n{}\n{}\n{}\n",
+            self.name,
+            Port::TITLE,
+            self.i_port.borrow().result_string(),
+            self.o_port.borrow().result_string()
+        )
     }
 }
 
 impl PortDict for ExpansionValve {
-    fn portdict(&self) -> &HashMap<String, *mut Port> {
+    fn portdict(&self) -> &HashMap<String, PortRef> {
         &self.portdict
     }
 }
 
 impl PortDictMut for ExpansionValve {
-    fn portdict_mut(&mut self) -> &mut HashMap<String, *mut Port> {
+    fn portdict_mut(&mut self) -> &mut HashMap<String, PortRef> {
         &mut self.portdict
     }
 }

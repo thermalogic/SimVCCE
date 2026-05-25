@@ -10,8 +10,9 @@
 //! - `state()`: panics if both ports' p are NaN
 //! - `balance()`: panics if both ports' mdot are NaN, or if either port's h is NaN
 
-use crate::common::{CompSISO, Port, UMComponent, to_string_with_precision, any_to_string, PortDictMut, PortDict};
+use crate::common::{CompSISO, Port, PortRef, UMComponent, to_string_with_precision, any_to_string, PortDictMut, PortDict};
 use std::collections::HashMap;
+use std::rc::Rc;
 
 /// Evaporator component for the vapor compression cycle.
 ///
@@ -23,12 +24,12 @@ pub struct Evaporator {
     pub name: String,
     /// Energy category: "QIN"
     pub energy: String,
-    /// Input port pointer
-    pub i_port: *mut Port,
-    /// Output port pointer
-    pub o_port: *mut Port,
-    /// Port dictionary: {"iPort" → ptr, "oPort" → ptr}
-    pub portdict: HashMap<String, *mut Port>,
+    /// Input port reference
+    pub i_port: PortRef,
+    /// Output port reference
+    pub o_port: PortRef,
+    /// Port dictionary: {"iPort" → ref, "oPort" → ref}
+    pub portdict: HashMap<String, PortRef>,
     /// Refrigeration capacity (kW)
     pub qe: f64,
 }
@@ -60,12 +61,12 @@ impl Evaporator {
             })
             .unwrap_or_default();
 
-        let i_port = Box::into_raw(Box::new(Port::new(&i_port_data, fluid_name)));
-        let o_port = Box::into_raw(Box::new(Port::new(&o_port_data, fluid_name)));
+        let i_port = Rc::new(std::cell::RefCell::new(Port::new(&i_port_data, fluid_name)));
+        let o_port = Rc::new(std::cell::RefCell::new(Port::new(&o_port_data, fluid_name)));
 
         let mut portdict = HashMap::new();
-        portdict.insert("iPort".to_string(), i_port);
-        portdict.insert("oPort".to_string(), o_port);
+        portdict.insert("iPort".to_string(), i_port.clone());
+        portdict.insert("oPort".to_string(), o_port.clone());
 
         Evaporator {
             name,
@@ -87,12 +88,14 @@ impl CompSISO for Evaporator {
         &self.energy
     }
 
-    fn setportaddress(&mut self) {
-        if self.i_port != *self.portdict.get("iPort").unwrap() {
-            self.i_port = *self.portdict.get("iPort").unwrap();
+    fn set_port_address(&mut self) {
+        let i_port = self.portdict.get("iPort").unwrap();
+        if !Rc::ptr_eq(&self.i_port, i_port) {
+            self.i_port = i_port.clone();
         }
-        if self.o_port != *self.portdict.get("oPort").unwrap() {
-            self.o_port = *self.portdict.get("oPort").unwrap();
+        let o_port = self.portdict.get("oPort").unwrap();
+        if !Rc::ptr_eq(&self.o_port, o_port) {
+            self.o_port = o_port.clone();
         }
     }
 
@@ -103,14 +106,14 @@ impl CompSISO for Evaporator {
     /// # Panics
     /// Panics if both ports' p are NaN (no pressure information available).
     fn state(&mut self) {
-        unsafe {
-            if !(*self.o_port).p.is_nan() && (*self.i_port).p.is_nan() {
-                (*self.i_port).p = (*self.o_port).p;
-            } else if !(*self.i_port).p.is_nan() && (*self.o_port).p.is_nan() {
-                (*self.o_port).p = (*self.i_port).p;
-            } else if (*self.i_port).p.is_nan() && (*self.o_port).p.is_nan() {
-                panic!("Evaporator: both ports p are NaN");
-            }
+        let i_p = self.i_port.borrow().p;
+        let o_p = self.o_port.borrow().p;
+        if !o_p.is_nan() && i_p.is_nan() {
+            self.i_port.borrow_mut().p = o_p;
+        } else if !i_p.is_nan() && o_p.is_nan() {
+            self.o_port.borrow_mut().p = i_p;
+        } else if i_p.is_nan() && o_p.is_nan() {
+            panic!("Evaporator: both ports p are NaN");
         }
     }
 
@@ -123,44 +126,45 @@ impl CompSISO for Evaporator {
     /// - Panics if both ports' mdot are NaN
     /// - Panics if either port's h is NaN
     fn balance(&mut self) {
-        unsafe {
-            if (*self.i_port).mdot.is_nan() && (*self.o_port).mdot.is_nan() {
-                panic!("Evaporator: mdot is NaN");
-            }
-            if !(*self.i_port).mdot.is_nan() {
-                (*self.o_port).mdot = (*self.i_port).mdot;
-            } else if !(*self.o_port).mdot.is_nan() {
-                (*self.i_port).mdot = (*self.o_port).mdot;
-            }
-            if (*self.i_port).h.is_nan() || (*self.o_port).h.is_nan() {
-                panic!("Evaporator: h is NaN");
-            }
-            self.qe = (*self.i_port).mdot * ((*self.o_port).h - (*self.i_port).h);
+        let i_mdot = self.i_port.borrow().mdot;
+        let o_mdot = self.o_port.borrow().mdot;
+        if i_mdot.is_nan() && o_mdot.is_nan() {
+            panic!("Evaporator: mdot is NaN");
         }
+        if !i_mdot.is_nan() {
+            self.o_port.borrow_mut().mdot = i_mdot;
+        } else if !o_mdot.is_nan() {
+            self.i_port.borrow_mut().mdot = o_mdot;
+        }
+        let i_h = self.i_port.borrow().h;
+        let o_h = self.o_port.borrow().h;
+        if i_h.is_nan() || o_h.is_nan() {
+            panic!("Evaporator: h is NaN");
+        }
+        let mdot = self.i_port.borrow().mdot;
+        self.qe = mdot * (o_h - i_h);
     }
 
-    fn resultstring(&self) -> String {
-        unsafe {
-            format!(
-                "\n{}\n{}\n{}\n{}\nThe Refrigeration Capacity(kW): {}\n",
-                self.name,
-                Port::TITLE,
-                (*self.i_port).resultstring(),
-                (*self.o_port).resultstring(),
-                to_string_with_precision(self.qe, 3)
-            )
-        }
+    fn result_string(&self) -> String {
+        format!(
+            "\n{}\n{}\n{}\n{}\nThe Refrigeration Capacity(kW): {}\n",
+            self.name,
+            Port::TITLE,
+            self.i_port.borrow().result_string(),
+            self.o_port.borrow().result_string(),
+            to_string_with_precision(self.qe, 3)
+        )
     }
 }
 
 impl PortDict for Evaporator {
-    fn portdict(&self) -> &HashMap<String, *mut Port> {
+    fn portdict(&self) -> &HashMap<String, PortRef> {
         &self.portdict
     }
 }
 
 impl PortDictMut for Evaporator {
-    fn portdict_mut(&mut self) -> &mut HashMap<String, *mut Port> {
+    fn portdict_mut(&mut self) -> &mut HashMap<String, PortRef> {
         &mut self.portdict
     }
 }

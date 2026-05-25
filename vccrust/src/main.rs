@@ -33,7 +33,7 @@ fn main() {
                 Ok(mut curcycle) => {
                     println!("Successfully loaded cycle");
                     curcycle.simulator();
-                    curcycle.outresults();
+                    curcycle.out_results();
                 }
                 Err(e) => {
                     eprintln!("Error creating cycle: {}", e);

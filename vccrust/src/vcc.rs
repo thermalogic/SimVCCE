@@ -99,7 +99,7 @@ impl VCCycle {
 
         // Set port addresses for all components
         for comp in comps.values_mut() {
-            comp.setportaddress();
+            comp.set_port_address();
         }
 
         VCCycle {
@@ -148,17 +148,15 @@ impl VCCycle {
                     // Step 2: update unresolved nodes
                     let mut j = 0;
                     while j < state_nodes.len() {
-                        unsafe {
-                            if !(*state_nodes[j]).stateok {
-                                (*state_nodes[j]).state();
-                                if (*state_nodes[j]).stateok {
-                                    state_nodes.remove(j);
-                                } else {
-                                    j += 1;
-                                }
+                        if !state_nodes[j].borrow().state_ok {
+                            state_nodes[j].borrow_mut().state();
+                            if state_nodes[j].borrow().state_ok {
+                                state_nodes.remove(j);
                             } else {
                                 j += 1;
                             }
+                        } else {
+                            j += 1;
                         }
                     }
 
@@ -201,7 +199,7 @@ impl VCCycle {
         self.qin = 0.0;
         self.qout = 0.0;
 
-        for (_, comp) in &self.comps {
+        for comp in self.comps.values() {
             if comp.energy() == "CompressionWork" {
                 if let Some(compressor) = comp.as_any().downcast_ref::<Compressor>() {
                     self.wc += compressor.wc;
@@ -221,18 +219,8 @@ impl VCCycle {
         self.cop_hp = self.qout / self.wc;
     }
 
-    /// Runs the simulator (alias for `simulator()`).
-    pub fn state(&mut self) {
-        self.simulator();
-    }
-
-    /// Balance is already handled within `simulator()`.
-    pub fn balance(&mut self) {
-        // Already handled in simulator
-    }
-
     /// Returns a formatted string of cycle-level performance indicators.
-    pub fn resultstr(&self) -> String {
+    pub fn result_str(&self) -> String {
         format!(
             "\n --- The Cycle ---
 \tCompression Work(kW): {}
@@ -252,21 +240,19 @@ impl VCCycle {
     }
 
     /// Prints each component's result string and all node states.
-    pub fn outdevresultstr(&self) {
-        for (_, comp) in &self.comps {
-            println!("{}", comp.resultstring());
+    pub fn out_dev_result_str(&self) {
+        for comp in self.comps.values() {
+            println!("{}", comp.result_string());
         }
         println!("\n{}", Port::TITLE);
-        for &node in &self.curcon.nodes {
-            unsafe {
-                println!("{}", (*node).resultstring());
-            }
+        for node in &self.curcon.nodes {
+            println!("{}", node.borrow().result_string());
         }
     }
 
     /// Prints the full cycle results (summary + component details + node states).
-    pub fn outresults(&self) {
-        println!("{}", self.resultstr());
-        self.outdevresultstr();
+    pub fn out_results(&self) {
+        println!("{}", self.result_str());
+        self.out_dev_result_str();
     }
 }
