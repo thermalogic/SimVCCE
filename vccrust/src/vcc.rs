@@ -64,7 +64,7 @@ impl VCCycle {
     /// 1. Instantiate components based on `classstr` field
     /// 2. Build connectors to create shared nodes between ports
     /// 3. Set port addresses for all components (point ports to shared nodes)
-    pub fn new(dict_comps: Vec<UMComponent>, vec_connectors: Vec<TupConnector>) -> Self {
+    pub fn new(dict_comps: Vec<UMComponent>, vec_connectors: Vec<TupConnector>, fluid_name: &str) -> Self {
         let mut comps = HashMap::new();
 
         for item in dict_comps {
@@ -77,16 +77,16 @@ impl VCCycle {
 
             match class_str {
                 "Compressor" => {
-                    comps.insert(name, Box::new(Compressor::new(&item)) as Box<dyn CompSISO>);
+                    comps.insert(name, Box::new(Compressor::new(&item, fluid_name)) as Box<dyn CompSISO>);
                 }
                 "Condenser" => {
-                    comps.insert(name, Box::new(Condenser::new(&item)) as Box<dyn CompSISO>);
+                    comps.insert(name, Box::new(Condenser::new(&item, fluid_name)) as Box<dyn CompSISO>);
                 }
                 "Evaporator" => {
-                    comps.insert(name, Box::new(Evaporator::new(&item)) as Box<dyn CompSISO>);
+                    comps.insert(name, Box::new(Evaporator::new(&item, fluid_name)) as Box<dyn CompSISO>);
                 }
                 "ExpansionValve" => {
-                    comps.insert(name, Box::new(ExpansionValve::new(&item)) as Box<dyn CompSISO>);
+                    comps.insert(name, Box::new(ExpansionValve::new(&item, fluid_name)) as Box<dyn CompSISO>);
                 }
                 _ => {}
             }

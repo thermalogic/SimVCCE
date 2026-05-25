@@ -35,7 +35,7 @@ pub struct Evaporator {
 
 impl Evaporator {
     /// Creates a new Evaporator from a JSON component configuration.
-    pub fn new(dict_comp: &UMComponent) -> Self {
+    pub fn new(dict_comp: &UMComponent, fluid_name: &str) -> Self {
         let name = any_to_string(dict_comp.get("name").unwrap());
         
         // Parse iPort
@@ -60,8 +60,8 @@ impl Evaporator {
             })
             .unwrap_or_default();
 
-        let i_port = Box::into_raw(Box::new(Port::new(&i_port_data)));
-        let o_port = Box::into_raw(Box::new(Port::new(&o_port_data)));
+        let i_port = Box::into_raw(Box::new(Port::new(&i_port_data, fluid_name)));
+        let o_port = Box::into_raw(Box::new(Port::new(&o_port_data, fluid_name)));
 
         let mut portdict = HashMap::new();
         portdict.insert("iPort".to_string(), i_port);

@@ -66,6 +66,11 @@ impl JSONLoader {
         let mut components = Vec::new();
         let mut connectors = Vec::new();
 
+        let fluid_name = json_value
+            .get("refrigerant")
+            .and_then(|v| v.as_str())
+            .unwrap_or("R134a");
+
         if let Some(comps) = json_value.get("components").and_then(|v| v.as_array()) {
             for comp in comps {
                 if let Some(obj) = comp.as_object() {
@@ -90,7 +95,7 @@ impl JSONLoader {
             }
         }
 
-        Ok(VCCycle::new(components, connectors))
+        Ok(VCCycle::new(components, connectors, fluid_name))
     }
 }
 

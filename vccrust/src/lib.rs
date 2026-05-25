@@ -53,6 +53,50 @@
 //! - COP = Qin / Wc
 //! - COP_hp = Qout / Wc
 //! - Capacity(ton) = Qin × 60 × (1/211)
+//!
+//! # Example VCC JSON
+//!
+//! - [demovcc.json](./jsonmodel/demovcc.json)
+//!
+//! ```json
+//! {
+//!     "name": "Demo Vapor-Compression Cycle",
+//!     "refrigerant": "R134a",
+//!     "components": [
+//!         {
+//!             "name": "Compressor",
+//!             "classstr": "Compressor",
+//!             "iPort": { "t": 0.0,   "x": 1.0,   "mdot": 0.08     },
+//!             "oPort": { "p": 0.6854     }
+//!         },
+//!         {
+//!             "name": "Condenser",
+//!             "classstr": "Condenser",
+//!             "iPort": {},
+//!             "oPort": {   "t": 26.0,  "x": 0.0  }
+//!         },
+//!         {
+//!             "name": "ExpansionValve",
+//!             "classstr": "ExpansionValve",
+//!             "iPort": {},
+//!             "oPort": {}
+//!         },
+//!         {
+//!             "name": "Evaporator",
+//!             "classstr": "Evaporator",
+//!             "iPort": {},
+//!             "oPort": {}
+//!         }
+//!     ],
+//!     "connectors": {
+//!         "Compressor.oPort": "Condenser.iPort",
+//!         "Condenser.oPort": "ExpansionValve.iPort",
+//!         "ExpansionValve.oPort": "Evaporator.iPort",
+//!         "Evaporator.oPort": "Compressor.iPort"
+//!     }
+//! }
+//! ```
+//! 
 
 pub mod common;
 pub mod core;

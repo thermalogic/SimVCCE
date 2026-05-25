@@ -61,10 +61,10 @@ impl Port {
     /// Initializes all properties to NaN, then sets provided values.
     /// If enough property pairs are given (e.g., t+x, p+x, p+t),
     /// automatically calculates the remaining properties.
-    pub fn new(curm_port: &HashMap<String, f64>) -> Self {
+    pub fn new(curm_port: &HashMap<String, f64>, fluid_name: &str) -> Self {
         let mut port = Port {
             name: "".to_string(),
-            fluid_name: "R134a".to_string(),
+            fluid_name: fluid_name.to_string(),
             p: f64::NAN,
             t: f64::NAN,
             h: f64::NAN,
