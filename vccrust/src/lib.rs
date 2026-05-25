@@ -56,7 +56,7 @@
 //!
 //! # Example VCC JSON
 //!
-//! - [demovcc.json](./jsonmodel/demovcc.json)
+//! * [demovcc.json](./jsonmodel/demovcc.json)
 //!
 //! ```json
 //! {
